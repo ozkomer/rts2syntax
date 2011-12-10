@@ -21,7 +21,7 @@ public class FilterHeader {
 			dictFiltro.put("g", "ggg");
 			dictFiltro.put("r", "rrr");
 			dictFiltro.put("i", "iii");
-			dictFiltro.put("z", "zzz");
+			dictFiltro.put("Z", "ZZZ");
 		}
 		header = new Vector<Filter>();
 		int largoEncabezado;
@@ -50,7 +50,7 @@ public class FilterHeader {
 				header.add(new Filter("i", -1, -1));
 				break;
 			case 'z':
-				header.add(new Filter("z", -1, -1));
+				header.add(new Filter("Z", -1, -1));
 				break;
 			default:
 				break;
