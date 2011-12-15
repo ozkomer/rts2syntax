@@ -94,15 +94,17 @@ public class MoveFits extends EventAction {
 		//scp /home/emaureir/20111212.tar.gz sne@calan.das.uchile.cl:CHASE500
 		StringBuilder comando;
 		comando = new StringBuilder();
-		comando.append("scp ");
+		// rsync -av -e ssh /images//archive/20111214/16904/20111215011624-167-RA.fits chase@zwicky.ctio.noao.edu:/home/chase/data/v8.0/CC/rawdata/20111214/
+		comando.append("rsync -av -e ssh ");
 		comando.append(fitsFile.getPathFileName());
-		comando.append(" chase@zwicky.ctio.noao.edu:data/v8.0/CC/rawdata/");
+		comando.append(" chase@zwicky.ctio.noao.edu:/home/chase/data/v8.0/CC/rawdata/");
 		comando.append(fitsFile.getYYYMMDD());
 		comando.append("/");
-		comando.append(fitsFile.getFilename());
+		//comando.append(fitsFile.getFilename());
 		System.out.println(comando);
 		if (enableCommand){
-			ejecutaComando("wget http://i1-win.softpedia-static.com/screenshots/Windows-7-High-Resolution-Regional-Wallpapers_1.jpg");
+			ejecutaComando(comando.toString());
+			//ejecutaComando("wget http://i1-win.softpedia-static.com/screenshots/Windows-7-High-Resolution-Regional-Wallpapers_1.jpg");
 		}
 		return;
 	}
