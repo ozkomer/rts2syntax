@@ -27,6 +27,13 @@ public class MoveFits extends EventAction {
 	 * Cualquiera de las líneas de log de interés tiene en común el siguiente String.
 	 */
 	public static final String commonPattern ="move /images//que/";
+	
+	/**
+	 * Si una linea de log a pesar de cumplir con el common patterm,
+	 * contiene este String, entonces se excluye.
+	 */
+	public static final String excludePattern ="/images//focusing/";
+	
 
 	/** 
 	 * Ahora, si la línea contiene el patron comun, debe poseer además alguno de los siguientes:
@@ -58,8 +65,8 @@ public class MoveFits extends EventAction {
 	@Override
 	public boolean processLine(String line) {
 
-		if (line.indexOf(commonPattern)>=0)
-		{
+		if ((line.indexOf(commonPattern)>=0) && (line.indexOf(excludePattern)==-1))
+		{				
 			this.action(line);
 		}
 		return false;
