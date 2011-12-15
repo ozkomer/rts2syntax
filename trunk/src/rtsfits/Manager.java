@@ -80,8 +80,10 @@ public class Manager {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		System.out.println("Rts2Log Manager: Start");
 		//test1();
 		test2(args[0], Boolean.parseBoolean(args[1]));
+		System.out.println("Rts2Log Manager: End");
 	}
 
 	/**
