@@ -126,7 +126,7 @@ public class MoveFits extends EventAction {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		scanner = new Scanner(process.getErrorStream());
+		scanner = new Scanner(process.getInputStream());
 		while(scanner.hasNextLine())
 		{
 			String line = scanner.nextLine();
