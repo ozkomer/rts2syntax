@@ -96,7 +96,7 @@ public class MoveFits extends EventAction {
 		comando = new StringBuilder();
 		comando.append("scp ");
 		comando.append(fitsFile.getPathFileName());
-		comando.append(" chase@zwicky.ctio.noao.edu:data/v8.0/CC/workspace/");
+		comando.append(" chase@zwicky.ctio.noao.edu:data/v8.0/CC/rawdata/");
 		comando.append(fitsFile.getYYYMMDD());
 		comando.append("/");
 		comando.append(fitsFile.getFilename());
