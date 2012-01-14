@@ -19,7 +19,7 @@ void setup()
   Wire.beginTransmission(0x20);  // setup out direction registers
   Wire.send(0x06);  // pointer
   Wire.send(0x00);  // DDR Port0 all output
-  Wire.send(0xFF);  // DDR Port1 all input
+  Wire.send(0x00);  // DDR Port1 all output
   Wire.endTransmission(); 
   
   
@@ -30,7 +30,8 @@ void loop() {
     i++; 
     Wire.beginTransmission(0x20);  // set mcp23016 for all output
     Wire.send(0x00); // begin here
-    Wire.send(i); 
+    Wire.send(i); //Escribe status del p
+    Wire.send(i);     
     Wire.endTransmission();
     if (i > 255) i = 0;
     delay(1000); // }
