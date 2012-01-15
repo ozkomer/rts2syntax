@@ -27,6 +27,7 @@ byte subnet[] = { 255, 255, 255, 224 };
 
 // Servidor de la Zapatilla IP
 EthernetServer server = EthernetServer(18008);
+EthernetClient client;
 
 void setup()  
 {
@@ -62,19 +63,14 @@ void loop() {
     listarComandosSerial ();
   }
   // if an incoming client connects, there will be bytes available to read:
-  EthernetClient client = server.available();
+  client = server.available();
   if (client == true) {
     // read bytes from the incoming client and write them back
     // to any clients connected to the server:
-    byte letra,chk;
+    byte letra;
     letra = client.read();
-    port0=client.read();
-    port1=client.read();
-    chk = client.read();
-    if (letra==1)
-    {
-      updateRelays();
-    }
+    procesaComandoTcpIP(letra);
+
   }
 } // end loop
   
@@ -92,6 +88,18 @@ void encenderTodo()
   port1=255;
   Serial.println(" ... Encendiendo Todo.");
   updateRelays();
+}
+
+void procesaComandoTcpIP(byte comando)
+{
+    byte chk;
+    port0=client.read();
+    port1=client.read();
+    chk = client.read();
+    if (comando==1)
+    {
+      updateRelays();
+    }  
 }
 
 void procesaComandoSerial(int linea)
