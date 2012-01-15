@@ -28,7 +28,6 @@ byte subnet[] = { 255, 255, 255, 224 };
 // Servidor de la Zapatilla IP
 EthernetServer server = EthernetServer(18008);
 
-
 void setup()  
 {
   // open the serial port at 9600 bps:
@@ -57,20 +56,25 @@ void loop() {
     // read the incoming byte:
     incomingByte = Serial.read();    
     // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte);
+    //Serial.print("I received: ");
+    //Serial.println(incomingByte);
     procesaComandoSerial(incomingByte);
     listarComandosSerial ();
   }
-//    // if an incoming client connects, there will be bytes available to read:
+  // if an incoming client connects, there will be bytes available to read:
   EthernetClient client = server.available();
   if (client == true) {
     // read bytes from the incoming client and write them back
     // to any clients connected to the server:
-    byte letra;
+    byte letra,chk;
     letra = client.read();
-    //server.write(letra);
-    procesaComandoTcp (letra,client);
+    port0=client.read();
+    port1=client.read();
+    chk = client.read();
+    if (letra==1)
+    {
+      updateRelays();
+    }
   }
 } // end loop
   
@@ -88,64 +92,6 @@ void encenderTodo()
   port1=255;
   Serial.println(" ... Encendiendo Todo.");
   updateRelays();
-}
-
-void procesaComandoTcp(byte letra, EthernetClient client)
-{
-  switch (letra)
-  {
-    case 49:
-      apagarTodo();
-      break;
-    case 50:
-      encenderTodo();
-      break;
-    case 76:// L
-      i = ((client.read())-49);
-      bitSet(port0,i); // port0 = ((port0) | (1<<i));
-      Serial.print(" ... Apagando, rele= ");
-      Serial.println(i);
-      updateRelays();
-      break;
-    case 72:// H
-      i = ((client.read())-49);
-      bitSet(port1,i);// port1 = ((port1) | (1<<i));
-      Serial.print(" ... Apagando, rele= ");
-      Serial.println(i+8);
-      updateRelays();
-      break;
-    case 108://l
-      i = ((client.read())-49);
-      bitClear(port0,i);// port0 = ((port0) - (1<<i));
-      Serial.print(" ... Encendiendo, rele= ");
-      Serial.println(i);
-      updateRelays();
-      break;
-    case 104://h
-      i = ((client.read())-49);
-      bitClear(port1,i);//port1 = ((port1) - (1<<i));
-      Serial.print(" ... Encendiendo, rele= ");
-      Serial.println(i+8);
-      updateRelays();
-      break;
-    case 115://s
-      j = ((client.read()));
-      i = ((client.read()));
-      if (i<58) { port0=(i-48); } else { port0= (i-87);}
-      if (j<58) { port0= (port0 | ((j-48)<<4)); } else { port0 = ( port0 | ((j-87)<<4));}
-      j = ((client.read()));
-      i = ((client.read()));
-      if (i<58) { port1=(i-48); } else { port1= (i-87);}
-      if (j<58) { port1= (port1 | ((j-48)<<4)); } else { port1 = ( port1 | ((j-87)<<4));}
-      
-      Serial.print(" ... Seteando port0=");
-      Serial.print(port0,DEC);
-      Serial.print(" port1=");
-      Serial.print(port1,DEC);
-      Serial.println("");
-      updateRelays();
-      break;
-  }
 }
 
 void procesaComandoSerial(int linea)
@@ -226,6 +172,7 @@ void updateRelays()
 {
   Wire.beginTransmission(0x20);  
   Wire.write((byte)0x00); // Comando para acceder al puerto de datos GP0.
+  
   
   Wire.write((byte)port0); //Escribe status del port 0
   Wire.write((byte)port1); //Escribe status del port 1, esto impacta en el GP1
