@@ -63,13 +63,14 @@ void loop() {
     listarComandos ();
   }
 //    // if an incoming client connects, there will be bytes available to read:
-//  Client client = server.available();
-//  if (client == true) {
-//    // read bytes from the incoming client and write them back
-//    // to any clients connected to the server:
-//    client.read();
-//    server.write(65);
-//  }
+  EthernetClient client = server.available();
+  if (client == true) {
+    // read bytes from the incoming client and write them back
+    // to any clients connected to the server:
+    byte letra;
+    letra = client.read();
+    server.write(letra);
+  }
 } // end loop
   
 void apagarTodo()
