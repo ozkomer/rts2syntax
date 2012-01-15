@@ -1,0 +1,8 @@
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\bin\Debug\ZapatillaIP_cs.exe
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\bin\Debug\ZapatillaIP_cs.pdb
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.Form1.resources
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.Properties.Resources.resources
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.csproj.GenerateResource.Cache
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.exe
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.pdb
