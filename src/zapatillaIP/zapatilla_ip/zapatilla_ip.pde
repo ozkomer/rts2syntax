@@ -47,21 +47,31 @@ void loop() {
   }
 } // end loop
   
+void apagarTodo()
+{
+  port0=0;
+  port1=0;
+  Serial.print(" ... Apagando Todo.");
+  updateRelays();  
+}
+
+void encenderTodo()
+{
+  port0=255;
+  port1=255;
+  Serial.print(" ... Encendiendo Todo.");
+  updateRelays();
+}
+
 void procesaComando(int linea)
 {
   switch (linea)
   {
     case 49:
-      port0=0;
-      port1=0;
-      Serial.print(" ... Apagando Todo.");
-      updateRelays();
+      apagarTodo();
       break;
     case 50:
-      port0=255;
-      port1=255;
-      Serial.print(" ... Encendiendo Todo.");
-      updateRelays();
+      encenderTodo();
       break;
     case 76:// L
       i = ((Serial.read())-49);
@@ -92,19 +102,19 @@ void procesaComando(int linea)
       updateRelays();
       break;
     case 115://s
-      i = ((Serial.read()));
       j = ((Serial.read()));
+      i = ((Serial.read()));
       if (i<58) { port0=(i-48); } else { port0= (i-87);}
       if (j<58) { port0= (port0 | ((j-48)<<4)); } else { port0 = ( port0 | ((j-87)<<4));}
-      i = ((Serial.read()));
       j = ((Serial.read()));
+      i = ((Serial.read()));
       if (i<58) { port1=(i-48); } else { port1= (i-87);}
       if (j<58) { port1= (port1 | ((j-48)<<4)); } else { port1 = ( port1 | ((j-87)<<4));}
       
-      Serial.print(" ... Seteando i=");
-      Serial.print(i,HEX);
-      Serial.print(" j=");
-      Serial.print(j,HEX);
+      Serial.print(" ... Seteando port0=");
+      Serial.print(port0,DEC);
+      Serial.print(" port1=");
+      Serial.print(port1,DEC);
       Serial.println("");
       updateRelays();
       break;
