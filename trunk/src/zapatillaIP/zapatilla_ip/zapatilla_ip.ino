@@ -46,7 +46,7 @@ void setup()
 
   // start listening for clients
   server.begin();
-  listarComandos ();
+  listarComandosSerial ();
 }
   
   int incomingByte = 0;	// for incoming serial data
@@ -59,8 +59,8 @@ void loop() {
     // say what you got:
     Serial.print("I received: ");
     Serial.println(incomingByte);
-    procesaComando(incomingByte);
-    listarComandos ();
+    procesaComandoSerial(incomingByte);
+    listarComandosSerial ();
   }
 //    // if an incoming client connects, there will be bytes available to read:
   EthernetClient client = server.available();
@@ -69,7 +69,8 @@ void loop() {
     // to any clients connected to the server:
     byte letra;
     letra = client.read();
-    server.write(letra);
+    //server.write(letra);
+    procesaComandoTcp (letra,client);
   }
 } // end loop
   
@@ -77,7 +78,7 @@ void apagarTodo()
 {
   port0=0;
   port1=0;
-  Serial.print(" ... Apagando Todo.");
+  Serial.println(" ... Apagando Todo.");
   updateRelays();  
 }
 
@@ -85,11 +86,69 @@ void encenderTodo()
 {
   port0=255;
   port1=255;
-  Serial.print(" ... Encendiendo Todo.");
+  Serial.println(" ... Encendiendo Todo.");
   updateRelays();
 }
 
-void procesaComando(int linea)
+void procesaComandoTcp(byte letra, EthernetClient client)
+{
+  switch (letra)
+  {
+    case 49:
+      apagarTodo();
+      break;
+    case 50:
+      encenderTodo();
+      break;
+    case 76:// L
+      i = ((client.read())-49);
+      bitSet(port0,i); // port0 = ((port0) | (1<<i));
+      Serial.print(" ... Apagando, rele= ");
+      Serial.println(i);
+      updateRelays();
+      break;
+    case 72:// H
+      i = ((client.read())-49);
+      bitSet(port1,i);// port1 = ((port1) | (1<<i));
+      Serial.print(" ... Apagando, rele= ");
+      Serial.println(i+8);
+      updateRelays();
+      break;
+    case 108://l
+      i = ((client.read())-49);
+      bitClear(port0,i);// port0 = ((port0) - (1<<i));
+      Serial.print(" ... Encendiendo, rele= ");
+      Serial.println(i);
+      updateRelays();
+      break;
+    case 104://h
+      i = ((client.read())-49);
+      bitClear(port1,i);//port1 = ((port1) - (1<<i));
+      Serial.print(" ... Encendiendo, rele= ");
+      Serial.println(i+8);
+      updateRelays();
+      break;
+    case 115://s
+      j = ((client.read()));
+      i = ((client.read()));
+      if (i<58) { port0=(i-48); } else { port0= (i-87);}
+      if (j<58) { port0= (port0 | ((j-48)<<4)); } else { port0 = ( port0 | ((j-87)<<4));}
+      j = ((client.read()));
+      i = ((client.read()));
+      if (i<58) { port1=(i-48); } else { port1= (i-87);}
+      if (j<58) { port1= (port1 | ((j-48)<<4)); } else { port1 = ( port1 | ((j-87)<<4));}
+      
+      Serial.print(" ... Seteando port0=");
+      Serial.print(port0,DEC);
+      Serial.print(" port1=");
+      Serial.print(port1,DEC);
+      Serial.println("");
+      updateRelays();
+      break;
+  }
+}
+
+void procesaComandoSerial(int linea)
 {
   switch (linea)
   {
@@ -147,7 +206,7 @@ void procesaComando(int linea)
   }
 }
 
-void listarComandos ()
+void listarComandosSerial ()
 {
   Serial.println("");
   Serial.println("*********Zapatilla IP.*********");
