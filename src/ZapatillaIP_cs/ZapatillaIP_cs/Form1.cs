@@ -14,6 +14,9 @@ namespace ZapatillaIP_cs
     public partial class Form1 : Form
     {
         TcpClient tcpclnt;
+        List<Button> relayButton;
+        byte port0;
+        byte port1;
 
         public Form1()
         {
@@ -21,6 +24,33 @@ namespace ZapatillaIP_cs
             tcpclnt = new TcpClient();
             tcpclnt.Connect("139.229.65.214", 18008);
             Console.WriteLine("Connected");
+
+            // Setea todo como energizado pone los botones en Verde
+            // y al mismo tiempo supone que la PDU esta 
+            // energizando todos los equipos.
+            port0 = 0;
+            port1 = 0;
+            relayButton = new List<Button>();
+            relayButton.Add(buttonRelay1);
+            relayButton.Add(buttonRelay2);
+            relayButton.Add(buttonRelay3);
+            relayButton.Add(buttonRelay4);
+            relayButton.Add(buttonRelay5);
+            relayButton.Add(buttonRelay6);
+            relayButton.Add(buttonRelay7);
+            relayButton.Add(buttonRelay8);
+            relayButton.Add(buttonRelay9);
+            relayButton.Add(buttonRelay10);
+            relayButton.Add(buttonRelay11);
+            relayButton.Add(buttonRelay12);
+            relayButton.Add(buttonRelay13);
+            relayButton.Add(buttonRelay14);
+            relayButton.Add(buttonRelay15);
+            relayButton.Add(buttonRelay16);
+            foreach (Button boton in relayButton)
+            {
+                boton.BackColor = Color.LightGreen;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -65,6 +95,14 @@ namespace ZapatillaIP_cs
         private void Form1_Shown(object sender, EventArgs e)
         {
             
+        }
+
+        private void buttonRelay_Click(object sender, EventArgs e)
+        {
+            int botonPresionado;
+            //botonPresionado = -1;
+            botonPresionado = relayButton.IndexOf((Button)sender);
+            Console.WriteLine("botonPresionado=" + botonPresionado);
         }
     }
 }

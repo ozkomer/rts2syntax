@@ -6,3 +6,4 @@ C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debu
 C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.csproj.GenerateResource.Cache
 C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.exe
 C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\obj\Debug\ZapatillaIP_cs.pdb
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\ZapatillaIP_cs\ZapatillaIP_cs\bin\Debug\ZapatillaIP_cs.exe.config
