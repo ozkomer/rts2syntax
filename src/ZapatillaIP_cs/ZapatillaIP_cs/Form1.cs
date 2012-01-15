@@ -15,8 +15,10 @@ namespace ZapatillaIP_cs
     {
         TcpClient tcpclnt;
         List<Button> relayButton;
+        Boolean[] relayStatus;
         byte port0;
         byte port1;
+        byte[] message;
 
         public Form1()
         {
@@ -25,6 +27,13 @@ namespace ZapatillaIP_cs
             tcpclnt.Connect("139.229.65.214", 18008);
             Console.WriteLine("Connected");
 
+            relayStatus = new Boolean[16];
+            for (int i = 0; i < 16; i++)
+            {
+                relayStatus[i] = true;
+            }
+
+            message = new byte[4];
             // Setea todo como energizado pone los botones en Verde
             // y al mismo tiempo supone que la PDU esta 
             // energizando todos los equipos.
@@ -47,44 +56,36 @@ namespace ZapatillaIP_cs
             relayButton.Add(buttonRelay14);
             relayButton.Add(buttonRelay15);
             relayButton.Add(buttonRelay16);
-            foreach (Button boton in relayButton)
+
+            refreshButtonRelayColors();
+        }
+
+        private void refreshButtonRelayColors()
+        {
+            Button boton;
+            for (int i = 0; i < 16; i++)
             {
-                boton.BackColor = Color.LightGreen;
+                boton = relayButton[i];
+                if (relayStatus[i])
+                {
+                    boton.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    boton.BackColor = Color.Pink;
+                }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Console.WriteLine("button1_Click");
-            
-            Console.WriteLine("Connecting.....");
-
-            
-            // use the ipaddress as in the server program
-
-
-            
-            //Console.Write("Enter the string to be transmitted : ");
-
-            String str = Console.ReadLine();
             Stream stm = tcpclnt.GetStream();
 
-            ASCIIEncoding asen = new ASCIIEncoding();
-            //byte[] ba = asen.GetBytes(str);
             Console.WriteLine("Transmitting.....");
-
-            //stm.Write(ba, 0, ba.Length);
             stm.WriteByte(49);
             Thread.Sleep(1000);
-            stm.WriteByte(50);
-/**
-            byte[] bb = new byte[100];
-            int k = stm.Read(bb, 0, 100);
-
-            for (int i = 0; i < k; i++)
-                Console.Write(Convert.ToChar(bb[i]));
-            */
-            
+            stm.WriteByte(50);            
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -103,6 +104,36 @@ namespace ZapatillaIP_cs
             //botonPresionado = -1;
             botonPresionado = relayButton.IndexOf((Button)sender);
             Console.WriteLine("botonPresionado=" + botonPresionado);
+            relayStatus[botonPresionado] = !relayStatus[botonPresionado];
+            refreshButtonRelayColors();
+            refreshPorts();
+        }
+
+        private void refreshPorts()
+        {
+            Console.WriteLine("refreshPorts:");
+            port0 = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                if (!relayStatus[i])
+                    port0 = (byte) (port0 | (((byte)1) << ((byte)i)));
+            }
+            port1 = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                if (!relayStatus[i+8])
+                    port1 = (byte)(port1 | (((byte)1) << ((byte)i)));
+            }
+            Console.WriteLine("port0="+port0+"port1="+port1);
+
+            Stream stm = tcpclnt.GetStream();
+
+            Console.WriteLine("Transmitting.....");
+            message[0] = 1;
+            message[1] = port0;
+            message[2] = port1;
+            message[3] = (byte)(1 | port0 | port1);
+            stm.Write(message,0,4);
         }
     }
 }
