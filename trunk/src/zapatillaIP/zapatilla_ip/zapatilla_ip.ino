@@ -11,6 +11,9 @@ Eduardo Maureira, Enero 2012
 int i;
 int j;
 
+//.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
+byte zxRelayAddres = 0x20;
+
 // Status de los relés 1 al 8
 byte port0=0; 
 // Status de los relés 9 al 16
@@ -36,7 +39,7 @@ void setup()
   Serial.println("Bienvenidos a Zapatilla IP.");
   
   Wire.begin();
-  Wire.beginTransmission(0x20);  // setup out direction registers
+  Wire.beginTransmission(zxRelayAddres);  // setup out direction registers
   Wire.write((byte)0x06);  // pointer
   Wire.write((byte)0x00);  // DDR Port0 all output
   Wire.write((byte)0x00);  // DDR Port1 all output
@@ -96,7 +99,7 @@ void procesaComandoTcpIP(byte comando)
     port0=client.read();
     port1=client.read();
     chk = client.read();
-    if (comando==1)
+    if ((comando==1) && ((comando + port0 + port1)==chk))
     {
       updateRelays();
     }  
@@ -178,7 +181,7 @@ void listarComandosSerial ()
 
 void updateRelays()
 {
-  Wire.beginTransmission(0x20);  
+  Wire.beginTransmission(zxRelayAddres);  
   Wire.write((byte)0x00); // Comando para acceder al puerto de datos GP0.
   
   
