@@ -50,6 +50,7 @@ void setup()
   // start listening for clients
   server.begin();
   listarComandosSerial ();
+  readRelays();
 }
   
   int incomingByte = 0;	// for incoming serial data
@@ -96,13 +97,26 @@ void encenderTodo()
 void procesaComandoTcpIP(byte comando)
 {
     byte chk;
-    port0=client.read();
-    port1=client.read();
-    chk = client.read();
-    if ((comando==1) && ((comando + port0 + port1)==chk))
+    byte suma;
+    if (comando==1)
     {
-      updateRelays();
-    }  
+      port0=client.read();
+      port1=client.read();
+      chk = client.read();
+      suma = (comando + port0 + port1);
+      if (suma==chk)
+      {
+        updateRelays();
+        readRelays();
+      }
+      else
+      {
+        Serial.print ("checksum Error;");
+        Serial.print(suma);
+        Serial.print("!=");
+        Serial.println(chk);
+      }
+    }
 }
 
 void procesaComandoSerial(int linea)
@@ -184,9 +198,26 @@ void updateRelays()
   Wire.beginTransmission(zxRelayAddres);  
   Wire.write((byte)0x00); // Comando para acceder al puerto de datos GP0.
   
-  
   Wire.write((byte)port0); //Escribe status del port 0
   Wire.write((byte)port1); //Escribe status del port 1, esto impacta en el GP1
   
   Wire.endTransmission();
-}  
+} 
+
+void readRelays()
+{
+    // read port0, port1
+    Wire.beginTransmission(zxRelayAddres);
+    Wire.write((byte)0x00); // must act as a position pointer?
+    Wire.endTransmission();
+    Wire.requestFrom((byte)zxRelayAddres, (byte)2);    // request 1 byte
+    port0 = Wire.read(); // receive a byte
+    port1 = Wire.read(); // receive a byte
+    Wire.endTransmission();
+    
+      Serial.print(" ... Status Actual port0=");
+      Serial.print(port0,DEC);
+      Serial.print(" port1=");
+      Serial.print(port1,DEC);
+      Serial.println("");
+}
