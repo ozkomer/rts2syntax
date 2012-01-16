@@ -214,5 +214,29 @@ namespace ZapatillaIP_cs.Properties {
                 this["relay16Label"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("139.229.65.214")]
+        public string ipAddress {
+            get {
+                return ((string)(this["ipAddress"]));
+            }
+            set {
+                this["ipAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("18008")]
+        public decimal port {
+            get {
+                return ((decimal)(this["port"]));
+            }
+            set {
+                this["port"] = value;
+            }
+        }
     }
 }

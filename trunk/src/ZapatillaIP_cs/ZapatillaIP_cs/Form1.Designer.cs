@@ -28,10 +28,15 @@ namespace ZapatillaIP_cs
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPDU = new System.Windows.Forms.TabPage();
             this.groupBoxRelayArray = new System.Windows.Forms.GroupBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.gbNetwork = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.tbxHost = new System.Windows.Forms.TextBox();
             this.buttonRelay16 = new System.Windows.Forms.Button();
             this.buttonRelay15 = new System.Windows.Forms.Button();
             this.buttonRelay14 = new System.Windows.Forms.Button();
@@ -48,21 +53,13 @@ namespace ZapatillaIP_cs
             this.buttonRelay3 = new System.Windows.Forms.Button();
             this.buttonRelay2 = new System.Windows.Forms.Button();
             this.buttonRelay1 = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.buttonReadRelay = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPDU.SuspendLayout();
             this.groupBoxRelayArray.SuspendLayout();
+            this.gbNetwork.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(36, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tabControl1
             // 
@@ -87,6 +84,7 @@ namespace ZapatillaIP_cs
             // 
             // groupBoxRelayArray
             // 
+            this.groupBoxRelayArray.Controls.Add(this.buttonReadRelay);
             this.groupBoxRelayArray.Controls.Add(this.buttonRelay16);
             this.groupBoxRelayArray.Controls.Add(this.buttonRelay15);
             this.groupBoxRelayArray.Controls.Add(this.buttonRelay14);
@@ -109,6 +107,72 @@ namespace ZapatillaIP_cs
             this.groupBoxRelayArray.TabIndex = 0;
             this.groupBoxRelayArray.TabStop = false;
             this.groupBoxRelayArray.Text = "16 Relays";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(600, 190);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // gbNetwork
+            // 
+            this.gbNetwork.Controls.Add(this.numericUpDown1);
+            this.gbNetwork.Controls.Add(this.label2);
+            this.gbNetwork.Controls.Add(this.tbxHost);
+            this.gbNetwork.Controls.Add(this.label1);
+            this.gbNetwork.Location = new System.Drawing.Point(26, 8);
+            this.gbNetwork.Name = "gbNetwork";
+            this.gbNetwork.Size = new System.Drawing.Size(365, 49);
+            this.gbNetwork.TabIndex = 2;
+            this.gbNetwork.TabStop = false;
+            this.gbNetwork.Text = "Network";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Host";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(192, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Tcp Port";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ZapatillaIP_cs.Properties.Settings.Default, "port", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(246, 17);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(69, 20);
+            this.numericUpDown1.TabIndex = 3;
+            this.numericUpDown1.Value = global::ZapatillaIP_cs.Properties.Settings.Default.port;
+            // 
+            // tbxHost
+            // 
+            this.tbxHost.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ZapatillaIP_cs.Properties.Settings.Default, "ipAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tbxHost.Location = new System.Drawing.Point(41, 16);
+            this.tbxHost.Name = "tbxHost";
+            this.tbxHost.ReadOnly = true;
+            this.tbxHost.Size = new System.Drawing.Size(137, 20);
+            this.tbxHost.TabIndex = 1;
+            this.tbxHost.Text = global::ZapatillaIP_cs.Properties.Settings.Default.ipAddress;
             // 
             // buttonRelay16
             // 
@@ -286,23 +350,23 @@ namespace ZapatillaIP_cs
             this.buttonRelay1.UseVisualStyleBackColor = true;
             this.buttonRelay1.Click += new System.EventHandler(this.buttonRelay_Click);
             // 
-            // tabPage2
+            // buttonReadRelay
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(600, 190);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.buttonReadRelay.Location = new System.Drawing.Point(19, 120);
+            this.buttonReadRelay.Name = "buttonReadRelay";
+            this.buttonReadRelay.Size = new System.Drawing.Size(75, 23);
+            this.buttonReadRelay.TabIndex = 16;
+            this.buttonReadRelay.Text = "Read";
+            this.buttonReadRelay.UseVisualStyleBackColor = true;
+            this.buttonReadRelay.Click += new System.EventHandler(this.buttonReadRelay_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(638, 294);
+            this.Controls.Add(this.gbNetwork);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "PDU Temp Compass";
             this.Shown += new System.EventHandler(this.Form1_Shown);
@@ -310,13 +374,15 @@ namespace ZapatillaIP_cs
             this.tabControl1.ResumeLayout(false);
             this.tabPDU.ResumeLayout(false);
             this.groupBoxRelayArray.ResumeLayout(false);
+            this.gbNetwork.ResumeLayout(false);
+            this.gbNetwork.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPDU;
         private System.Windows.Forms.TabPage tabPage2;
@@ -337,6 +403,12 @@ namespace ZapatillaIP_cs
         private System.Windows.Forms.Button buttonRelay16;
         private System.Windows.Forms.Button buttonRelay15;
         private System.Windows.Forms.Button buttonRelay14;
+        private System.Windows.Forms.GroupBox gbNetwork;
+        private System.Windows.Forms.TextBox tbxHost;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button buttonReadRelay;
     }
 }
 

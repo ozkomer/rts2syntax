@@ -19,12 +19,15 @@ namespace ZapatillaIP_cs
         byte port0;
         byte port1;
         byte[] message;
+        static ZapatillaIP_cs.Properties.Settings settings = Properties.Settings.Default;
 
         public Form1()
         {
             InitializeComponent();
             tcpclnt = new TcpClient();
-            tcpclnt.Connect("139.229.65.214", 18008);
+
+
+            tcpclnt.Connect(settings.ipAddress, (int) settings.port);
             Console.WriteLine("Connected");
 
             relayStatus = new Boolean[16];
@@ -77,17 +80,6 @@ namespace ZapatillaIP_cs
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("button1_Click");
-            Stream stm = tcpclnt.GetStream();
-
-            Console.WriteLine("Transmitting.....");
-            stm.WriteByte(49);
-            Thread.Sleep(1000);
-            stm.WriteByte(50);            
-        }
-
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             tcpclnt.Close();
@@ -124,7 +116,7 @@ namespace ZapatillaIP_cs
                 if (!relayStatus[i+8])
                     port1 = (byte)(port1 | (((byte)1) << ((byte)i)));
             }
-            Console.WriteLine("port0="+port0+"port1="+port1);
+            Console.WriteLine("port0="+port0+"  port1="+port1);
 
             Stream stm = tcpclnt.GetStream();
 
@@ -132,8 +124,26 @@ namespace ZapatillaIP_cs
             message[0] = 1;
             message[1] = port0;
             message[2] = port1;
-            message[3] = (byte)(1 | port0 | port1);
+            message[3] = (byte)(1 + port0 + port1);
             stm.Write(message,0,4);
+        }
+
+        private void buttonReadRelay_Click(object sender, EventArgs e)
+        {
+            Stream stm = tcpclnt.GetStream();
+            stm.WriteByte(2);
+            byte p0, p1;
+            p0 = (byte)stm.ReadByte();
+            p1 = (byte)stm.ReadByte();
+            int stat;
+            stat = (p0 + (p1 << 8));
+            Console.WriteLine("p0=" + p0 + "  p1=" + p1+ "  stat="+stat);
+            for (int i = 0; i < 16; i++)
+            {
+                relayStatus[i] = ((stat%2)==0);
+                stat /= 2;
+            }
+            this.refreshButtonRelayColors();
         }
     }
 }
