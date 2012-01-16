@@ -98,8 +98,10 @@ void procesaComandoTcpIP(byte comando)
 {
     byte chk;
     byte suma;
-    if (comando==1)
+    switch (comando)
     {
+    case 1:
+    
       port0=client.read();
       port1=client.read();
       chk = client.read();
@@ -116,7 +118,13 @@ void procesaComandoTcpIP(byte comando)
         Serial.print("!=");
         Serial.println(chk);
       }
+      break;
+    case 2:
+      client.write(port0);
+      client.write(port1);
+      break;
     }
+    
 }
 
 void procesaComandoSerial(int linea)
