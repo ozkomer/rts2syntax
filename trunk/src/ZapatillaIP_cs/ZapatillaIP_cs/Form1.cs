@@ -31,10 +31,7 @@ namespace ZapatillaIP_cs
             Console.WriteLine("Connected");
 
             relayStatus = new Boolean[16];
-            for (int i = 0; i < 16; i++)
-            {
-                relayStatus[i] = true;
-            }
+
 
             message = new byte[4];
             // Setea todo como energizado pone los botones en Verde
@@ -60,7 +57,26 @@ namespace ZapatillaIP_cs
             relayButton.Add(buttonRelay15);
             relayButton.Add(buttonRelay16);
 
-            refreshButtonRelayColors();
+
+            readRelays();
+        }
+
+        private void readRelays()
+        {
+            Stream stm = tcpclnt.GetStream();
+            stm.WriteByte(2);
+            byte p0, p1;
+            p0 = (byte)stm.ReadByte();
+            p1 = (byte)stm.ReadByte();
+            int stat;
+            stat = (p0 + (p1 << 8));
+            Console.WriteLine("p0=" + p0 + "  p1=" + p1 + "  stat=" + stat);
+            for (int i = 0; i < 16; i++)
+            {
+                relayStatus[i] = ((stat % 2) == 0);
+                stat /= 2;
+            }
+            this.refreshButtonRelayColors();
         }
 
         private void refreshButtonRelayColors()
@@ -130,20 +146,9 @@ namespace ZapatillaIP_cs
 
         private void buttonReadRelay_Click(object sender, EventArgs e)
         {
-            Stream stm = tcpclnt.GetStream();
-            stm.WriteByte(2);
-            byte p0, p1;
-            p0 = (byte)stm.ReadByte();
-            p1 = (byte)stm.ReadByte();
-            int stat;
-            stat = (p0 + (p1 << 8));
-            Console.WriteLine("p0=" + p0 + "  p1=" + p1+ "  stat="+stat);
-            for (int i = 0; i < 16; i++)
-            {
-                relayStatus[i] = ((stat%2)==0);
-                stat /= 2;
-            }
-            this.refreshButtonRelayColors();
+            readRelays();
         }
+
+
     }
 }
