@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZapatillaIP_cs", "ZapatillaIP_cs\ZapatillaIP_cs.csproj", "{9C7F497E-6B8D-4DEC-9B6B-250904EB4F85}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupPdu", "SetupPdu\SetupPdu.vdproj", "{22A9D814-7633-42CE-B933-72B748EE9544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,8 @@ Global
 		{9C7F497E-6B8D-4DEC-9B6B-250904EB4F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C7F497E-6B8D-4DEC-9B6B-250904EB4F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C7F497E-6B8D-4DEC-9B6B-250904EB4F85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22A9D814-7633-42CE-B933-72B748EE9544}.Debug|Any CPU.ActiveCfg = Debug
+		{22A9D814-7633-42CE-B933-72B748EE9544}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

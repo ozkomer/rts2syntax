@@ -25,7 +25,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Baade")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay1Label")]
         public string relay1Label {
             get {
                 return ((string)(this["relay1Label"]));
@@ -37,7 +37,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Zwicky")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay2Label")]
         public string relay2Label {
             get {
                 return ((string)(this["relay2Label"]));
@@ -49,7 +49,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("GTOCP3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay3Label")]
         public string relay3Label {
             get {
                 return ((string)(this["relay3Label"]));
@@ -61,7 +61,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ATC-02")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay4Label")]
         public string relay4Label {
             get {
                 return ((string)(this["relay4Label"]));
@@ -73,7 +73,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Filter Wheel")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay5Label")]
         public string relay5Label {
             get {
                 return ((string)(this["relay5Label"]));
@@ -85,7 +85,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Rotador")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay6Label")]
         public string relay6Label {
             get {
                 return ((string)(this["relay6Label"]));
@@ -97,7 +97,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CCD")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay7Label")]
         public string relay7Label {
             get {
                 return ((string)(this["relay7Label"]));
@@ -109,7 +109,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NE Camera")]
+        [global::System.Configuration.DefaultSettingValueAttribute("relay8Label")]
         public string relay8Label {
             get {
                 return ((string)(this["relay8Label"]));
@@ -121,7 +121,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NW Camera")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CCD")]
         public string relay9Label {
             get {
                 return ((string)(this["relay9Label"]));
@@ -133,7 +133,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("relay10Label")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Baade")]
         public string relay10Label {
             get {
                 return ((string)(this["relay10Label"]));
@@ -145,7 +145,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("relay11Label")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fuente 12 Volts")]
         public string relay11Label {
             get {
                 return ((string)(this["relay11Label"]));
@@ -157,7 +157,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("relay12Label")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ATC-02")]
         public string relay12Label {
             get {
                 return ((string)(this["relay12Label"]));
@@ -169,7 +169,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("relay13Label")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Magnetic Lock")]
         public string relay13Label {
             get {
                 return ((string)(this["relay13Label"]));
