@@ -3,43 +3,43 @@
   <Profiles />
   <Settings>
     <Setting Name="relay1Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Baade</Value>
+      <Value Profile="(Default)">relay1Label</Value>
     </Setting>
     <Setting Name="relay2Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Zwicky</Value>
+      <Value Profile="(Default)">relay2Label</Value>
     </Setting>
     <Setting Name="relay3Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">GTOCP3</Value>
+      <Value Profile="(Default)">relay3Label</Value>
     </Setting>
     <Setting Name="relay4Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ATC-02</Value>
+      <Value Profile="(Default)">relay4Label</Value>
     </Setting>
     <Setting Name="relay5Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Filter Wheel</Value>
+      <Value Profile="(Default)">relay5Label</Value>
     </Setting>
     <Setting Name="relay6Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Rotador</Value>
+      <Value Profile="(Default)">relay6Label</Value>
     </Setting>
     <Setting Name="relay7Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CCD</Value>
+      <Value Profile="(Default)">relay7Label</Value>
     </Setting>
     <Setting Name="relay8Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">NE Camera</Value>
+      <Value Profile="(Default)">relay8Label</Value>
     </Setting>
     <Setting Name="relay9Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">NW Camera</Value>
+      <Value Profile="(Default)">CCD</Value>
     </Setting>
     <Setting Name="relay10Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay10Label</Value>
+      <Value Profile="(Default)">Baade</Value>
     </Setting>
     <Setting Name="relay11Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay11Label</Value>
+      <Value Profile="(Default)">Fuente 12 Volts</Value>
     </Setting>
     <Setting Name="relay12Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay12Label</Value>
+      <Value Profile="(Default)">ATC-02</Value>
     </Setting>
     <Setting Name="relay13Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay13Label</Value>
+      <Value Profile="(Default)">Magnetic Lock</Value>
     </Setting>
     <Setting Name="relay14Label" Type="System.String" Scope="User">
       <Value Profile="(Default)">relay14Label</Value>
