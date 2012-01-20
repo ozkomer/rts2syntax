@@ -14,7 +14,7 @@ namespace ZapatillaIP_cs
     public partial class Form1 : Form
     {
         TcpClient tcpclnt;
-        List<Button> relayButton;
+        List<CheckBox> relayCheckBox;
         Boolean[] relayStatus;
         byte port0;
         byte port1;
@@ -26,8 +26,18 @@ namespace ZapatillaIP_cs
             InitializeComponent();
             tcpclnt = new TcpClient();
 
-
-            tcpclnt.Connect(settings.ipAddress, (int) settings.port);
+            try
+            {
+                tcpclnt.Connect(settings.ipAddress, (int) settings.port);
+            }
+            catch (SocketException e)
+            {
+                MessageBox.Show(e.Message);
+                //Application.Exit();
+                //this.Close();
+                //return;
+            }
+            
             Console.WriteLine("Connected");
 
             relayStatus = new Boolean[16];
@@ -39,23 +49,23 @@ namespace ZapatillaIP_cs
             // energizando todos los equipos.
             port0 = 0;
             port1 = 0;
-            relayButton = new List<Button>();
-            relayButton.Add(buttonRelay1);
-            relayButton.Add(buttonRelay2);
-            relayButton.Add(buttonRelay3);
-            relayButton.Add(buttonRelay4);
-            relayButton.Add(buttonRelay5);
-            relayButton.Add(buttonRelay6);
-            relayButton.Add(buttonRelay7);
-            relayButton.Add(buttonRelay8);
-            relayButton.Add(buttonRelay9);
-            relayButton.Add(buttonRelay10);
-            relayButton.Add(buttonRelay11);
-            relayButton.Add(buttonRelay12);
-            relayButton.Add(buttonRelay13);
-            relayButton.Add(buttonRelay14);
-            relayButton.Add(buttonRelay15);
-            relayButton.Add(buttonRelay16);
+            relayCheckBox = new List<CheckBox>();
+            relayCheckBox.Add(checkBoxRelay1);
+            relayCheckBox.Add(checkBoxRelay2);
+            relayCheckBox.Add(checkBoxRelay3);
+            relayCheckBox.Add(checkBoxRelay4);
+            relayCheckBox.Add(checkBoxRelay5);
+            relayCheckBox.Add(checkBoxRelay6);
+            relayCheckBox.Add(checkBoxRelay7);
+            relayCheckBox.Add(checkBoxRelay8);
+            relayCheckBox.Add(checkBoxRelay9);
+            relayCheckBox.Add(checkBoxRelay10);
+            relayCheckBox.Add(checkBoxRelay11);
+            relayCheckBox.Add(checkBoxRelay12);
+            relayCheckBox.Add(checkBoxRelay13);
+            relayCheckBox.Add(checkBoxRelay14);
+            relayCheckBox.Add(checkBoxRelay15);
+            relayCheckBox.Add(checkBoxRelay16);
 
 
             readRelays();
@@ -63,28 +73,33 @@ namespace ZapatillaIP_cs
 
         private void readRelays()
         {
-            Stream stm = tcpclnt.GetStream();
-            stm.WriteByte(2);
-            byte p0, p1;
-            p0 = (byte)stm.ReadByte();
-            p1 = (byte)stm.ReadByte();
-            int stat;
-            stat = (p0 + (p1 << 8));
-            Console.WriteLine("p0=" + p0 + "  p1=" + p1 + "  stat=" + stat);
-            for (int i = 0; i < 16; i++)
+            Stream stm;
+            stm = null;
+            if (tcpclnt.Connected)
             {
-                relayStatus[i] = ((stat % 2) == 0);
-                stat /= 2;
+                stm = tcpclnt.GetStream();
+                stm.WriteByte(2);
+                byte p0, p1;
+                p0 = (byte)stm.ReadByte();
+                p1 = (byte)stm.ReadByte();
+                int stat;
+                stat = (p0 + (p1 << 8));
+                Console.WriteLine("p0=" + p0 + "  p1=" + p1 + "  stat=" + stat);
+                for (int i = 0; i < 16; i++)
+                {
+                    relayStatus[i] = ((stat % 2) == 0);
+                    stat /= 2;
+                }
             }
-            this.refreshButtonRelayColors();
+            this.refreshcheckBoxRelayColors();
         }
 
-        private void refreshButtonRelayColors()
+        private void refreshcheckBoxRelayColors()
         {
-            Button boton;
+            CheckBox boton;
             for (int i = 0; i < 16; i++)
             {
-                boton = relayButton[i];
+                boton = relayCheckBox[i];
                 if (relayStatus[i])
                 {
                     boton.BackColor = Color.LightGreen;
@@ -93,28 +108,16 @@ namespace ZapatillaIP_cs
                 {
                     boton.BackColor = Color.Pink;
                 }
+                if (!tcpclnt.Connected)
+                {
+                    boton.Enabled = false;
+                }
             }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             tcpclnt.Close();
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void buttonRelay_Click(object sender, EventArgs e)
-        {
-            int botonPresionado;
-            //botonPresionado = -1;
-            botonPresionado = relayButton.IndexOf((Button)sender);
-            Console.WriteLine("botonPresionado=" + botonPresionado);
-            relayStatus[botonPresionado] = !relayStatus[botonPresionado];
-            refreshButtonRelayColors();
-            refreshPorts();
         }
 
         private void refreshPorts()
@@ -149,6 +152,74 @@ namespace ZapatillaIP_cs
             readRelays();
         }
 
+        //private void buttonRelay_Click(object sender, EventArgs e)
+        //{
+        //    int botonPresionado;
+        //    //botonPresionado = -1;
+        //    botonPresionado = relayButton.IndexOf((Button)sender);
+        //    Console.WriteLine("botonPresionado=" + botonPresionado);
+        //    relayStatus[botonPresionado] = !relayStatus[botonPresionado];
+        //    refreshButtonRelayColors();
+        //    refreshPorts();
+        //}
 
+        /**
+         * Recorre la lista de reles, formando una lista con aquellos que estan tickeados. 
+         * 
+         */
+        private void switchRelays(Boolean targetState)
+        {
+            List<int> tickeds;
+            CheckBox cbLocal;
+            tickeds = new List<int>();
+            StringBuilder message;
+            message = new StringBuilder();
+            message.AppendLine(" Los reles:\n");
+            for (int i = 0; i < 16; i++)
+            {
+                cbLocal = relayCheckBox[i];
+                if (cbLocal.Checked)
+                {
+                    tickeds.Add(i);
+                    //relayStatus[i] = targetState;
+                    message.AppendLine(relayCheckBox[i].Text);
+                }
+            }
+            message.Append("serán ");
+            if (targetState)
+            {
+                message.AppendLine("encendidos.");
+            }
+            else
+            {
+                message.AppendLine("apagados");
+            }
+            DialogResult respuesta;
+            respuesta = MessageBox.Show(message.ToString(), "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Hand);
+            if (respuesta == DialogResult.Yes)
+            {
+                foreach (int indice in tickeds)
+                {
+                    Console.WriteLine("relayStatus[" + indice + "]=" + relayStatus[indice] + " ---> " + targetState);
+                    relayCheckBox[indice].Checked = false;
+                    relayStatus[indice] = targetState;
+
+                }
+                refreshcheckBoxRelayColors();
+                refreshPorts();
+            }
+        }
+
+        private void buttonSwitchOff_Click(object sender, EventArgs e)
+        {
+            switchRelays(false);
+        }
+
+        private void buttonSwitchOn_Click(object sender, EventArgs e)
+        {
+            switchRelays(true);
+        }
+
+ 
     }
 }
