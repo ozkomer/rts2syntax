@@ -42,12 +42,15 @@ public class Cupula {
 			System.out.println("Cantidad insuficiente de parametros.");
 		  System.exit(1);
 		} else {
+			System.out.println("args[0]="+args[0]);
+			System.out.println("args[1]="+args[1]);
+			System.out.println("args[2]="+args[2]);
 		  try {
 		    String astr = args[0];
 		    int idx = astr.indexOf(':');
 		    if(idx < 0) {
-		      port = Integer.parseInt(astr.substring(idx+1));
-		      astr = astr.substring(0,idx);
+		      port = 502;
+		      //astr = astr.substring(0,idx);
 		    }
 		    addr = InetAddress.getByName(astr);
 		    ref = Integer.decode(args[1]).intValue();
