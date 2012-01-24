@@ -39,6 +39,7 @@ public class Cupula {
 		
 		//1. Setup the parameters
 		if (args.length < 3) {
+			System.out.println("Cantidad insuficiente de parametros.");
 		  System.exit(1);
 		} else {
 		  try {
