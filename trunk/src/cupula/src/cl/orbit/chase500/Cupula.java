@@ -10,7 +10,6 @@ import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.ModbusIOException;
 import net.wimpi.modbus.ModbusSlaveException;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
-import net.wimpi.modbus.msg.ModbusResponse;
 import net.wimpi.modbus.msg.ReadInputDiscretesRequest;
 import net.wimpi.modbus.msg.ReadInputDiscretesResponse;
 import net.wimpi.modbus.net.TCPMasterConnection;
@@ -29,7 +28,7 @@ public class Cupula {
 		TCPMasterConnection con = null; //the connection
 		ModbusTCPTransaction trans = null; //the transaction
 		ReadInputDiscretesRequest req = null; //the request
-		ModbusResponse res = null; //the response
+		ReadInputDiscretesResponse res = null; //the response
 
 		/* Variables for storing the parameters */
 		InetAddress addr = null; //the slave's address
@@ -97,8 +96,8 @@ public class Cupula {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		  res = (ReadInputDiscretesResponse) trans.getResponse();
-		  System.out.println("Digital Inputs Status=" + ((ReadInputDiscretesResponse)res).getDiscretes().toString());
+		  res =  (ReadInputDiscretesResponse) trans.getResponse();
+		  System.out.println("Digital Inputs Status=" + res.getDiscretes().toString());
 		  k++;
 		} while (k < repeat);
 
