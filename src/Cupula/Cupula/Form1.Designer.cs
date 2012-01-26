@@ -541,6 +541,7 @@ namespace Cupula
             this.comboBoxControlSouth.Name = "comboBoxControlSouth";
             this.comboBoxControlSouth.Size = new System.Drawing.Size(121, 21);
             this.comboBoxControlSouth.TabIndex = 0;
+            this.comboBoxControlSouth.SelectedIndexChanged += new System.EventHandler(this.comboBoxControlSouth_SelectedIndexChanged);
             // 
             // buttonConnect
             // 

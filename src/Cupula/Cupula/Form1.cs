@@ -58,9 +58,10 @@ namespace Cupula
 
         private void buttonIsOpened_Click(object sender, EventArgs e)
         {
-            //int status;
-            //status = cet.IsOpened();
-            //buttonIsOpened.Text = ("Is opened=" + status);
+            this.statusRead();
+            int status;
+            status = cet.IsOpened();
+            buttonIsOpened.Text = ("Is opened=" + status);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -71,10 +72,6 @@ namespace Cupula
             }
         }
 
-        private void comboBoxControlNorth_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void checkBoxJ1XT102_CheckedChanged(object sender, EventArgs e)
         {
@@ -89,7 +86,7 @@ namespace Cupula
             }
         }
 
-        private void buttonStatusRead_Click(object sender, EventArgs e)
+        private void statusRead()
         {
             cet.Read_ZREG_O1XT1();
             for (int i = 0; i < 16; i++)
@@ -101,6 +98,11 @@ namespace Cupula
             }
         }
 
+        private void buttonStatusRead_Click(object sender, EventArgs e)
+        {
+            this.statusRead();
+        }
+
         private void buttonControlRead_Click(object sender, EventArgs e)
         {
             cet.Read_ZREG_J1XT1();
@@ -109,6 +111,19 @@ namespace Cupula
                 this.checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
             }
         }
+
+        private void comboBoxControlSouth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cet.SouthRoof = (ushort)comboBoxControlSouth.SelectedIndex;
+            Console.WriteLine("cet.SouthRoof=" + cet.SouthRoof);
+        }
+
+        private void comboBoxControlNorth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cet.NorthRoof = (ushort)comboBoxControlNorth.SelectedIndex;
+            Console.WriteLine("cet.NorthRoof=" + cet.NorthRoof);
+        }
+
 
 
     }
