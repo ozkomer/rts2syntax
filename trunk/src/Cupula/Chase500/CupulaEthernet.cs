@@ -29,12 +29,12 @@ namespace Chase500
         public const ushort ZREG_J1XT1 = 16;
         public const ushort ZREG_O1XT1 = 20;
 
-        public const UInt16 ZS_SOUTH_OPEN  =  5;
-        public const UInt16 ZS_SOUTH_50    =  6;
-        public const UInt16 ZS_SOUTH_CLOSE =  7;
-        public const UInt16 ZS_NORTH_OPEN  =  8;
-        public const UInt16 ZS_NORTH_50    =  9;
-        public const UInt16 ZS_NORTH_CLOSE = 10;
+        public const UInt16 ZS_SOUTH_OPEN  =  4;
+        public const UInt16 ZS_SOUTH_50    =  5;
+        public const UInt16 ZS_SOUTH_CLOSE =  6;
+        public const UInt16 ZS_NORTH_OPEN  =  7;
+        public const UInt16 ZS_NORTH_50    =  8;
+        public const UInt16 ZS_NORTH_CLOSE =  9;
 
 
         public const UInt16 DOME_DOME_MASK = 0xffff;
