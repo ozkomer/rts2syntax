@@ -29,26 +29,33 @@ namespace Chase500
         public const ushort ZREG_J1XT1 = 16;
         public const ushort ZREG_O1XT1 = 20;
 
+        public const UInt16 ZS_SOUTH_OPEN  =  5;
+        public const UInt16 ZS_SOUTH_50    =  6;
+        public const UInt16 ZS_SOUTH_CLOSE =  7;
+        public const UInt16 ZS_NORTH_OPEN  =  8;
+        public const UInt16 ZS_NORTH_50    =  9;
+        public const UInt16 ZS_NORTH_CLOSE = 10;
 
-        public const UInt16 ZS_NORTH_CLOSE = 0x0200;
-        public const UInt16 ZS_NORTH_50 = 0x0100;
-        public const UInt16 ZS_NORTH_OPEN = 0x0080;
-
-        public const UInt16 ZS_SOUTH_CLOSE = 0x0040;
-        public const UInt16 ZS_SOUTH_50 = 0x0020;
-        public const UInt16 ZS_SOUTH_OPEN = 0x0010;
 
         public const UInt16 DOME_DOME_MASK = 0xffff;
         public const UInt16 DOME_CLOSING = 0xffff;
 
-
-        //private Boolean northMiddle;
-        //private Boolean southMiddle;
-
-        //private byte openNorth;
-        //private byte openSouth;
+        public enum roof { Open, Half, Close };
 
 
+        public const ushort OPEN = 0;
+        public const ushort HALF = 1;
+        public const ushort CLOSE = 2;
+
+        /// <summary>
+        /// Posicion definido por el usuario para la apertura del lado Norte.
+        /// </summary>
+        private ushort northRoof;
+
+        /// <summary>
+        /// Posicion definido por el usuario para la apertura del lado Sur.
+        /// </summary>
+        private ushort southRoof;
 
         private Master zelioConn;
 
@@ -57,9 +64,28 @@ namespace Chase500
             zelioConn = new Master();
             zregJ1XT1 = new Boolean[16];
             zregO1XT1 = new Boolean[16];
+            northRoof = CupulaEthernet.OPEN;
+            southRoof = CupulaEthernet.OPEN;
 
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
         }
+
+        /// <summary>
+        /// Posicion definido por el usuario para la apertura del lado Norte.
+        /// </summary>
+        public ushort NorthRoof
+        {
+            get { return this.northRoof; }
+            set { this.northRoof = value; }
+        }
+
+        public ushort SouthRoof
+        {
+            get { return this.southRoof; }
+            set { this.southRoof = value; }
+        }
+
+
 
         public Master TcpSession
         {
@@ -67,7 +93,7 @@ namespace Chase500
             set { this.zelioConn = value; }
         }
 
-        private Boolean[] Read_PLC(int startRegister, ushort cantBytes)
+        private Boolean[] Read_PLC(ushort startRegister, ushort cantBytes)
         {
             byte[] regs;
             regs = new byte[cantBytes];
@@ -128,7 +154,49 @@ namespace Chase500
         }
 
 
+        /// <summary>
+        /// Al invocar a esta funcion, los valores de zregO1XT1 deben estar frescos
+        /// </summary>
+        /// <returns></returns>
+        public int IsOpened()
+        {
+            int hits = 0;
+            switch (this.northRoof)
+            {
+                case OPEN:
+                    if (zregO1XT1[ZS_NORTH_OPEN])
+                        hits |= 0x01;
+                    break;
+                case HALF:
+                    if (zregO1XT1[ZS_NORTH_50])
+                        hits |= 0x01;
+                    break;
+                case CLOSE:
+                    if (zregO1XT1[ZS_NORTH_CLOSE])
+                        hits |= 0x01;
+                    break;
+            }
+            switch (this.southRoof)
+            {
+                case 0:
+                    if (zregO1XT1[ZS_SOUTH_OPEN])
+                        hits |= 0x02;
+                    break;
+                case 1:
+                    if (zregO1XT1[ZS_SOUTH_50])
+                        hits |= 0x02;
+                    break;
+                case 2:
+                    if (zregO1XT1[ZS_SOUTH_CLOSE])
+                        hits |= 0x02;
+                    break;
+            }
 
+            //if (hits == 0x03)
+            //    return -2;
+            //return 0;
+            return hits;
+        }
 
         //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
         /*
@@ -212,54 +280,7 @@ namespace Chase500
             info();
         }
 
-        public int IsOpened()
-        {
-            byte[] regs;
-            regs = new byte[2];
-            try
-            {
-                zelioConn.ReadHoldingRegister(0, ZREG_O1XT1, 2, ref regs);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return -1;
-            }
-            int hits = 0;
-            switch (openNorth)
-            {
-                case 0:
-                    if ((regs[0] & ZS_NORTH_OPEN) != 0)
-                        hits |= 0x01;
-                    break;
-                case 1:
-                    if ((regs[0] & ZS_NORTH_50) != 0)
-                        hits |= 0x01;
-                    break;
-                case 2:
-                    if ((regs[0] & ZS_NORTH_CLOSE) != 0)
-                        hits |= 0x01;
-                    break;
-            }
-            switch (openSouth)
-            {
-                case 0:
-                    if ((regs[0] & ZS_SOUTH_OPEN) != 0)
-                        hits |= 0x02;
-                    break;
-                case 1:
-                    if ((regs[0] & ZS_SOUTH_50) != 0)
-                        hits |= 0x02;
-                    break;
-                case 2:
-                    if ((regs[0] & ZS_SOUTH_CLOSE) != 0)
-                        hits |= 0x02;
-                    break;
-            }
-            if (hits == 0x03)
-                return -2;
-            return 0;
-        }
+
 
         private ushort getState()
         {
