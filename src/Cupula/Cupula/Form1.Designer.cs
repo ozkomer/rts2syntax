@@ -75,6 +75,7 @@ namespace Cupula
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.labelKeepOpen = new System.Windows.Forms.Label();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
             this.groupBoxJ1.SuspendLayout();
@@ -521,6 +522,7 @@ namespace Cupula
             // 
             // groupBoxControlOpen
             // 
+            this.groupBoxControlOpen.Controls.Add(this.labelKeepOpen);
             this.groupBoxControlOpen.Controls.Add(this.groupBoxNorth);
             this.groupBoxControlOpen.Controls.Add(this.groupBoxSouth);
             this.groupBoxControlOpen.Controls.Add(this.buttonStartOpen);
@@ -663,6 +665,15 @@ namespace Cupula
             this.textBox3.Size = new System.Drawing.Size(322, 225);
             this.textBox3.TabIndex = 5;
             // 
+            // labelKeepOpen
+            // 
+            this.labelKeepOpen.AutoSize = true;
+            this.labelKeepOpen.Location = new System.Drawing.Point(324, 75);
+            this.labelKeepOpen.Name = "labelKeepOpen";
+            this.labelKeepOpen.Size = new System.Drawing.Size(61, 13);
+            this.labelKeepOpen.TabIndex = 3;
+            this.labelKeepOpen.Text = "Keep Open";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -681,6 +692,7 @@ namespace Cupula
             this.groupBoxJ1.ResumeLayout(false);
             this.groupBoxJ1.PerformLayout();
             this.groupBoxControlOpen.ResumeLayout(false);
+            this.groupBoxControlOpen.PerformLayout();
             this.groupBoxNorth.ResumeLayout(false);
             this.groupBoxSouth.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -739,6 +751,7 @@ namespace Cupula
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label labelKeepOpen;
     }
 }
 
