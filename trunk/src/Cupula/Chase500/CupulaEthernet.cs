@@ -12,7 +12,7 @@ namespace Chase500
 
 
         public const long USEC_SEC = 1000000;
-        public const long SLEEP_OPENING = (USEC_SEC / 2);
+        public const long SLEEP_OPENING = 500;
 
         public const UInt16 ZC_NORTH_OPEN = 0x0001;
         public const UInt16 ZC_SOUTH_OPEN = 0x0010;
@@ -93,6 +93,9 @@ namespace Chase500
             set { this.zelioConn = value; }
         }
 
+        /// <summary>
+        /// Abrir personalizado.
+        /// </summary>
         public void abrir()
         {
             Console.WriteLine("Abrir");
@@ -324,6 +327,82 @@ namespace Chase500
                 }
             }
         }
+        //private UInt16 GetMask(Byte o, Byte ns)
+        //{
+        //    switch (o)
+        //    {
+        //        case 0:
+        //            return (ns == 0 ? ZC_NORTH_OPEN : ZC_SOUTH_OPEN);
+        //        case 1:
+        //            {
+        //                if (info())
+        //                    return 0;
+        //                UInt16 rc = 0;
+        //                switch (ns)
+        //                {
+        //                    case 0:
+        //                        if (northMiddle)
+        //                        {
+        //                            rc = ZC_NORTH_CLOSE_50;
+        //                        }
+        //                        else
+        //                        {
+        //                            rc = ZC_NORTH_OPEN_50;
+        //                        }
+        //                        break;
+        //                    case 1:
+        //                        if (southMiddle)
+        //                        {
+        //                            rc = ZC_SOUTH_CLOSE_50;
+        //                        }
+        //                        else
+        //                        {
+        //                            rc = ZC_SOUTH_OPEN_50;
+        //                        }
+
+        //                        break;
+        //                }
+
+        //                //zelioConn ->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, ZC_RESET_PASSED);
+        //                System.Threading.Thread.Sleep((int)SLEEP_OPENING);
+        //                //zelioConn->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, 0);
+        //                return rc;
+        //            }
+        //        case 2:
+        //            return ns == 0 ? ZC_NORTH_CLOSE : ZC_SOUTH_CLOSE;
+        //        //	case 3:
+        //        //      return ns == 0 ? ZC_NORTH_STOP : ZC_SOUTH_STOP; 
+        //    }
+        //    return 0;
+        //}
+
+
+        private void MatchOpenSetting()
+        {
+            UInt16 no;
+            UInt16 so;
+            //no = GetMask(this.openNorth, 0);
+            //so = GetMask(this.openSouth, 1);
+            byte[] command;
+            command = new byte[2];
+            command[0] = 0x0088;
+            command[1] = 0x0000;
+            zelioConn.WriteSingleRegister(0,ZREG_J1XT1, command);
+            System.Threading.Thread.Sleep((int)SLEEP_OPENING);
+            command[0] = 0x0011;
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command);
+
+            //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, no | so);
+
+        }
+
+
+        public void StartOpen()
+        {
+            MatchOpenSetting();
+            System.Threading.Thread.Sleep((int)SLEEP_OPENING);
+            //info();
+        }
 
         //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
         /*
@@ -336,76 +415,7 @@ namespace Chase500
 
 
 
-        private UInt16 GetMask(Byte o, Byte ns)
-        {
-            switch (o)
-            {
-                case 0:
-                    return (ns == 0 ? ZC_NORTH_OPEN : ZC_SOUTH_OPEN);
-                case 1:
-                    {
-                        if (info())
-                            return 0;
-                        UInt16 rc = 0;
-                        switch (ns)
-                        {
-                            case 0:
-                                if (northMiddle)
-                                {
-                                    rc = ZC_NORTH_CLOSE_50;
-                                }
-                                else
-                                {
-                                    rc = ZC_NORTH_OPEN_50;
-                                }
-                                break;
-                            case 1:
-                                if (southMiddle)
-                                {
-                                    rc = ZC_SOUTH_CLOSE_50;
-                                }
-                                else
-                                {
-                                    rc = ZC_SOUTH_OPEN_50;
-                                }
 
-                                break;
-                        }
-
-                        //zelioConn ->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, ZC_RESET_PASSED);
-                        System.Threading.Thread.Sleep((int)SLEEP_OPENING);
-                        //zelioConn->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, 0);
-                        return rc;
-                    }
-                case 2:
-                    return ns == 0 ? ZC_NORTH_CLOSE : ZC_SOUTH_CLOSE;
-                //	case 3:
-                  //      return ns == 0 ? ZC_NORTH_STOP : ZC_SOUTH_STOP; 
-            }
-            return 0;
-        }
-
-
-        private void MatchOpenSetting()
-        {
-            UInt16 no;
-            UInt16 so;
-            no = GetMask(this.openNorth, 0);
-            so = GetMask(this.openSouth, 1);
-
-            //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, ZC_NORTH_STOP | ZC_SOUTH_STOP);
-            System.Threading.Thread.Sleep((int)SLEEP_OPENING);
-            //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, no | so);
-
-        }
-
-
-        public void StartOpen()
-        {
-            MatchOpenSetting();
-            System.Threading.Thread.Sleep((int)SLEEP_OPENING);
-            info();
-        }
 
 
 
