@@ -229,9 +229,9 @@ namespace Cupula
             resultado = instr.ejecutar(this.cet.ZelioConn);
             String textoSalida;
             textoSalida = textBox3.Text;
-            textoSalida = textoSalida + "\n" + resultado;
+            textoSalida = textoSalida + Environment.NewLine + resultado;
             textBox3.Text = textoSalida;
-            
+            this.numericUpDown1.Value++;
         }
 
 
