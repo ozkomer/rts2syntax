@@ -93,6 +93,71 @@ namespace Chase500
             set { this.zelioConn = value; }
         }
 
+        public void abrir()
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                if ((i == 3) || (i == 7))
+                {
+                    Zreg_J1XT1[i] = true;
+                }
+                else
+                {
+                    Zreg_J1XT1[i] = true;
+                }
+            }
+            Write_ZREG_J1XT1();
+            System.Threading.Thread.Sleep(5000);
+            Read_ZREG_O1XT1();
+            int valor;
+            valor = 0;
+            // Lado Norte
+            switch (northRoof)
+            {
+                case (CupulaEthernet.OPEN):
+                    valor += 1;
+                    break;
+                case (CupulaEthernet.HALF):
+                    if (Zreg_O1XT1[CupulaEthernet.ZS_NORTH_CLOSE])
+                    {
+                        valor += (1 << 1);
+                    }
+                    if (Zreg_O1XT1[CupulaEthernet.ZS_NORTH_OPEN])
+                    {
+                        valor += (1 << 2);
+                    }
+                    break;
+                case (CupulaEthernet.CLOSE):
+                    valor += (1 << 3);
+                    break;
+            }
+            switch (southRoof)
+            {
+                case (CupulaEthernet.OPEN):
+                    valor += (1 << 4);
+                    break;
+                case (CupulaEthernet.HALF):
+                    if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
+                    {
+                        valor += (1 << 5);
+                    }
+                    if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
+                    {
+                        valor += (1 << 6);
+                    }
+                    break;
+                case (CupulaEthernet.CLOSE):
+                    valor += (1 << 7);
+                    break;
+            }
+            for (int i = 0; i < 16; i++)
+            {
+                Zreg_J1XT1[i] = ((valor % 2) == 1);
+                valor /= 2;
+            }
+            Write_ZREG_J1XT1();
+        }
+
         private Boolean[] Read_PLC(ushort startRegister, ushort cantBytes)
         {
             byte[] regs;

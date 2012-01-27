@@ -134,54 +134,57 @@ namespace Cupula
 
         private void buttonStartOpen_Click(object sender, EventArgs e)
         {
-            int valor;
-            valor = 0;
-            // Lado Norte
-            switch (comboBoxControlNorth.SelectedIndex)
-            {
-                case (CupulaEthernet.OPEN):
-                    valor += 1;
-                    break;
-                case (CupulaEthernet.HALF):
-                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_CLOSE])
-                    {
-                        valor += (1 << 1);
-                    }
-                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_OPEN])
-                    {
-                        valor += (1 << 2);
-                    }
+            cet.abrir();
+            //int valor;
+            //valor = 0;
+            //// Lado Norte
+            //switch (comboBoxControlNorth.SelectedIndex)
+            //{
+            //    case (CupulaEthernet.OPEN):
+            //        valor += 1;
+            //        break;
+            //    case (CupulaEthernet.HALF):
+            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_CLOSE])
+            //        {
+            //            valor += (1 << 1);
+            //        }
+            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_OPEN])
+            //        {
+            //            valor += (1 << 2);
+            //        }
 
-                    break;
-                case (CupulaEthernet.CLOSE):
-                    valor += (1<<3);
-                    break;
-            }
-            switch (comboBoxControlSouth.SelectedIndex)
-            {
-                case (CupulaEthernet.OPEN):
-                    valor += (1 << 4);
-                    break;
-                case (CupulaEthernet.HALF):
-                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
-                    {
-                        valor += (1 << 5);
-                    }
-                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
-                    {
-                        valor += (1 << 6);
-                    }
-                    break;
-                case (CupulaEthernet.CLOSE):
-                    valor += (1 << 7);
-                    break;
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                cet.Zreg_J1XT1[i] = ((valor % 2) == 1);
-                valor /= 2;
-                checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
-            }
+            //        break;
+            //    case (CupulaEthernet.CLOSE):
+            //        valor += (1<<3);
+            //        break;
+            //}
+            //switch (comboBoxControlSouth.SelectedIndex)
+            //{
+            //    case (CupulaEthernet.OPEN):
+            //        valor += (1 << 4);
+            //        break;
+            //    case (CupulaEthernet.HALF):
+            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
+            //        {
+            //            valor += (1 << 5);
+            //        }
+            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
+            //        {
+            //            valor += (1 << 6);
+            //        }
+            //        break;
+            //    case (CupulaEthernet.CLOSE):
+            //        valor += (1 << 7);
+            //        break;
+            //}
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    cet.Zreg_J1XT1[i] = ((valor % 2) == 1);
+            //    valor /= 2;
+            //    checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
+            //}
+
+            //cet.Write_ZREG_J1XT1();
 
         }
 
