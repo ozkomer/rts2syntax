@@ -27,6 +27,8 @@ namespace Chase500
         public const UInt16 ZC_SOUTH_CLOSE = 0x0000;
 
         public const ushort ZREG_J1XT1 = 16;
+        public const ushort ZREG_J2XT1 = 17;
+
         public const ushort ZREG_O1XT1 = 20;
 
         public const UInt16 ZS_SOUTH_OPEN = 4;
@@ -66,7 +68,6 @@ namespace Chase500
             zregO1XT1 = new Boolean[16];
             northRoof = CupulaEthernet.OPEN;
             southRoof = CupulaEthernet.OPEN;
-
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
         }
 
@@ -102,7 +103,18 @@ namespace Chase500
         /// </summary>
         public void abrir()
         {
+
             Console.WriteLine("Abrir");
+            byte[] deadMan;
+            deadMan = new byte[2];
+            deadMan[0] = 0;
+            deadMan[1] = 0;
+
+            zelioConn.WriteSingleRegister(0, ZREG_J2XT1, deadMan);
+            System.Threading.Thread.Sleep(500);
+            deadMan[1] = 1;
+            zelioConn.WriteSingleRegister(0, ZREG_J2XT1, deadMan);
+            
             for (int i = 0; i < 16; i++)
             {
                 if ((i == 3) || (i == 7))
@@ -172,7 +184,10 @@ namespace Chase500
             regs = new byte[cantBytes];
             try
             {
-                zelioConn.ReadHoldingRegister(0, startRegister, cantBytes, ref regs);
+                if (zelioConn.connected)
+                {
+                    zelioConn.ReadHoldingRegister(0, startRegister, cantBytes, ref regs);
+                }
             }
             catch (Exception e)
             {
@@ -219,11 +234,14 @@ namespace Chase500
                 indice = (i / 8);
                 if (zregJ1XT1[i])
                 {
-                    valor[indice] += (byte)(1 << (i - (indice * 8)));
+                    valor[(indice+1)%2] += (byte)(1 << (i - (indice * 8)));
                 }
             }
             Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);
-            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, valor);
+            if (zelioConn.connected)
+            {
+                zelioConn.WriteSingleRegister(0, ZREG_J1XT1, valor);
+            }
         }
 
         /// <summary>
