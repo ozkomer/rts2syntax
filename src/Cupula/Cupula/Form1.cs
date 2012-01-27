@@ -194,6 +194,11 @@ namespace Cupula
             }
         }
 
+        private void buttonControlWrite_Click(object sender, EventArgs e)
+        {
+            cet.Write_ZREG_J1XT1();
+        }
+
 
 
 
