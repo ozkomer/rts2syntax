@@ -64,6 +64,14 @@ namespace Cupula
             buttonIsOpened.Text = ("Is opened=" + status);
         }
 
+        private void buttonIsClosed_Click(object sender, EventArgs e)
+        {
+            this.statusRead();
+            int status;
+            status = cet.IsClosed();
+            buttonIsOpened.Text = ("Is closed=" + status);
+        }
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (cet.TcpSession.connected)
@@ -123,6 +131,8 @@ namespace Cupula
             cet.NorthRoof = (ushort)comboBoxControlNorth.SelectedIndex;
             Console.WriteLine("cet.NorthRoof=" + cet.NorthRoof);
         }
+
+
 
 
 

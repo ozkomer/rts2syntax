@@ -347,6 +347,7 @@ namespace Cupula
             this.buttonIsClosed.TabIndex = 1;
             this.buttonIsClosed.Text = "Is Closed?";
             this.buttonIsClosed.UseVisualStyleBackColor = true;
+            this.buttonIsClosed.Click += new System.EventHandler(this.buttonIsClosed_Click);
             // 
             // buttonIsOpened
             // 
@@ -572,7 +573,7 @@ namespace Cupula
             this.Controls.Add(this.groupBoxControl);
             this.Controls.Add(this.groupBoxStatus);
             this.Name = "Form1";
-            this.Text = "Concha Control";
+            this.Text = "Dome Control";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
