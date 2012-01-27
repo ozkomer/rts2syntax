@@ -52,6 +52,7 @@ namespace Cupula
             this.buttonIsOpened = new System.Windows.Forms.Button();
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
             this.groupBoxJ1 = new System.Windows.Forms.GroupBox();
+            this.buttonControlWrite = new System.Windows.Forms.Button();
             this.buttonControlRead = new System.Windows.Forms.Button();
             this.checkBoxJ1XT108 = new System.Windows.Forms.CheckBox();
             this.checkBoxJ1XT107 = new System.Windows.Forms.CheckBox();
@@ -67,7 +68,6 @@ namespace Cupula
             this.groupBoxSouth = new System.Windows.Forms.GroupBox();
             this.comboBoxControlSouth = new System.Windows.Forms.ComboBox();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.buttonControlWrite = new System.Windows.Forms.Button();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
             this.groupBoxJ1.SuspendLayout();
@@ -393,6 +393,16 @@ namespace Cupula
             this.groupBoxJ1.TabStop = false;
             this.groupBoxJ1.Text = "ZREG_J1XT1";
             // 
+            // buttonControlWrite
+            // 
+            this.buttonControlWrite.Location = new System.Drawing.Point(514, 53);
+            this.buttonControlWrite.Name = "buttonControlWrite";
+            this.buttonControlWrite.Size = new System.Drawing.Size(75, 23);
+            this.buttonControlWrite.TabIndex = 9;
+            this.buttonControlWrite.Text = "Write";
+            this.buttonControlWrite.UseVisualStyleBackColor = true;
+            this.buttonControlWrite.Click += new System.EventHandler(this.buttonControlWrite_Click);
+            // 
             // buttonControlRead
             // 
             this.buttonControlRead.Location = new System.Drawing.Point(514, 19);
@@ -567,15 +577,6 @@ namespace Cupula
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
-            // 
-            // buttonControlWrite
-            // 
-            this.buttonControlWrite.Location = new System.Drawing.Point(514, 53);
-            this.buttonControlWrite.Name = "buttonControlWrite";
-            this.buttonControlWrite.Size = new System.Drawing.Size(75, 23);
-            this.buttonControlWrite.TabIndex = 9;
-            this.buttonControlWrite.Text = "Write";
-            this.buttonControlWrite.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

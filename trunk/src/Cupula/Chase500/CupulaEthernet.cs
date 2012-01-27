@@ -134,6 +134,26 @@ namespace Chase500
         }
 
         /// <summary>
+        /// Envia al PLC los 16 bits del primer "Control Register".
+        /// </summary>
+        public void Write_ZREG_J1XT1()
+        {
+            byte[] valor;
+            valor = new byte[2];
+            int indice;
+            for (int i = 0; i < 16; i++)
+            {
+                indice = (i / 8);
+                if (zregJ1XT1[i])
+                {
+                    valor[indice] += (byte)(1 << (i - (indice * 8)));
+                }                 
+            }
+            Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);            
+            zelioConn.WriteSingleRegister(0,ZREG_J1XT1,valor);
+        }
+
+        /// <summary>
         /// Lee los 16 bits del primer "Ouput Register"
         /// </summary>
         public void Read_ZREG_O1XT1()
