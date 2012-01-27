@@ -108,7 +108,7 @@ namespace Chase500
                 }
             }
             Write_ZREG_J1XT1();
-            System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(500);
             Read_ZREG_O1XT1();
             int valor;
             valor = 0;
@@ -135,16 +135,16 @@ namespace Chase500
             switch (southRoof)
             {
                 case (CupulaEthernet.OPEN):
-                    valor += (1 << 5);
+                    valor += (1 << 4);
                     break;
                 case (CupulaEthernet.HALF):
                     if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
                     {
-                        valor += (1 << 6);
+                        valor += (1 << 5);
                     }
                     if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
                     {
-                        valor += (1 << 7);
+                        valor += (1 << 6);
                     }
                     break;
                 case (CupulaEthernet.CLOSE):
