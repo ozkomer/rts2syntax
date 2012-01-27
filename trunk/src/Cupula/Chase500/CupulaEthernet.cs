@@ -155,9 +155,13 @@ namespace Chase500
 
 
         /// <summary>
-        /// Al invocar a esta funcion, los valores de zregO1XT1 deben estar frescos
+        /// Al invocar a esta funcion, los valores de zregO1XT1 deben estar frescos.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> 0 si el estado de apertura difiere del estado deseado para los techos norte y sur.
+        /// 1 si el estado de apertura coincide solo para el techo norte.
+        /// 2 si el estado de apertura coincide solo para el techo sur.
+        /// 3 si el estado de apertura coincide para ambos techos.
+        /// </returns>
         public int IsOpened()
         {
             int hits = 0;
