@@ -221,6 +221,24 @@ namespace Chase500
             return hits;
         }
 
+        /// <summary>
+        /// Invocar cuando en la interfaz se escoja la opcion "Set Close".
+        /// </summary>
+        public void SetClose()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if ((i == 3) || (i == 7))
+                {
+                    Zreg_J1XT1[i] = true;
+                }
+                else
+                {
+                    Zreg_J1XT1[i] = false;
+                }
+            }
+        }
+
         //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
         /*
         private Boolean info()
