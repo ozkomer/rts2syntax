@@ -383,14 +383,16 @@ namespace Chase500
             UInt16 so;
             //no = GetMask(this.openNorth, 0);
             //so = GetMask(this.openSouth, 1);
-            byte[] command;
+            byte[] command, respuesta;
             command = new byte[2];
-            command[0] = 0x0088;
-            command[1] = 0x0000;
-            zelioConn.WriteSingleRegister(0,ZREG_J1XT1, command);
+            respuesta = new byte[2];
+            command[1] = 0x0088;
+            command[0] = 0x0000;
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command,ref respuesta);
+            
             System.Threading.Thread.Sleep((int)SLEEP_OPENING);
-            command[0] = 0x0011;
-            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command);
+            command[1] = 0x0011;
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command,ref respuesta);
 
             //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, no | so);
 
