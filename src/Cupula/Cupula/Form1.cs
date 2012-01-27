@@ -132,6 +132,27 @@ namespace Cupula
             Console.WriteLine("cet.NorthRoof=" + cet.NorthRoof);
         }
 
+        private void buttonStartOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonStartClose_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if ((i == 3) || (i == 7))
+                {
+                    checkBoxJ1[i].Checked = true;
+                }
+                else
+                {
+                    checkBoxJ1[i].Checked = false;
+                }
+                cet.Zreg_J1XT1[i] = checkBoxJ1[i].Checked;
+            }
+        }
+
 
 
 

@@ -52,6 +52,7 @@ namespace Cupula
             this.buttonIsOpened = new System.Windows.Forms.Button();
             this.groupBoxControl = new System.Windows.Forms.GroupBox();
             this.groupBoxJ1 = new System.Windows.Forms.GroupBox();
+            this.buttonControlRead = new System.Windows.Forms.Button();
             this.checkBoxJ1XT108 = new System.Windows.Forms.CheckBox();
             this.checkBoxJ1XT107 = new System.Windows.Forms.CheckBox();
             this.checkBoxJ1XT106 = new System.Windows.Forms.CheckBox();
@@ -66,7 +67,7 @@ namespace Cupula
             this.groupBoxSouth = new System.Windows.Forms.GroupBox();
             this.comboBoxControlSouth = new System.Windows.Forms.ComboBox();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.buttonControlRead = new System.Windows.Forms.Button();
+            this.buttonControlWrite = new System.Windows.Forms.Button();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
             this.groupBoxJ1.SuspendLayout();
@@ -81,8 +82,9 @@ namespace Cupula
             this.buttonStartOpen.Name = "buttonStartOpen";
             this.buttonStartOpen.Size = new System.Drawing.Size(75, 23);
             this.buttonStartOpen.TabIndex = 0;
-            this.buttonStartOpen.Text = "Start Open";
+            this.buttonStartOpen.Text = "Set Open";
             this.buttonStartOpen.UseVisualStyleBackColor = true;
+            this.buttonStartOpen.Click += new System.EventHandler(this.buttonStartOpen_Click);
             // 
             // buttonStartClose
             // 
@@ -90,8 +92,9 @@ namespace Cupula
             this.buttonStartClose.Name = "buttonStartClose";
             this.buttonStartClose.Size = new System.Drawing.Size(75, 23);
             this.buttonStartClose.TabIndex = 1;
-            this.buttonStartClose.Text = "Start Close";
+            this.buttonStartClose.Text = "Set Close";
             this.buttonStartClose.UseVisualStyleBackColor = true;
+            this.buttonStartClose.Click += new System.EventHandler(this.buttonStartClose_Click);
             // 
             // groupBoxStatus
             // 
@@ -366,13 +369,14 @@ namespace Cupula
             this.groupBoxControl.Controls.Add(this.buttonStartClose);
             this.groupBoxControl.Location = new System.Drawing.Point(12, 41);
             this.groupBoxControl.Name = "groupBoxControl";
-            this.groupBoxControl.Size = new System.Drawing.Size(619, 207);
+            this.groupBoxControl.Size = new System.Drawing.Size(619, 224);
             this.groupBoxControl.TabIndex = 3;
             this.groupBoxControl.TabStop = false;
             this.groupBoxControl.Text = "Control";
             // 
             // groupBoxJ1
             // 
+            this.groupBoxJ1.Controls.Add(this.buttonControlWrite);
             this.groupBoxJ1.Controls.Add(this.buttonControlRead);
             this.groupBoxJ1.Controls.Add(this.checkBoxJ1XT108);
             this.groupBoxJ1.Controls.Add(this.checkBoxJ1XT107);
@@ -384,16 +388,26 @@ namespace Cupula
             this.groupBoxJ1.Controls.Add(this.checkBoxJ1XT101);
             this.groupBoxJ1.Location = new System.Drawing.Point(6, 119);
             this.groupBoxJ1.Name = "groupBoxJ1";
-            this.groupBoxJ1.Size = new System.Drawing.Size(595, 72);
+            this.groupBoxJ1.Size = new System.Drawing.Size(595, 82);
             this.groupBoxJ1.TabIndex = 4;
             this.groupBoxJ1.TabStop = false;
             this.groupBoxJ1.Text = "ZREG_J1XT1";
+            // 
+            // buttonControlRead
+            // 
+            this.buttonControlRead.Location = new System.Drawing.Point(514, 19);
+            this.buttonControlRead.Name = "buttonControlRead";
+            this.buttonControlRead.Size = new System.Drawing.Size(75, 23);
+            this.buttonControlRead.TabIndex = 8;
+            this.buttonControlRead.Text = "Read";
+            this.buttonControlRead.UseVisualStyleBackColor = true;
+            this.buttonControlRead.Click += new System.EventHandler(this.buttonControlRead_Click);
             // 
             // checkBoxJ1XT108
             // 
             this.checkBoxJ1XT108.AutoSize = true;
             this.checkBoxJ1XT108.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxJ1XT108.Location = new System.Drawing.Point(364, 42);
+            this.checkBoxJ1XT108.Location = new System.Drawing.Point(364, 57);
             this.checkBoxJ1XT108.Name = "checkBoxJ1XT108";
             this.checkBoxJ1XT108.Size = new System.Drawing.Size(101, 17);
             this.checkBoxJ1XT108.TabIndex = 7;
@@ -405,7 +419,7 @@ namespace Cupula
             // 
             this.checkBoxJ1XT107.AutoSize = true;
             this.checkBoxJ1XT107.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxJ1XT107.Location = new System.Drawing.Point(245, 42);
+            this.checkBoxJ1XT107.Location = new System.Drawing.Point(245, 57);
             this.checkBoxJ1XT107.Name = "checkBoxJ1XT107";
             this.checkBoxJ1XT107.Size = new System.Drawing.Size(100, 17);
             this.checkBoxJ1XT107.TabIndex = 6;
@@ -417,7 +431,7 @@ namespace Cupula
             // 
             this.checkBoxJ1XT106.AutoSize = true;
             this.checkBoxJ1XT106.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxJ1XT106.Location = new System.Drawing.Point(132, 42);
+            this.checkBoxJ1XT106.Location = new System.Drawing.Point(132, 57);
             this.checkBoxJ1XT106.Name = "checkBoxJ1XT106";
             this.checkBoxJ1XT106.Size = new System.Drawing.Size(99, 17);
             this.checkBoxJ1XT106.TabIndex = 5;
@@ -429,7 +443,7 @@ namespace Cupula
             // 
             this.checkBoxJ1XT105.AutoSize = true;
             this.checkBoxJ1XT105.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxJ1XT105.Location = new System.Drawing.Point(5, 42);
+            this.checkBoxJ1XT105.Location = new System.Drawing.Point(5, 57);
             this.checkBoxJ1XT105.Name = "checkBoxJ1XT105";
             this.checkBoxJ1XT105.Size = new System.Drawing.Size(100, 17);
             this.checkBoxJ1XT105.TabIndex = 4;
@@ -554,15 +568,14 @@ namespace Cupula
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
-            // buttonControlRead
+            // buttonControlWrite
             // 
-            this.buttonControlRead.Location = new System.Drawing.Point(514, 19);
-            this.buttonControlRead.Name = "buttonControlRead";
-            this.buttonControlRead.Size = new System.Drawing.Size(75, 23);
-            this.buttonControlRead.TabIndex = 8;
-            this.buttonControlRead.Text = "Read";
-            this.buttonControlRead.UseVisualStyleBackColor = true;
-            this.buttonControlRead.Click += new System.EventHandler(this.buttonControlRead_Click);
+            this.buttonControlWrite.Location = new System.Drawing.Point(514, 53);
+            this.buttonControlWrite.Name = "buttonControlWrite";
+            this.buttonControlWrite.Size = new System.Drawing.Size(75, 23);
+            this.buttonControlWrite.TabIndex = 9;
+            this.buttonControlWrite.Text = "Write";
+            this.buttonControlWrite.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -628,6 +641,7 @@ namespace Cupula
         private System.Windows.Forms.CheckBox checkBoxO1XT101;
         private System.Windows.Forms.Button buttonStatusRead;
         private System.Windows.Forms.Button buttonControlRead;
+        private System.Windows.Forms.Button buttonControlWrite;
     }
 }
 
