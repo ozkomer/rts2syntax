@@ -95,6 +95,7 @@ namespace Chase500
 
         public void abrir()
         {
+            Console.WriteLine("Abrir");
             for (int i = 0; i < 16; i++)
             {
                 if ((i == 3) || (i == 7))
@@ -103,7 +104,7 @@ namespace Chase500
                 }
                 else
                 {
-                    Zreg_J1XT1[i] = true;
+                    Zreg_J1XT1[i] = false;
                 }
             }
             Write_ZREG_J1XT1();
@@ -128,26 +129,26 @@ namespace Chase500
                     }
                     break;
                 case (CupulaEthernet.CLOSE):
-                    valor += (1 << 3);
+                    //valor += (1 << 3);
                     break;
             }
             switch (southRoof)
             {
                 case (CupulaEthernet.OPEN):
-                    valor += (1 << 4);
+                    valor += (1 << 5);
                     break;
                 case (CupulaEthernet.HALF):
                     if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
                     {
-                        valor += (1 << 5);
+                        valor += (1 << 6);
                     }
                     if (Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
                     {
-                        valor += (1 << 6);
+                        valor += (1 << 7);
                     }
                     break;
                 case (CupulaEthernet.CLOSE):
-                    valor += (1 << 7);
+                    //valor += (1 << 7);
                     break;
             }
             for (int i = 0; i < 16; i++)
