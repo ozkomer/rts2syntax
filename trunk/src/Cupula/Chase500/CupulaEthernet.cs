@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ModbusTCP;
+using System.Timers;
 
 namespace Chase500
 {
@@ -12,8 +13,16 @@ namespace Chase500
 
 
         public const long USEC_SEC = 1000000;
-        public const long SLEEP_OPENING = 500;
+        public const long SLEEP_BETWEEN_COMMANDS_MILISECS = 500;
+        public const long DEADMAN_MILISECS = 5000;
 
+        /// <summary>
+        /// Timer encargado de mantener la cupula abierta.
+        /// </summary>
+        Timer deadManTimer;
+        private byte deadManStatus;
+
+        /*
         public const UInt16 ZC_NORTH_OPEN = 0x0001;
         public const UInt16 ZC_SOUTH_OPEN = 0x0010;
 
@@ -25,7 +34,7 @@ namespace Chase500
 
         public const UInt16 ZC_NORTH_CLOSE = 0x0000;
         public const UInt16 ZC_SOUTH_CLOSE = 0x0000;
-
+        */
         public const ushort ZREG_J1XT1 = 16;
         public const ushort ZREG_J2XT1 = 17;
 
@@ -38,10 +47,10 @@ namespace Chase500
         public const UInt16 ZS_NORTH_50 = 8;
         public const UInt16 ZS_NORTH_CLOSE = 9;
 
-
+        /*
         public const UInt16 DOME_DOME_MASK = 0xffff;
         public const UInt16 DOME_CLOSING = 0xffff;
-
+        */
         public enum roof { Open, Half, Close };
 
 
@@ -69,14 +78,14 @@ namespace Chase500
             northRoof = CupulaEthernet.OPEN;
             southRoof = CupulaEthernet.OPEN;
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
+            deadManTimer = new Timer(DEADMAN_MILISECS);
+            deadManStatus = 0;
+            deadManTimer.Elapsed += new ElapsedEventHandler(deadMan_Elapsed);
         }
 
-        public ModbusTCP.Master ZelioConn
-        {
-            get { return this.zelioConn; }
-        }
+
         /// <summary>
-        /// Posicion definido por el usuario para la apertura del lado Norte.
+        /// Posicion definida por el usuario para la apertura del lado Norte.
         /// </summary>
         public ushort NorthRoof
         {
@@ -84,6 +93,9 @@ namespace Chase500
             set { this.northRoof = value; }
         }
 
+        /// <summary>
+        /// Posicion definida por el usuario para la apertura del lado Sur.
+        /// </summary>
         public ushort SouthRoof
         {
             get { return this.southRoof; }
@@ -91,11 +103,28 @@ namespace Chase500
         }
 
 
-
+        /// <summary>
+        /// Componente encargado de las comunicaciones TCP/IP
+        /// bajo el protocolo ModBus.
+        /// </summary>
         public Master TcpSession
         {
             get { return this.zelioConn; }
             set { this.zelioConn = value; }
+        }
+
+        
+
+        void deadMan_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            byte[] deadMan;
+            deadMan = new byte[2];
+            deadMan[0] = 0;
+            deadMan[1] = deadManStatus;
+            zelioConn.WriteSingleRegister(0, ZREG_J2XT1, deadMan);
+            deadManStatus++;
+            deadManStatus = (byte)(deadManStatus%2);
+            Console.WriteLine("deadMan_Elapsed");
         }
 
         /// <summary>
@@ -103,7 +132,6 @@ namespace Chase500
         /// </summary>
         public void abrir()
         {
-
             Console.WriteLine("Abrir");
             byte[] deadMan;
             deadMan = new byte[2];
@@ -114,7 +142,7 @@ namespace Chase500
             System.Threading.Thread.Sleep(500);
             deadMan[1] = 1;
             zelioConn.WriteSingleRegister(0, ZREG_J2XT1, deadMan);
-            
+
             for (int i = 0; i < 16; i++)
             {
                 if ((i == 3) || (i == 7))
@@ -176,8 +204,16 @@ namespace Chase500
                 valor /= 2;
             }
             Write_ZREG_J1XT1();
+            // Finalmente arrancamos el timer que permite mantener la cupula abierta.
+            this.deadManTimer.Start();
         }
 
+        /// <summary>
+        /// Metodo generico para leer registros del PLC
+        /// </summary>
+        /// <param name="startRegister">registro donde comienza la lectura</param>
+        /// <param name="cantBytes">cantidad de bytes a leer.</param>
+        /// <returns></returns>
         private Boolean[] Read_PLC(ushort startRegister, ushort cantBytes)
         {
             byte[] regs;
@@ -234,7 +270,7 @@ namespace Chase500
                 indice = (i / 8);
                 if (zregJ1XT1[i])
                 {
-                    valor[(indice+1)%2] += (byte)(1 << (i - (indice * 8)));
+                    valor[(indice + 1) % 2] += (byte)(1 << (i - (indice * 8)));
                 }
             }
             Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);
@@ -250,6 +286,12 @@ namespace Chase500
         public void Read_ZREG_O1XT1()
         {
             this.zregO1XT1 = Read_PLC(ZREG_O1XT1, 2);
+        }
+
+        public Timer DeadManTimer
+        {
+            get { return this.deadManTimer; }
+            set { this.deadManTimer = value; }
         }
 
         public Boolean[] Zreg_J1XT1
@@ -337,6 +379,7 @@ namespace Chase500
         /// </summary>
         public void SetClose()
         {
+            this.deadManTimer.Stop(); 
             for (int i = 0; i < 8; i++)
             {
                 if ((i == 3) || (i == 7))
@@ -349,54 +392,66 @@ namespace Chase500
                 }
             }
         }
-        //private UInt16 GetMask(Byte o, Byte ns)
-        //{
-        //    switch (o)
-        //    {
-        //        case 0:
-        //            return (ns == 0 ? ZC_NORTH_OPEN : ZC_SOUTH_OPEN);
-        //        case 1:
-        //            {
-        //                if (info())
-        //                    return 0;
-        //                UInt16 rc = 0;
-        //                switch (ns)
-        //                {
-        //                    case 0:
-        //                        if (northMiddle)
-        //                        {
-        //                            rc = ZC_NORTH_CLOSE_50;
-        //                        }
-        //                        else
-        //                        {
-        //                            rc = ZC_NORTH_OPEN_50;
-        //                        }
-        //                        break;
-        //                    case 1:
-        //                        if (southMiddle)
-        //                        {
-        //                            rc = ZC_SOUTH_CLOSE_50;
-        //                        }
-        //                        else
-        //                        {
-        //                            rc = ZC_SOUTH_OPEN_50;
-        //                        }
 
-        //                        break;
-        //                }
 
-        //                //zelioConn ->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, ZC_RESET_PASSED);
-        //                System.Threading.Thread.Sleep((int)SLEEP_OPENING);
-        //                //zelioConn->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, 0);
-        //                return rc;
-        //            }
-        //        case 2:
-        //            return ns == 0 ? ZC_NORTH_CLOSE : ZC_SOUTH_CLOSE;
-        //        //	case 3:
-        //        //      return ns == 0 ? ZC_NORTH_STOP : ZC_SOUTH_STOP; 
-        //    }
-        //    return 0;
-        //}
+        //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
+        /*
+        private Boolean info()
+        {
+            Boolean respuesta;
+            respuesta = true;
+            return respuesta;
+        }
+
+
+        private UInt16 GetMask(Byte o, Byte ns)
+        {
+            switch (o)
+            {
+                case 0:
+                    return (ns == 0 ? ZC_NORTH_OPEN : ZC_SOUTH_OPEN);
+                case 1:
+                    {
+                        if (info())
+                            return 0;
+                        UInt16 rc = 0;
+                        switch (ns)
+                        {
+                            case 0:
+                                if (northMiddle)
+                                {
+                                    rc = ZC_NORTH_CLOSE_50;
+                                }
+                                else
+                                {
+                                    rc = ZC_NORTH_OPEN_50;
+                                }
+                                break;
+                            case 1:
+                                if (southMiddle)
+                                {
+                                    rc = ZC_SOUTH_CLOSE_50;
+                                }
+                                else
+                                {
+                                    rc = ZC_SOUTH_OPEN_50;
+                                }
+
+                                break;
+                        }
+
+                        //zelioConn ->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, ZC_RESET_PASSED);
+                        System.Threading.Thread.Sleep((int)SLEEP_OPENING);
+                        //zelioConn->writeHoldingRegisterMask (ZREG_J2XT1, ZC_RESET_PASSED, 0);
+                        return rc;
+                    }
+                case 2:
+                    return ns == 0 ? ZC_NORTH_CLOSE : ZC_SOUTH_CLOSE;
+                //	case 3:
+                //      return ns == 0 ? ZC_NORTH_STOP : ZC_SOUTH_STOP; 
+            }
+            return 0;
+        }
 
 
         private void MatchOpenSetting()
@@ -427,17 +482,6 @@ namespace Chase500
             System.Threading.Thread.Sleep((int)SLEEP_OPENING);
             //info();
         }
-
-        //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
-        /*
-        private Boolean info()
-        {
-            Boolean respuesta;
-            respuesta = true;
-            return respuesta;
-        }
-
-
 
 
 

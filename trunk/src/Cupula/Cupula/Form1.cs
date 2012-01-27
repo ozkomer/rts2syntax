@@ -25,7 +25,7 @@ namespace Cupula
             checkBoxO1 = new CheckBox[16];
 
             int indice;
-            
+
             indice = 0;
             this.checkBoxJ1[indice] = this.checkBoxJ1XT101; indice++;
             this.checkBoxJ1[indice] = this.checkBoxJ1XT102; indice++;
@@ -41,12 +41,12 @@ namespace Cupula
             this.checkBoxO1[indice] = this.checkBoxO1XT102; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT103; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT104; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_OPEN]   = this.checkBoxO1XT105; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_50]     = this.checkBoxO1XT106; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_CLOSE]  = this.checkBoxO1XT107; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_NORTH_OPEN]   = this.checkBoxO1XT108; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_NORTH_50]     = this.checkBoxO1XT109; indice++;
-            this.checkBoxO1[CupulaEthernet.ZS_NORTH_CLOSE]  = this.checkBoxO1XT110; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_OPEN] = this.checkBoxO1XT105; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_50] = this.checkBoxO1XT106; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_CLOSE] = this.checkBoxO1XT107; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_OPEN] = this.checkBoxO1XT108; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_50] = this.checkBoxO1XT109; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_CLOSE] = this.checkBoxO1XT110; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT111; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT112; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT113; indice++;
@@ -54,6 +54,15 @@ namespace Cupula
             this.checkBoxO1[indice] = this.checkBoxO1XT115; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT116; indice++;
 
+            cet.DeadManTimer.Elapsed += new System.Timers.ElapsedEventHandler(DeadManTimer_Elapsed);
+
+        }
+
+        void DeadManTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.labelKeepOpen.BackColor = Color.LightGreen;
+            System.Threading.Thread.Sleep(1000);
+            this.labelKeepOpen.BackColor = Color.LightGray;
         }
 
         private void buttonIsOpened_Click(object sender, EventArgs e)
@@ -134,59 +143,7 @@ namespace Cupula
 
         private void buttonStartOpen_Click(object sender, EventArgs e)
         {
-            //cet.StartOpen();
             cet.abrir();
-            //int valor;
-            //valor = 0;
-            //// Lado Norte
-            //switch (comboBoxControlNorth.SelectedIndex)
-            //{
-            //    case (CupulaEthernet.OPEN):
-            //        valor += 1;
-            //        break;
-            //    case (CupulaEthernet.HALF):
-            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_CLOSE])
-            //        {
-            //            valor += (1 << 1);
-            //        }
-            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_OPEN])
-            //        {
-            //            valor += (1 << 2);
-            //        }
-
-            //        break;
-            //    case (CupulaEthernet.CLOSE):
-            //        valor += (1<<3);
-            //        break;
-            //}
-            //switch (comboBoxControlSouth.SelectedIndex)
-            //{
-            //    case (CupulaEthernet.OPEN):
-            //        valor += (1 << 4);
-            //        break;
-            //    case (CupulaEthernet.HALF):
-            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
-            //        {
-            //            valor += (1 << 5);
-            //        }
-            //        if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
-            //        {
-            //            valor += (1 << 6);
-            //        }
-            //        break;
-            //    case (CupulaEthernet.CLOSE):
-            //        valor += (1 << 7);
-            //        break;
-            //}
-            //for (int i = 0; i < 8; i++)
-            //{
-            //    cet.Zreg_J1XT1[i] = ((valor % 2) == 1);
-            //    valor /= 2;
-            //    checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
-            //}
-
-            //cet.Write_ZREG_J1XT1();
-
         }
 
         private void buttonStartClose_Click(object sender, EventArgs e)
@@ -207,7 +164,7 @@ namespace Cupula
         {
             String[] linea;
             linea = this.textBox1.Text.Split(("\n").ToCharArray());
-            this.textBox2.Text = linea[ (int) numericUpDown1.Value];
+            this.textBox2.Text = linea[(int)numericUpDown1.Value];
         }
 
 
@@ -226,7 +183,7 @@ namespace Cupula
             Instruccion instr;
             instr = new Instruccion(this.textBox2.Text);
             String resultado;
-            resultado = instr.ejecutar(this.cet.ZelioConn);
+            resultado = instr.ejecutar(this.cet.TcpSession);
             String textoSalida;
             textoSalida = textBox3.Text;
             textoSalida = textoSalida + Environment.NewLine + resultado;
