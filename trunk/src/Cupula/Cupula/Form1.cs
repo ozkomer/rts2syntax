@@ -134,22 +134,46 @@ namespace Cupula
 
         private void buttonStartOpen_Click(object sender, EventArgs e)
         {
+            int valor;
+            valor = 0;
+            // Lado Norte
+            switch (comboBoxControlNorth.SelectedIndex)
+            {
+                case (CupulaEthernet.OPEN):
+                    valor += 1;
+                    break;
+                case (CupulaEthernet.HALF):
+                    break;
+                case (CupulaEthernet.CLOSE):
+                    valor += (1<<3);
+                    break;
+            }
+            switch (comboBoxControlSouth.SelectedIndex)
+            {
+                case (CupulaEthernet.OPEN):
+                    valor += (1 << 4);
+                    break;
+                case (CupulaEthernet.HALF):
+                    break;
+                case (CupulaEthernet.CLOSE):
+                    valor += (1 << 7);
+                    break;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                cet.Zreg_J1XT1[i] = ((valor % 2) == 1);
+                valor /= 2;
+                checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
+            }
 
         }
 
         private void buttonStartClose_Click(object sender, EventArgs e)
         {
+            cet.SetClose();
             for (int i = 0; i < 8; i++)
             {
-                if ((i == 3) || (i == 7))
-                {
-                    checkBoxJ1[i].Checked = true;
-                }
-                else
-                {
-                    checkBoxJ1[i].Checked = false;
-                }
-                cet.Zreg_J1XT1[i] = checkBoxJ1[i].Checked;
+                checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
             }
         }
 
