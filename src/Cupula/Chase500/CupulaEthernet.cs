@@ -202,6 +202,25 @@ namespace Chase500
             return hits;
         }
 
+        /// <summary>
+        /// Al invocar a esta funcion, los valores de zregO1XT1 deben estar frescos.
+        /// </summary>
+        /// <returns></returns>
+        public int IsClosed()
+        {
+            // check states of end switches..
+            int hits = 0;
+            if (zregO1XT1[ZS_SOUTH_CLOSE]) 
+            {
+                hits |= 0x01;
+            }
+            if (zregO1XT1[ZS_NORTH_CLOSE])
+            {
+                hits |= 0x02;
+            }
+            return hits;
+        }
+
         //------------------- Replica codigo RTS2 (Desde aqui hasta el final)------------
         /*
         private Boolean info()
@@ -312,29 +331,7 @@ namespace Chase500
             return 0;
         }
 
-        public int IsClosed()
-        {
-            byte[] regs;
-            regs = new byte[2];
 
-            try
-            {
-                zelioConn.ReadHoldingRegister(0, ZREG_O1XT1, 2, ref regs);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return -1;
-            }
-            // check states of end switches..
-            if ((regs[0] & (ZS_NORTH_CLOSE | ZS_SOUTH_CLOSE)) == (ZS_NORTH_CLOSE | ZS_SOUTH_CLOSE))
-            {
-                // re-write close
-                //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, ZC_NORTH_CLOSE | ZC_SOUTH_CLOSE);
-                return -2;
-            }
-            return 0;
-        }
 */
 
     }
