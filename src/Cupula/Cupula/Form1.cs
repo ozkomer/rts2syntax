@@ -149,10 +149,10 @@ namespace Cupula
         private void buttonStartClose_Click(object sender, EventArgs e)
         {
             cet.SetClose();
-            for (int i = 0; i < 8; i++)
-            {
-                checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
-            }
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    checkBoxJ1[i].Checked = cet.Zreg_J1XT1[i];
+            //}
         }
 
         private void buttonControlWrite_Click(object sender, EventArgs e)

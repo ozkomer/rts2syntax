@@ -205,7 +205,10 @@ namespace Chase500
             }
             Write_ZREG_J1XT1();
             // Finalmente arrancamos el timer que permite mantener la cupula abierta.
-            this.deadManTimer.Start();
+            if (!(this.deadManTimer.Enabled))
+            {
+                this.deadManTimer.Start();
+            }
         }
 
         /// <summary>
@@ -380,17 +383,23 @@ namespace Chase500
         public void SetClose()
         {
             this.deadManTimer.Stop(); 
-            for (int i = 0; i < 8; i++)
-            {
-                if ((i == 3) || (i == 7))
-                {
-                    Zreg_J1XT1[i] = true;
-                }
-                else
-                {
-                    Zreg_J1XT1[i] = false;
-                }
-            }
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    if ((i == 3) || (i == 7))
+            //    {
+            //        Zreg_J1XT1[i] = true;
+            //    }
+            //    else
+            //    {
+            //        Zreg_J1XT1[i] = false;
+            //    }
+            //}
+            byte[] cerrar;
+            cerrar = new byte[2];
+            cerrar[0] = 0;
+            cerrar[1] = 0;
+
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, cerrar);
         }
 
 
