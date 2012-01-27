@@ -134,8 +134,8 @@ namespace Cupula
 
         private void buttonStartOpen_Click(object sender, EventArgs e)
         {
-            cet.StartOpen();
-            //cet.abrir();
+            //cet.StartOpen();
+            cet.abrir();
             //int valor;
             //valor = 0;
             //// Lado Norte

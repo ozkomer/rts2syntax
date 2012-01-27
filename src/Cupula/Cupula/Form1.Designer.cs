@@ -595,7 +595,7 @@ namespace Cupula
             this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(1, 41);
+            this.panel1.Location = new System.Drawing.Point(243, 439);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(683, 386);
             this.panel1.TabIndex = 5;
