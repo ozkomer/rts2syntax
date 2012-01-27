@@ -41,12 +41,12 @@ namespace Cupula
             this.checkBoxO1[indice] = this.checkBoxO1XT102; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT103; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT104; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT105; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT106; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT107; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT108; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT109; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT110; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_OPEN]   = this.checkBoxO1XT105; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_50]     = this.checkBoxO1XT106; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_SOUTH_CLOSE]  = this.checkBoxO1XT107; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_OPEN]   = this.checkBoxO1XT108; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_50]     = this.checkBoxO1XT109; indice++;
+            this.checkBoxO1[CupulaEthernet.ZS_NORTH_CLOSE]  = this.checkBoxO1XT110; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT111; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT112; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT113; indice++;
@@ -143,6 +143,15 @@ namespace Cupula
                     valor += 1;
                     break;
                 case (CupulaEthernet.HALF):
+                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_CLOSE])
+                    {
+                        valor += (1 << 1);
+                    }
+                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_NORTH_OPEN])
+                    {
+                        valor += (1 << 2);
+                    }
+
                     break;
                 case (CupulaEthernet.CLOSE):
                     valor += (1<<3);
@@ -154,6 +163,14 @@ namespace Cupula
                     valor += (1 << 4);
                     break;
                 case (CupulaEthernet.HALF):
+                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_CLOSE])
+                    {
+                        valor += (1 << 5);
+                    }
+                    if (cet.Zreg_O1XT1[CupulaEthernet.ZS_SOUTH_OPEN])
+                    {
+                        valor += (1 << 6);
+                    }
                     break;
                 case (CupulaEthernet.CLOSE):
                     valor += (1 << 7);
