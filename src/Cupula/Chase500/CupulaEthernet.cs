@@ -29,12 +29,12 @@ namespace Chase500
         public const ushort ZREG_J1XT1 = 16;
         public const ushort ZREG_O1XT1 = 20;
 
-        public const UInt16 ZS_SOUTH_OPEN  =  4;
-        public const UInt16 ZS_SOUTH_50    =  5;
-        public const UInt16 ZS_SOUTH_CLOSE =  6;
-        public const UInt16 ZS_NORTH_OPEN  =  7;
-        public const UInt16 ZS_NORTH_50    =  8;
-        public const UInt16 ZS_NORTH_CLOSE =  9;
+        public const UInt16 ZS_SOUTH_OPEN = 4;
+        public const UInt16 ZS_SOUTH_50 = 5;
+        public const UInt16 ZS_SOUTH_CLOSE = 6;
+        public const UInt16 ZS_NORTH_OPEN = 7;
+        public const UInt16 ZS_NORTH_50 = 8;
+        public const UInt16 ZS_NORTH_CLOSE = 9;
 
 
         public const UInt16 DOME_DOME_MASK = 0xffff;
@@ -70,6 +70,10 @@ namespace Chase500
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
         }
 
+        public ModbusTCP.Master ZelioConn
+        {
+            get { return this.zelioConn; }
+        }
         /// <summary>
         /// Posicion definido por el usuario para la apertura del lado Norte.
         /// </summary>
@@ -216,10 +220,10 @@ namespace Chase500
                 if (zregJ1XT1[i])
                 {
                     valor[indice] += (byte)(1 << (i - (indice * 8)));
-                }                 
+                }
             }
-            Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);            
-            zelioConn.WriteSingleRegister(0,ZREG_J1XT1,valor);
+            Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, valor);
         }
 
         /// <summary>
@@ -299,7 +303,7 @@ namespace Chase500
         {
             // check states of end switches..
             int hits = 0;
-            if (zregO1XT1[ZS_SOUTH_CLOSE]) 
+            if (zregO1XT1[ZS_SOUTH_CLOSE])
             {
                 hits |= 0x01;
             }
@@ -388,11 +392,11 @@ namespace Chase500
             respuesta = new byte[2];
             command[1] = 0x0088;
             command[0] = 0x0000;
-            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command,ref respuesta);
-            
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command, ref respuesta);
+
             System.Threading.Thread.Sleep((int)SLEEP_OPENING);
             command[1] = 0x0011;
-            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command,ref respuesta);
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, command, ref respuesta);
 
             //zelioConn->writeHoldingRegisterMask(ZREG_J1XT1, ZC_MASK_OPEN_CLOSE, no | so);
 

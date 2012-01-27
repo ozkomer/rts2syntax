@@ -203,6 +203,37 @@ namespace Cupula
             cet.Write_ZREG_J1XT1();
         }
 
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            String[] linea;
+            linea = this.textBox1.Text.Split(("\n").ToCharArray());
+            this.textBox2.Text = linea[ (int) numericUpDown1.Value];
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.numericUpDown1.Value++;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Instruccion instr;
+            instr = new Instruccion(this.textBox2.Text);
+            String resultado;
+            resultado = instr.ejecutar(this.cet.ZelioConn);
+            String textoSalida;
+            textoSalida = textBox3.Text;
+            textoSalida = textoSalida + "\n" + resultado;
+            textBox3.Text = textoSalida;
+            
+        }
+
 
 
 
