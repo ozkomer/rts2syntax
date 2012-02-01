@@ -28,6 +28,7 @@ using ASCOM.Utilities;
 using System.Globalization;
 using ModbusTCP;
 using System.Timers;
+using System.Text;
 
 namespace ASCOM.Chase500
 {
@@ -255,7 +256,7 @@ namespace ASCOM.Chase500
 
         public void CloseShutter()
         {
-            throw new System.NotImplementedException();
+            this.CloseDome();
         }
 
         public void FindHome()
@@ -265,7 +266,9 @@ namespace ASCOM.Chase500
 
         public void OpenShutter()
         {
-            throw new System.NotImplementedException();
+            northRoof = Dome.OPEN;
+            southRoof = Dome.OPEN;
+            this.OpenDome();
         }
 
         public void Park()
@@ -295,18 +298,37 @@ namespace ASCOM.Chase500
 
         public bool Connected
         {
-            get { throw new System.NotImplementedException(); }
-            set { throw new System.NotImplementedException(); }
+            get { return this.zelioConn.connected; }
+            set
+            {
+                if (value)
+                {
+                    this.Connect();
+                }
+                else
+                {
+                    this.Disconnect();
+                }
+            }
         }
 
         public string Description
         {
-            get { throw new System.NotImplementedException(); }
+            get { return "Chase500 Dome Driver."; }
         }
 
         public string DriverInfo
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                StringBuilder respuesta;
+                respuesta = new StringBuilder();
+                respuesta.Append("Chase 500, control básico del domo.\n\r");
+                respuesta.Append("Domo basado en sistema hidráulico gobernado por un PLC\n\r");
+                respuesta.Append("Desarrollado por Eduardo Maureira. emaureir@das.uchile.cl\n\r");
+
+                return respuesta.ToString();
+            }
         }
 
         public string DriverVersion
@@ -325,7 +347,7 @@ namespace ASCOM.Chase500
 
         public string Name
         {
-            get { throw new System.NotImplementedException(); }
+            get { return "Chase 500"; }
         }
 
         public ArrayList SupportedActions
@@ -355,47 +377,47 @@ namespace ASCOM.Chase500
 
         public bool CanFindHome
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanPark
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanSetAltitude
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanSetAzimuth
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanSetPark
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanSetShutter
         {
-            get { throw new System.NotImplementedException(); }
+            get { return true; }
         }
 
         public bool CanSlave
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public bool CanSyncAzimuth
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public ShutterState ShutterStatus
         {
-            get { throw new System.NotImplementedException(); }
+            get { return this.shutterStatus; }
         }
 
         public bool Slaved
@@ -406,7 +428,15 @@ namespace ASCOM.Chase500
 
         public bool Slewing
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                if ((this.shutterStatus == ShutterState.shutterOpening)
+                    || (this.shutterStatus == ShutterState.shutterClosing))
+                {
+                    return true;
+                }
+                return false;
+            }
         }
 
         #endregion
@@ -508,6 +538,8 @@ namespace ASCOM.Chase500
         {
             if (!zelioConn.connected)
             {
+                this.host = "10.0.65.10";
+                this.port = 502;
                 zelioConn.connect(this.host, this.port);
             }
         }
