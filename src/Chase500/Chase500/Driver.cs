@@ -288,7 +288,7 @@ namespace ASCOM.Chase500
 
         public void SlewToAzimuth(double azimuth)
         {
-            throw new System.NotImplementedException();
+            return;
         }
 
         public void SyncToAzimuth(double azimuth)
@@ -372,7 +372,7 @@ namespace ASCOM.Chase500
 
         public double Azimuth
         {
-            get { throw new System.NotImplementedException(); }
+            get { return 0; }
         }
 
         public bool CanFindHome
@@ -392,7 +392,7 @@ namespace ASCOM.Chase500
 
         public bool CanSetAzimuth
         {
-            get { return false; }
+            get { return true; }
         }
 
         public bool CanSetPark
