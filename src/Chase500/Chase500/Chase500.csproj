@@ -103,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ASCOM.png" />
+    <Content Include="LeaMe_Chase500.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ReadMe.htm" />
   </ItemGroup>
   <ItemGroup>
