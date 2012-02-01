@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ModbusTCP</name>
+    </assembly>
+    <members>
+        <member name="T:ModbusTCP.Master">
+            <summary>
+            Zusammenfassung für Class1.
+            </summary>
+        </member>
+    </members>
+</doc>
