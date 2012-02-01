@@ -1,0 +1,10 @@
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\bin\Debug\ModbusTester.exe
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\bin\Debug\ModbusTester.pdb
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\bin\Debug\ModbusTCP.dll
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\bin\Debug\ModbusTCP.pdb
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\bin\Debug\ModbusTCP.xml
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\obj\Debug\Modbus.frmStart.resources
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\obj\Debug\ModbusTester.csproj.GenerateResource.Cache
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\obj\Debug\ModbusTester.exe
+C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusSampleCommon\obj\Debug\ModbusTester.pdb

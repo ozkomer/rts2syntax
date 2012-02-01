@@ -1,0 +1,6 @@
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\bin\Debug\ModbusTCP.dll
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\bin\Debug\ModbusTCP.pdb
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\bin\Debug\modbusTCP.xml
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\obj\Debug\ModbusTCP.dll
+C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusClassTCP\obj\Debug\ModbusTCP.pdb

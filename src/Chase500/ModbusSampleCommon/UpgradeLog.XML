@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Modbus Sample Common">
+</Property><Property Name="Solution File" Value="C:\Documents and Settings\strickers\My Documents\Downloads\Modbus_TCP_class_demo\ModbusSampleCommon\Modbus Sample Common.sln">
+</Property><Property Name="Date" Value="Wednesday, December 15, 2010">
+</Property><Property Name="Time" Value="9:48 AM">
+</Property></Properties><Event ErrorLevel="0" Project="ModbusTester" Source="ModbusTester.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="ModbusTester" Source="ModbusTester.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ModbusTCP" Source="..\ModbusClassTCP\ModbusTCP.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="ModbusTCP" Source="..\ModbusClassTCP\ModbusTCP.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Modbus Sample Common.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Modbus Sample Common.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ModbusTester" Source="ModbusTester.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="ModbusTCP" Source="..\ModbusClassTCP\ModbusTCP.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
