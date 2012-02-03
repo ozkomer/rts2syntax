@@ -3,10 +3,8 @@
  */
 package cl.calan.ctio;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -24,11 +22,34 @@ public class WeatherRow {
 	private int pressure;
 	private String time;
 	
+	public final double MAX_WIND_SPEED = 30;
+	public final double MAX_HUMIDITY = 75;
+	
+	
 	/**
 	 * 
 	 */
 	public WeatherRow() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Analiza solo los datos de este registro y determina si representa una condicion segura de Observación.
+	 * @return
+	 */
+	public Boolean isSafe()
+	{
+		if (this.windSpeed>MAX_WIND_SPEED)
+		{
+			logger.info("Condiciones climaticas inseguras, razon: Windspeed="+this.windSpeed+" > "+MAX_WIND_SPEED+"=MAX_WIND_SPEED");
+			return false;
+		}
+		if (this.humidity>MAX_HUMIDITY)
+		{
+			logger.info("Condiciones climaticas inseguras, razon: humidity="+this.humidity+" > "+MAX_HUMIDITY+"=MAX_HUMIDITY");
+			return false;			
+		}		
+		return true;
 	}
 	
 	/**
@@ -91,4 +112,53 @@ public class WeatherRow {
 
 	}
 
+	public double getWindSpeed() {
+		return windSpeed;
+	}
+
+	public void setWindSpeed(double windSpeed) {
+		this.windSpeed = windSpeed;
+	}
+
+	public double getWindDir() {
+		return windDir;
+	}
+
+	public void setWindDir(double windDir) {
+		this.windDir = windDir;
+	}
+
+	public double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
+	}
+
+	public int getHumidity() {
+		return humidity;
+	}
+
+	public void setHumidity(int humidity) {
+		this.humidity = humidity;
+	}
+
+	public int getPressure() {
+		return pressure;
+	}
+
+	public void setPressure(int pressure) {
+		this.pressure = pressure;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	
 }

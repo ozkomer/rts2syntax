@@ -4,7 +4,6 @@
 package cl.calan.ctio;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,8 +15,8 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * La base de datos "tololo" tiene una tabla "weather" donde se almacena un 
- * nuevo registro cada 5 minutos aproximadamente.
- * Luego, 288 registros equivalen a un dia completo.
+ * nuevo registro cada 1 minutos aproximadamente.
+ * Luego, 1440 registros equivalen a un dia completo.
  * @author sysop
  *
  */
@@ -30,7 +29,7 @@ public class TololoWeather {
 	private ResultSet resultSet = null;
 
 	/**
-	 * Lista con la información de los últimos 288 registros de la tabla weather de la
+	 * Lista con la información de los últimos 1440 registros de la tabla weather de la
 	 * base de datos del clima de tololo.
 	 */
 	private Vector<WeatherRow> weatherList;
@@ -77,14 +76,14 @@ public class TololoWeather {
 	}
 
 	/**
-	 * Obtiene los últimos 288 registros de la tabla weather.
+	 * Obtiene los últimos 1440 registros de la tabla weather.
 	 */
 	private void refreshWeather ()
 	{
 		logger.info("refreshWeather ();;Start.");
 		int first, last;
 		last = this.countWeather;
-		first = this.countWeather - 288;
+		first = this.countWeather - 1440;
 
 		// Statements allow to issue SQL queries to the database
 		try {
@@ -113,10 +112,7 @@ public class TololoWeather {
 		{
 			logger.error("weatherList.size()!=288;;weatherList.size()="+weatherList.size());
 		}
-		for (int i=0;i<weatherList.size();i++)
-		{
-			System.out.println(weatherList.elementAt(i).toString());
-		}
+
 		logger.info("refreshWeather ();;End.");
 	}
 
@@ -185,6 +181,15 @@ public class TololoWeather {
 		wea.conectar();
 		wea.refreshCountWeather();
 		wea.refreshWeather();
+		
+		WeatherRow wRow;
+		for (int i=0;i<wea.weatherList.size();i++)
+		{
+			wRow = wea.weatherList.elementAt(i);
+			
+			
+			System.out.println(wRow.toString()+" isSafe="+wRow.isSafe());
+		}
 		wea.close();
 		logger.info("Tololo Weather End.");
 
