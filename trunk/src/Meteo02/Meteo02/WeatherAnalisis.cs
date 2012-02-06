@@ -35,6 +35,10 @@ namespace ASCOM.Meteo02
 
         private static Properties.Settings settings = Properties.Settings.Default;
 
+        public static double MaxWindSpeed_inKnots { get { return settings.maxWindSpeed_inKnots; } }
+        public static float MaxHumidity { get { return settings.maxHumidity; } }
+        public static float MinDewPointDelta { get { return settings.minDewPointDelta; } }
+
         public WeatherAnalisis()
             : base()
         {
