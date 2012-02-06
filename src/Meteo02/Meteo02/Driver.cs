@@ -101,63 +101,41 @@ namespace ASCOM.Meteo02
         #region variables instancia
 
         /// <summary>
-        /// Fecha y hora del ultimo registro leido.
+        /// Aqui estan los últimos 40 registros.
+        /// Y se evalua si la condiciones de tiempo
+        /// son seguras para la ovserbación.
         /// </summary>
-        private DateTime fechaHora;
+        private WeatherAnalisis weather_Analisis;
+
+        /// <summary>
+        /// objeto que contiene las variables meteorologicas.
+        /// </summary>
+        //private WeatherRow weatherRow;
 
         /// <summary>
         /// Timer que se gatilla cada 30 segundos. La base de datos de tololo
         /// se gatilla cada 60 segundos. Luego el intervalo escogido para este timer
         /// siempre deberia garantizar que todos los ultimos registros
         /// sean leidos con un retraso inferior a 30 segundos.
-        /// 
         /// </summary>
         private System.Timers.Timer timerLeer;
+
         /// <summary>
         /// Determina si el driver se ha comunicado con la base de datos
         /// </summary>
         private bool conectado;
 
-
-        /// <summary>
-        /// Humedad Relativa
-        /// </summary>
-        private float relativeHumidity;
-
-        /// <summary>
-        /// Temperatura Ambiente
-        /// </summary>
-        private float ambientTemperature;
-
-        /// <summary>
-        /// Presion Barometrica
-        /// </summary>
-        private float barometricPressure;
-
-        /// <summary>
-        /// Direccion del Viento
-        /// </summary>
-        private float windDirection;
-
-        /// <summary>
-        /// Rapidez del viento. 
-        /// Velocidad es un vector (rapidez + direccion)
-        /// </summary>
-        private float windVelocity;
-
         /// <summary>
         /// Objeto con la tabla de datos meteorologicos
         /// </summary>
         private DataTableWeatherTableAdapter dtWeatheTa;
-
-
-
+        
         #endregion
         public SafetyMonitor()
         {            
             dtWeatheTa = new DataTableWeatherTableAdapter();
+            weather_Analisis = new WeatherAnalisis();
 
-            //dtWeather.BeginInit();
             this.conectado = (dtWeatheTa != null); 
             this.LeerUltimoRegistro();
             timerLeer = new System.Timers.Timer();
@@ -171,19 +149,41 @@ namespace ASCOM.Meteo02
             this.LeerUltimoRegistro();
         }
 
+        
         void LeerUltimoRegistro()
         {
-            tololoDataSet.DataTableWeatherDataTable aaa;
-            aaa = dtWeatheTa.GetDataByMostRecent();
-            tololoDataSet.DataTableWeatherRow weatherRow;
-            weatherRow = (tololoDataSet.DataTableWeatherRow)aaa.Rows[0];
 
-            this.fechaHora = weatherRow.time;
-            this.relativeHumidity = weatherRow.hum;
-            this.ambientTemperature = weatherRow.temp;
-            this.barometricPressure = weatherRow.pres;
-            this.windVelocity = weatherRow.wspeed;
-            this.windDirection = weatherRow.wdir;
+            tololoDataSet.DataTableWeatherDataTable dtWeatherDT;
+            tololoDataSet.DataTableWeatherRow registro;
+            if (weather_Analisis.Count == 0)
+            {
+                dtWeatherDT = dtWeatheTa.GetDataBy40MostRecent();
+                int largoDT;
+                largoDT = dtWeatherDT.Count;
+                //Recorremos el DataTable desde el pasado hacia el futuro
+                for (int i = (largoDT - 1); i >= 0; i--)
+                {
+                    WeatherRow nuevo;
+                    tololoDataSet.DataTableWeatherRow nuevoRow;
+                    nuevoRow = (tololoDataSet.DataTableWeatherRow)dtWeatherDT.Rows[i];
+                    nuevo = new WeatherRow(nuevoRow);
+                    weather_Analisis.insertar(nuevo);
+                }
+            }
+            else
+            {
+                WeatherRow nuevo;
+                dtWeatherDT = dtWeatheTa.GetDataByMostRecent();
+                registro = (tololoDataSet.DataTableWeatherRow)dtWeatherDT.Rows[0];
+                nuevo = new WeatherRow(registro);
+                weather_Analisis.insertar(nuevo);
+            }
+        }
+
+        public WeatherAnalisis Weather_Analisis
+        {
+            get { return this.weather_Analisis; }
+
         }
 
         /// <summary>
@@ -197,13 +197,12 @@ namespace ASCOM.Meteo02
         }
 
         public DateTime FechaHora
-        { get { return this.fechaHora; } }
+        { get { return this.weather_Analisis.Ultimo.FechaHora; } }
 
         #region Weather Object
         public float AmbientTemperature
         {
-            get { return this.ambientTemperature; }
-
+            get { return this.weather_Analisis.Ultimo.AmbientTemperature; }
         }
 
         //public bool Available
@@ -214,8 +213,7 @@ namespace ASCOM.Meteo02
         
         public float BarometricPressure
         {
-            get { return this.barometricPressure; }
-
+            get { return this.weather_Analisis.Ultimo.BarometricPressure; }
         }
 
         public float Clouds
@@ -227,8 +225,7 @@ namespace ASCOM.Meteo02
 
         public float DewPoint
         {
-            get { throw new System.NotImplementedException(); }
-            //get { return (float)33; }
+            get { return this.weather_Analisis.Ultimo.DewPoint; }
         }
 
         public float InsideTemperature
@@ -247,12 +244,12 @@ namespace ASCOM.Meteo02
 
         public float RelativeHumidity
         {
-            get { return this.relativeHumidity; }
+            get { return this.weather_Analisis.Ultimo.RelativeHumidity; }
         }
 
         public bool Safe
         {
-            get { return true; }
+            get { return this.weather_Analisis.isSafe(); }
         }
 
         public bool Connected
@@ -263,18 +260,21 @@ namespace ASCOM.Meteo02
 
         public float WindDirection
         {
-            get { return this.windDirection; }
-
+            get { return this.weather_Analisis.Ultimo.WindDirection; }
         }
 
+        /// <summary>
+        /// Aclaracion:
+        /// ACP quiere windVelocity. (definido por la interfaz que ellos exigen)
+        /// Velocity -> Vectores. Lo que aqui se provee y solicita es claramente un escalar.
+        /// </summary>
         public float WindVelocity
         {
-            get { return this.windVelocity; }
-
+            get { return this.weather_Analisis.Ultimo.WindSpeed; }
         }
 
-
         #endregion
+
         /*
         #region IDisposable Members
 

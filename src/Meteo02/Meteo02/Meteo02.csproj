@@ -129,6 +129,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>tololoDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="WeatherAnalisis.cs" />
+    <Compile Include="WeatherRow.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
