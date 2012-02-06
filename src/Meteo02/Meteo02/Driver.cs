@@ -28,6 +28,7 @@ using System.Runtime.InteropServices;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System.Globalization;
+using ASCOM.Meteo02.tololoDataSetTableAdapters;
 
 namespace ASCOM.Meteo02
 {
@@ -97,11 +98,111 @@ namespace ASCOM.Meteo02
         }
         #endregion
 
-        #region Weather Object
+        #region variables instancia
 
+        /// <summary>
+        /// Fecha y hora del ultimo registro leido.
+        /// </summary>
+        private DateTime fechaHora;
+
+        /// <summary>
+        /// Timer que se gatilla cada 30 segundos. La base de datos de tololo
+        /// se gatilla cada 60 segundos. Luego el intervalo escogido para este timer
+        /// siempre deberia garantizar que todos los ultimos registros
+        /// sean leidos con un retraso inferior a 30 segundos.
+        /// 
+        /// </summary>
+        private System.Timers.Timer timerLeer;
+        /// <summary>
+        /// Determina si el driver se ha comunicado con la base de datos
+        /// </summary>
+        private bool conectado;
+
+
+        /// <summary>
+        /// Humedad Relativa
+        /// </summary>
+        private float relativeHumidity;
+
+        /// <summary>
+        /// Temperatura Ambiente
+        /// </summary>
+        private float ambientTemperature;
+
+        /// <summary>
+        /// Presion Barometrica
+        /// </summary>
+        private float barometricPressure;
+
+        /// <summary>
+        /// Direccion del Viento
+        /// </summary>
+        private float windDirection;
+
+        /// <summary>
+        /// Rapidez del viento. 
+        /// Velocidad es un vector (rapidez + direccion)
+        /// </summary>
+        private float windVelocity;
+
+        /// <summary>
+        /// Objeto con la tabla de datos meteorologicos
+        /// </summary>
+        private DataTableWeatherTableAdapter dtWeatheTa;
+
+
+
+        #endregion
+        public SafetyMonitor()
+        {            
+            dtWeatheTa = new DataTableWeatherTableAdapter();
+
+            //dtWeather.BeginInit();
+            this.conectado = (dtWeatheTa != null); 
+            this.LeerUltimoRegistro();
+            timerLeer = new System.Timers.Timer();
+            timerLeer.Interval = 30000;
+            timerLeer.Elapsed+=new System.Timers.ElapsedEventHandler(timerLeer_Elapsed);
+            timerLeer.Start();
+        }
+
+        void timerLeer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.LeerUltimoRegistro();
+        }
+
+        void LeerUltimoRegistro()
+        {
+            tololoDataSet.DataTableWeatherDataTable aaa;
+            aaa = dtWeatheTa.GetDataByMostRecent();
+            tololoDataSet.DataTableWeatherRow weatherRow;
+            weatherRow = (tololoDataSet.DataTableWeatherRow)aaa.Rows[0];
+
+            this.fechaHora = weatherRow.time;
+            this.relativeHumidity = weatherRow.hum;
+            this.ambientTemperature = weatherRow.temp;
+            this.barometricPressure = weatherRow.pres;
+            this.windVelocity = weatherRow.wspeed;
+            this.windDirection = weatherRow.wdir;
+        }
+
+        /// <summary>
+        /// Expone el timer para que una aplicacion pueda
+        /// desplegar los nuevos valores apenas se obtengan
+        /// </summary>
+        public System.Timers.Timer TimerLeer
+        {
+            get { return this.timerLeer; }
+            set { this.timerLeer = value; }
+        }
+
+        public DateTime FechaHora
+        { get { return this.fechaHora; } }
+
+        #region Weather Object
         public float AmbientTemperature
         {
-            get { return (float)33; }
+            get { return this.ambientTemperature; }
 
         }
 
@@ -110,30 +211,30 @@ namespace ASCOM.Meteo02
         //    get { return true; }
         //}
 
-
+        
         public float BarometricPressure
         {
-            get { return (float)33; }
+            get { return this.barometricPressure; }
 
         }
 
         public float Clouds
         {
-            get { return (float)33; }
-
+            get { throw new System.NotImplementedException(); }
+            //get { return (float)0; }
         }
 
 
         public float DewPoint
         {
-            get { return (float)33; }
-
+            get { throw new System.NotImplementedException(); }
+            //get { return (float)33; }
         }
 
         public float InsideTemperature
         {
-            get { return (float)33; }
-
+            get { throw new System.NotImplementedException(); }
+            //get { return (float)0; }
         }
 
 
@@ -146,8 +247,7 @@ namespace ASCOM.Meteo02
 
         public float RelativeHumidity
         {
-            get { return (float)33; }
-
+            get { return this.relativeHumidity; }
         }
 
         public bool Safe
@@ -155,23 +255,21 @@ namespace ASCOM.Meteo02
             get { return true; }
         }
 
-        private bool conectado;
         public bool Connected
         {
             get { return conectado; }
             set { this.conectado = value; }
         }
 
-
         public float WindDirection
         {
-            get { return (float)33; }
+            get { return this.windDirection; }
 
         }
 
         public float WindVelocity
         {
-            get { return (float)33; }
+            get { return this.windVelocity; }
 
         }
 

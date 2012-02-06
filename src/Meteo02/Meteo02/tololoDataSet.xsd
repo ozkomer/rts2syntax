@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="tololoDataSet" targetNamespace="http://tempuri.org/tololoDataSet.xsd" xmlns:mstns="http://tempuri.org/tololoDataSet.xsd" xmlns="http://tempuri.org/tololoDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="tololoConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="tololoConnectionString (Settings)" PropertyReference="ApplicationSettings.ASCOM.Meteo02.Properties.Settings.GlobalReference.Default.tololoConnectionString" Provider="System.Data.Odbc" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTableWeatherTableAdapter" GeneratorDataComponentClassName="DataTableWeatherTableAdapter" Name="DataTableWeather" UserDataComponentName="DataTableWeatherTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="tololoConnectionString (Settings)" DbObjectName="" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT * FROM            `weather` limit @desde, @hasta</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="wspeed" DataSetColumn="wspeed" />
+              <Mapping SourceColumn="wdir" DataSetColumn="wdir" />
+              <Mapping SourceColumn="temp" DataSetColumn="temp" />
+              <Mapping SourceColumn="hum" DataSetColumn="hum" />
+              <Mapping SourceColumn="pres" DataSetColumn="pres" />
+              <Mapping SourceColumn="time" DataSetColumn="time" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="tololoConnectionString (Settings)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="CantRegistros" Modifier="Public" Name="CantRegistros" QueryType="Scalar" ScalarCallRetval="System.Int64, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy" UserSourceName="CantRegistros">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT count(*) FROM `weather`</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="tololoConnectionString (Settings)" DbObjectName="" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillBy" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetDataByMostRecent" GeneratorSourceName="FillBy" GetMethodModifier="Public" GetMethodName="GetDataByMostRecent" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataByMostRecent" UserSourceName="FillBy">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT * FROM weather w ORDER BY time desc LIMIT 1</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="tololoConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT * FROM `Weather_Data`</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ut" DataSetColumn="ut" />
+              <Mapping SourceColumn="parameter" DataSetColumn="parameter" />
+              <Mapping SourceColumn="value" DataSetColumn="value" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="tololoDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="tololoDataSet" msprop:Generator_DataSetName="tololoDataSet" msprop:EnableTableAdapterManager="True">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTableWeather" msprop:Generator_UserTableName="DataTableWeather" msprop:Generator_RowDeletedName="DataTableWeatherRowDeleted" msprop:Generator_TableClassName="DataTableWeatherDataTable" msprop:Generator_RowChangedName="DataTableWeatherRowChanged" msprop:Generator_RowClassName="DataTableWeatherRow" msprop:Generator_RowChangingName="DataTableWeatherRowChanging" msprop:Generator_RowEvArgName="DataTableWeatherRowChangeEvent" msprop:Generator_RowEvHandlerName="DataTableWeatherRowChangeEventHandler" msprop:Generator_TablePropName="DataTableWeather" msprop:Generator_TableVarName="tableDataTableWeather" msprop:Generator_RowDeletingName="DataTableWeatherRowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="wspeed" msprop:Generator_UserColumnName="wspeed" msprop:Generator_ColumnPropNameInRow="wspeed" msprop:Generator_ColumnVarNameInTable="columnwspeed" msprop:Generator_ColumnPropNameInTable="wspeedColumn" type="xs:float" minOccurs="0" />
+              <xs:element name="wdir" msprop:Generator_UserColumnName="wdir" msprop:Generator_ColumnPropNameInRow="wdir" msprop:Generator_ColumnVarNameInTable="columnwdir" msprop:Generator_ColumnPropNameInTable="wdirColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="temp" msprop:Generator_UserColumnName="temp" msprop:Generator_ColumnPropNameInRow="temp" msprop:Generator_ColumnVarNameInTable="columntemp" msprop:Generator_ColumnPropNameInTable="tempColumn" type="xs:float" minOccurs="0" />
+              <xs:element name="hum" msprop:Generator_UserColumnName="hum" msprop:Generator_ColumnPropNameInRow="hum" msprop:Generator_ColumnVarNameInTable="columnhum" msprop:Generator_ColumnPropNameInTable="humColumn" type="xs:long" minOccurs="0" />
+              <xs:element name="pres" msprop:Generator_UserColumnName="pres" msprop:Generator_ColumnPropNameInRow="pres" msprop:Generator_ColumnVarNameInTable="columnpres" msprop:Generator_ColumnPropNameInTable="presColumn" type="xs:long" minOccurs="0" />
+              <xs:element name="time" msprop:Generator_UserColumnName="time" msprop:Generator_ColumnPropNameInRow="time" msprop:Generator_ColumnVarNameInTable="columntime" msprop:Generator_ColumnPropNameInTable="timeColumn" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable1" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_TablePropName="DataTable1" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ut" msprop:Generator_UserColumnName="ut" msprop:Generator_ColumnPropNameInRow="ut" msprop:Generator_ColumnVarNameInTable="columnut" msprop:Generator_ColumnPropNameInTable="utColumn" type="xs:dateTime" />
+              <xs:element name="parameter" msprop:Generator_UserColumnName="parameter" msprop:Generator_ColumnPropNameInRow="parameter" msprop:Generator_ColumnVarNameInTable="columnparameter" msprop:Generator_ColumnPropNameInTable="parameterColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="value" msprop:Generator_UserColumnName="value" msprop:Generator_ColumnPropNameInRow="value" msprop:Generator_ColumnVarNameInTable="columnvalue" msprop:Generator_ColumnPropNameInTable="valueColumn" type="xs:float" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTableWeather" />
+      <xs:field xpath="mstns:time" />
+    </xs:unique>
+    <xs:unique name="DataTable1_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:ut" />
+      <xs:field xpath="mstns:parameter" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

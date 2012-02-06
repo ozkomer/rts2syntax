@@ -87,7 +87,7 @@ namespace ASCOM.Meteo02
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(180, 24);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Orbit6    Weather";
+            this.label2.Text = "Orbit7    Weather";
             // 
             // SetupDialogForm
             // 
