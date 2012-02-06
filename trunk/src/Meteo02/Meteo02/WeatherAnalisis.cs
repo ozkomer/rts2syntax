@@ -52,6 +52,7 @@ namespace ASCOM.Meteo02
 
         private void timerUnsafe_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            logger.Info("desActivando  timerUnsafe.");
             this.timerUnsafe.Stop();
         }        
 
@@ -76,11 +77,15 @@ namespace ASCOM.Meteo02
                 //Consideraiones para la humedad relativa
                 if (this.ultimo.RelativeHumidity > settings.maxHumidity)
                 {
+                    logger.Info("unsafe, razon:RelativeHumidity="+this.ultimo.RelativeHumidity+" > "+settings.maxHumidity);
                     safe = false;
                 }
                 //Consideraiones para el viento
-                if (this.getAverageWindSpeed() > settings.maxWindSpeed_inKnots)
+                double averageWS;
+                averageWS = this.getAverageWindSpeed();
+                if (averageWS > settings.maxWindSpeed_inKnots)
                 {
+                    logger.Info("unsafe, razon:AverageWindSpeed="+averageWS+" > "+settings.maxWindSpeed_inKnots);
                     safe = false;
                 }
                 //Consideraiones para el dewPoint
@@ -88,6 +93,8 @@ namespace ASCOM.Meteo02
                 deltaTemp = this.ultimo.AmbientTemperature - this.ultimo.DewPoint;
                 if ( deltaTemp < settings.minDewPointDelta)
                 {
+
+                    logger.Info("unsafe, razon:DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
                     safe = false;
                 }
 
@@ -97,6 +104,7 @@ namespace ASCOM.Meteo02
                 // pase lo que pase.
                 if (!safe)
                 {
+                    logger.Info("activando  timerUnsafe.");
                     this.timerUnsafe.Start();
                 }
             }
@@ -107,6 +115,8 @@ namespace ASCOM.Meteo02
         {
             double suma;
             suma = 0;
+            logger.Info("Calculando AverageWindSpeed.");
+
             foreach (WeatherRow registro in this)
             {
                 suma += registro.WindSpeed;
@@ -125,11 +135,11 @@ namespace ASCOM.Meteo02
             //if (ultimo is earlier than nuevo)
             if ((ultimo == null) || (ultimo.FechaHora.CompareTo(nuevo.FechaHora) < 0))
             {
+                logger.Info("Insertando nuevo registro. registro="+nuevo);
                 this.Enqueue(nuevo);
                 this.ultimo = nuevo;
                 this.aseguraMediaHora();
             }
-
         }
 
         /// <summary>
@@ -166,8 +176,6 @@ namespace ASCOM.Meteo02
         {
             get { return this.ultimo; }
         }
-
-
 
     }
 }

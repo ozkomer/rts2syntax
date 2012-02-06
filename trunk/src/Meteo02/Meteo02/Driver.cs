@@ -161,7 +161,7 @@ namespace ASCOM.Meteo02
         /// </summary>
         void LeerUltimoRegistro()
         {
-
+            logger.Info("Start");
             tololoDataSet.DataTableWeatherDataTable dtWeatherDT;
             tololoDataSet.DataTableWeatherRow registro;
             if (weather_Analisis.Count == 0)
@@ -193,6 +193,7 @@ namespace ASCOM.Meteo02
                     weather_Analisis.insertar(nuevo);
                 }
             }
+            logger.Info("End");
         }
 
         public WeatherAnalisis Weather_Analisis
