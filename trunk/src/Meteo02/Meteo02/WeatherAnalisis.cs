@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using log4net;
 
 namespace ASCOM.Meteo02
 {
@@ -14,6 +15,8 @@ namespace ASCOM.Meteo02
     /// y el Time-Span completo supera la media hora.    /// </summary>
     public class WeatherAnalisis : Queue<WeatherRow>
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(WeatherRow));
+
         /// <summary>
         /// Ultimo registro ingresado.
         /// </summary>
@@ -22,7 +25,7 @@ namespace ASCOM.Meteo02
         /// <summary>
         /// Utilizado por el timerUnsafe
         /// </summary>
-        public const double _30Minutes_inMilliseconds = 1800000;
+        public static readonly double _30Minutes_inMilliseconds = 1800000;
 
         /// <summary>
         /// Mientras este timer esta activo, el estado retornado siempre será UNSAFE.
@@ -147,7 +150,7 @@ namespace ASCOM.Meteo02
                 if (primero.FechaHora.CompareTo(haceMediaHora)<0)
                 {
                     primero = this.Dequeue();
-                    Console.WriteLine("registro eliminado:" + primero);
+                    logger.Debug("registro eliminado:" + primero);                    
                 }
                 else
                 {

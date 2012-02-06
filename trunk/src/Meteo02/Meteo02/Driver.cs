@@ -23,12 +23,12 @@
 // --------------------------------------------------------------------------------
 //
 using System;
-using System.Collections;
 using System.Runtime.InteropServices;
-using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
-using System.Globalization;
 using ASCOM.Meteo02.tololoDataSetTableAdapters;
+using log4net.Config;
+using System.IO;
+using log4net;
 
 namespace ASCOM.Meteo02
 {
@@ -44,6 +44,7 @@ namespace ASCOM.Meteo02
     [ComVisible(true)]
     public class SafetyMonitor //: ISafetyMonitor, IDisposable
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(SafetyMonitor));
         #region Constants
         //
         // Driver ID and descriptive string that shows in the Chooser
@@ -91,10 +92,12 @@ namespace ASCOM.Meteo02
 
         public void SetupDialog()
         {
+            logger.Info("Start");
             using (var f = new SetupDialogForm())
             {
                 f.ShowDialog();
             }
+            logger.Info("End");
         }
         #endregion
 
@@ -129,19 +132,22 @@ namespace ASCOM.Meteo02
         /// Objeto con la tabla de datos meteorologicos
         /// </summary>
         private DataTableWeatherTableAdapter dtWeatheTa;
-        
+
         #endregion
         public SafetyMonitor()
-        {            
+        {
+            //XmlConfigurator.Configure();
+            logger.Info("Meteorologic monitor:Constructor Start");
             dtWeatheTa = new DataTableWeatherTableAdapter();
             weather_Analisis = new WeatherAnalisis();
 
-            this.conectado = (dtWeatheTa != null); 
+            this.conectado = (dtWeatheTa != null);
             this.LeerUltimoRegistro();
             timerLeer = new System.Timers.Timer();
             timerLeer.Interval = 30000;
-            timerLeer.Elapsed+=new System.Timers.ElapsedEventHandler(timerLeer_Elapsed);
+            timerLeer.Elapsed += new System.Timers.ElapsedEventHandler(timerLeer_Elapsed);
             timerLeer.Start();
+            logger.Info("Meteorologic monitor:Constructor End");
         }
 
         void timerLeer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -149,7 +155,10 @@ namespace ASCOM.Meteo02
             this.LeerUltimoRegistro();
         }
 
-        
+        /// <summary>
+        /// Si es la primera vez que se leen registros, se leen los 40 últmos.
+        /// En regimen, se lee un solo registro.
+        /// </summary>
         void LeerUltimoRegistro()
         {
 
@@ -167,7 +176,10 @@ namespace ASCOM.Meteo02
                     tololoDataSet.DataTableWeatherRow nuevoRow;
                     nuevoRow = (tololoDataSet.DataTableWeatherRow)dtWeatherDT.Rows[i];
                     nuevo = new WeatherRow(nuevoRow);
-                    weather_Analisis.insertar(nuevo);
+                    if (!nuevo.HasErrors)
+                    {
+                        weather_Analisis.insertar(nuevo);
+                    }
                 }
             }
             else
@@ -176,7 +188,10 @@ namespace ASCOM.Meteo02
                 dtWeatherDT = dtWeatheTa.GetDataByMostRecent();
                 registro = (tololoDataSet.DataTableWeatherRow)dtWeatherDT.Rows[0];
                 nuevo = new WeatherRow(registro);
-                weather_Analisis.insertar(nuevo);
+                if (!nuevo.HasErrors)
+                {
+                    weather_Analisis.insertar(nuevo);
+                }
             }
         }
 
@@ -210,7 +225,7 @@ namespace ASCOM.Meteo02
         //    get { return true; }
         //}
 
-        
+
         public float BarometricPressure
         {
             get { return this.weather_Analisis.Ultimo.BarometricPressure; }

@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ASCOM.Meteo02;
+using log4net.Config;
+using log4net;
 
 namespace MeteoChase500DriverTestAplication
 {
     public partial class Form1 : Form
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
         /// <summary>
         /// El driver que se esta testeando
         /// </summary>
@@ -19,6 +22,7 @@ namespace MeteoChase500DriverTestAplication
 
         public Form1()
         {
+            XmlConfigurator.Configure();
             InitializeComponent();
             this.labelMaxHumidity.Text = "Max Hum = " + WeatherAnalisis.MaxHumidity;
             this.labelMaxWindSpeed.Text = "Max Wind Speed = " + WeatherAnalisis.MaxWindSpeed_inKnots;

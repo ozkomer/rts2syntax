@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+using log4net;
 
 namespace ASCOM.Meteo02
 {
@@ -12,6 +14,7 @@ namespace ASCOM.Meteo02
     /// </summary>
     public class WeatherRow
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(WeatherRow));
         /*  Constantes para el calculo del DewPoint
          * http://www.paroscientific.com/dewpoint.htm
         with      a = 17.27  	
@@ -56,17 +59,78 @@ namespace ASCOM.Meteo02
         /// Velocidad es un vector (rapidez + direccion)
         /// </summary>
         private float windSpeed;
+
+        private Boolean hasErrors;
         #endregion
 
 
         public WeatherRow(tololoDataSet.DataTableWeatherRow registro)
         {
+
+            if (
+                 (registro.HasErrors) ||
+
+                 (registro.IspresNull()) ||
+                 (registro.IstempNull()) ||
+                 (registro.IshumNull()) ||
+                 (registro.IswdirNull()) ||
+                 (registro.IswspeedNull())
+                )
+            {
+                this.hasErrors = true;
+                logger.Error("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
+                //Console.WriteLine("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
+                return;
+            }
+            this.hasErrors = false;
+
+
             this.fechaHora = registro.time;
-            this.relativeHumidity = ((registro.hum / 100.0f)); // to percentage
-            this.ambientTemperature = registro.temp;
-            this.barometricPressure = registro.pres;
-            this.windSpeed = (registro.wspeed * 0.868976242f); // mph to knots
-            this.windDirection = registro.wdir; //Check if directions match. (between ctio database and what ACP is expecting.
+
+            try
+            {
+                this.relativeHumidity = ((registro.hum / 100.0f)); // to percentage
+            }
+            catch (StrongTypingException ex)
+            {
+                Console.WriteLine("Nuevo registro tiene humedad=null messaje=" + ex.Message);
+            }
+
+            try
+            {
+                this.ambientTemperature = registro.temp;
+            }
+            catch (StrongTypingException ex)
+            {
+                Console.WriteLine("Nuevo registro tiene temp=null messaje=" + ex.Message);
+            }
+
+            try
+            {
+                this.barometricPressure = registro.pres;
+            }
+            catch (StrongTypingException ex)
+            {
+                Console.WriteLine("Nuevo registro tiene barometricPressure=null messaje=" + ex.Message);
+            }
+
+            try
+            {
+                this.windSpeed = (registro.wspeed * 0.868976242f); // mph to knots
+            }
+            catch (StrongTypingException ex)
+            {
+                Console.WriteLine("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
+            }
+
+            try
+            {
+                this.windDirection = registro.wdir; //Check if directions match. (between ctio database and what ACP is expecting.
+            }
+            catch (StrongTypingException ex)
+            {
+                Console.WriteLine("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
+            }
             this.refreshDewPoint();
         }
 
@@ -80,7 +144,7 @@ namespace ASCOM.Meteo02
         /// RH is the measured relative humidity
         /// and Td  is the calculated dew point temperature [°C]
         /// </summary>
-        private void refreshDewPoint ()
+        private void refreshDewPoint()
         {
             double alphaT_RH;
             alphaT_RH = ((aa * this.ambientTemperature) / (bb + this.ambientTemperature)) + Math.Log(this.relativeHumidity);
@@ -104,11 +168,22 @@ namespace ASCOM.Meteo02
 
         #region Propiedades
 
+        /// <summary>
+        /// Indica si el constructor de esta instancia detecto algun error.
+        /// </summary>
+        public Boolean HasErrors
+        {
+            get { return this.hasErrors; }
+            set { this.hasErrors = value; }
+        }
+
         public DateTime FechaHora
         {
             get { return this.fechaHora; }
             set { this.fechaHora = value; }
         }
+
+
 
         /// <summary>
         /// Humedad Relativa
