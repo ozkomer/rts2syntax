@@ -113,9 +113,9 @@
             this.labelDewPoint.AutoSize = true;
             this.labelDewPoint.Location = new System.Drawing.Point(409, 46);
             this.labelDewPoint.Name = "labelDewPoint";
-            this.labelDewPoint.Size = new System.Drawing.Size(200, 13);
+            this.labelDewPoint.Size = new System.Drawing.Size(218, 13);
             this.labelDewPoint.TabIndex = 6;
-            this.labelDewPoint.Text = "Dew Point................................................";
+            this.labelDewPoint.Text = "Dew Point......................................................";
             this.labelDewPoint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // listBoxRegistros

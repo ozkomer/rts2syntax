@@ -23,16 +23,16 @@ namespace MeteoChase500DriverTestAplication
         public Form1()
         {
             XmlConfigurator.Configure();
+            logger.Info("Start");
             InitializeComponent();
-            this.labelMaxHumidity.Text = "Max Hum = " + WeatherAnalisis.MaxHumidity;
+            this.labelMaxHumidity.Text = "Max Hum = " + (WeatherAnalisis.MaxHumidity * 100)+" %";
             this.labelMaxWindSpeed.Text = "Max Wind Speed = " + WeatherAnalisis.MaxWindSpeed_inKnots;
             this.labelMinDewPoint.Text = "Min Dew Point Delta = " + WeatherAnalisis.MinDewPointDelta;
 
             sm = new SafetyMonitor();
             this.timerRefresh.Start();
-            //sm.TimerLeer.Elapsed += new System.Timers.ElapsedEventHandler(TimerLeer_Elapsed);
             this.refresh();
-
+            logger.Info("Start");
         }
 
         void refresh()
@@ -47,7 +47,7 @@ namespace MeteoChase500DriverTestAplication
             }
 
             this.labelDateTime.Text = "FechaHora = " + sm.FechaHora;
-            this.labelHumidity.Text = "Humidity = " + sm.RelativeHumidity +"%";
+            this.labelHumidity.Text = "Humidity = " + (sm.RelativeHumidity * 100) +"%";
             this.labelPressure.Text = "Pressure = " + sm.BarometricPressure + " [mBar]";
             this.labelTemperature.Text = "Temperature = " + sm.AmbientTemperature + " [ºC]";
 
