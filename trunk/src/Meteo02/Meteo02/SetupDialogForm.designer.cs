@@ -105,7 +105,7 @@ namespace ASCOM.Meteo02
             this.Name = "SetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Meteo02 Setup";
+            this.Text = "Chase 500 Meteorology";
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
