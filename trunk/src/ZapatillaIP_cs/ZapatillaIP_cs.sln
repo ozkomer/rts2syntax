@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZapatillaIP_cs", "ZapatillaIP_cs\ZapatillaIP_cs.csproj", "{9C7F497E-6B8D-4DEC-9B6B-250904EB4F85}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupPdu", "SetupPdu\SetupPdu.vdproj", "{22A9D814-7633-42CE-B933-72B748EE9544}"
