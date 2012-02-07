@@ -39,5 +39,12 @@ namespace ASCOM.Meteo02
                 MessageBox.Show(other.Message);
             }
         }
+
+        private void SetupDialogForm_Load(object sender, EventArgs e)
+        {
+            this.textBoxMaxHumidity.Text = ""+Properties.Settings.Default.maxHumidity;
+            this.textBoxMaxWindSpeed.Text = "" + Properties.Settings.Default.maxWindSpeed_inKnots;
+            this.textBoxMinDewPoint.Text = "" + (100 * Properties.Settings.Default.minDewPointDelta);
+        }
     }
 }

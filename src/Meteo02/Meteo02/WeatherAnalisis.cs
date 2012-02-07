@@ -20,7 +20,13 @@ namespace ASCOM.Meteo02
         /// <summary>
         /// Ultimo registro ingresado.
         /// </summary>
-        private WeatherRow ultimo;        
+        private WeatherRow ultimo;
+
+        /// <summary>
+        /// Velociad promedio del viento almacenado en esta estructura
+        /// </summary>
+        private double averageWindSpeed;
+
 
         /// <summary>
         /// Utilizado por el timerUnsafe
@@ -48,13 +54,14 @@ namespace ASCOM.Meteo02
             ultimo = null;
             timerUnsafe = new System.Timers.Timer(_30Minutes_inMilliseconds);
             timerUnsafe.Elapsed += new System.Timers.ElapsedEventHandler(timerUnsafe_Elapsed);
+            this.averageWindSpeed = 0;
         }
 
         private void timerUnsafe_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             logger.Info("desActivando  timerUnsafe.");
             this.timerUnsafe.Stop();
-        }        
+        }
 
         /// <summary>
         /// Determina a partir de toda la informacion contenida en esta estructura,
@@ -77,21 +84,21 @@ namespace ASCOM.Meteo02
                 //Consideraiones para la humedad relativa
                 if (this.ultimo.RelativeHumidity > settings.maxHumidity)
                 {
-                    logger.Info("unsafe, razon:RelativeHumidity="+this.ultimo.RelativeHumidity+" > "+settings.maxHumidity);
+                    logger.Info("unsafe, razon:RelativeHumidity=" + this.ultimo.RelativeHumidity + " > " + settings.maxHumidity);
                     safe = false;
                 }
                 //Consideraiones para el viento
-                double averageWS;
-                averageWS = this.getAverageWindSpeed();
-                if (averageWS > settings.maxWindSpeed_inKnots)
+                //double averageWS;
+                this.refreshAverageWindSpeed();
+                if (this.averageWindSpeed > settings.maxWindSpeed_inKnots)
                 {
-                    logger.Info("unsafe, razon:AverageWindSpeed="+averageWS+" > "+settings.maxWindSpeed_inKnots);
+                    logger.Info("unsafe, razon:AverageWindSpeed=" + this.averageWindSpeed + " > " + settings.maxWindSpeed_inKnots);
                     safe = false;
                 }
                 //Consideraiones para el dewPoint
                 float deltaTemp; //Diferencia entre tenperaturaAmviente y Temperatura de Rocio
                 deltaTemp = this.ultimo.AmbientTemperature - this.ultimo.DewPoint;
-                if ( deltaTemp < settings.minDewPointDelta)
+                if (deltaTemp < settings.minDewPointDelta)
                 {
 
                     logger.Info("unsafe, razon:DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
@@ -111,7 +118,7 @@ namespace ASCOM.Meteo02
             return safe;
         }
 
-        private double getAverageWindSpeed()
+        private void refreshAverageWindSpeed()
         {
             double suma;
             suma = 0;
@@ -121,7 +128,7 @@ namespace ASCOM.Meteo02
             {
                 suma += registro.WindSpeed;
             }
-            return (suma / ((double)this.Count));
+            averageWindSpeed = (suma / ((double)this.Count));
         }
 
         /// <summary>
@@ -135,7 +142,7 @@ namespace ASCOM.Meteo02
             //if (ultimo is earlier than nuevo)
             if ((ultimo == null) || (ultimo.FechaHora.CompareTo(nuevo.FechaHora) < 0))
             {
-                logger.Info("Insertando nuevo registro. registro="+nuevo);
+                logger.Info("Insertando nuevo registro. registro=" + nuevo);
                 this.Enqueue(nuevo);
                 this.ultimo = nuevo;
                 this.aseguraMediaHora();
@@ -150,17 +157,17 @@ namespace ASCOM.Meteo02
         /// </summary>
         private void aseguraMediaHora()
         {
-            DateTime haceMediaHora;            
+            DateTime haceMediaHora;
             WeatherRow primero;
             haceMediaHora = DateTime.Now.Subtract(mediaHora);
             while (this.Count > 0)
             {
                 primero = this.Peek();
                 // if (primero is earlier than haceMediaHora)
-                if (primero.FechaHora.CompareTo(haceMediaHora)<0)
+                if (primero.FechaHora.CompareTo(haceMediaHora) < 0)
                 {
                     primero = this.Dequeue();
-                    logger.Debug("registro eliminado:" + primero);                    
+                    logger.Debug("registro eliminado:" + primero);
                 }
                 else
                 {
@@ -175,6 +182,11 @@ namespace ASCOM.Meteo02
         public WeatherRow Ultimo
         {
             get { return this.ultimo; }
+        }
+
+        public double AverageWindSpeed
+        {
+            get { return this.averageWindSpeed; }
         }
 
     }

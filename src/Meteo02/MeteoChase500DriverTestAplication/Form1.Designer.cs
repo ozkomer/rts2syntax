@@ -41,9 +41,10 @@
             this.labelMaxHumidity = new System.Windows.Forms.Label();
             this.labelMinDewPoint = new System.Windows.Forms.Label();
             this.labelMaxWindSpeed = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSetup = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.labelAverageWindSpeed = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelHumidity
@@ -59,7 +60,7 @@
             // labelPressure
             // 
             this.labelPressure.AutoSize = true;
-            this.labelPressure.Location = new System.Drawing.Point(197, 17);
+            this.labelPressure.Location = new System.Drawing.Point(226, 22);
             this.labelPressure.Name = "labelPressure";
             this.labelPressure.Size = new System.Drawing.Size(48, 13);
             this.labelPressure.TabIndex = 1;
@@ -77,11 +78,11 @@
             // labelWindSpeed
             // 
             this.labelWindSpeed.AutoSize = true;
-            this.labelWindSpeed.Location = new System.Drawing.Point(381, 75);
+            this.labelWindSpeed.Location = new System.Drawing.Point(226, 75);
             this.labelWindSpeed.Name = "labelWindSpeed";
-            this.labelWindSpeed.Size = new System.Drawing.Size(228, 13);
+            this.labelWindSpeed.Size = new System.Drawing.Size(66, 13);
             this.labelWindSpeed.TabIndex = 3;
-            this.labelWindSpeed.Text = "Wind Speed......................................................";
+            this.labelWindSpeed.Text = "Wind Speed";
             this.labelWindSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelWindDir
@@ -111,7 +112,7 @@
             // labelDewPoint
             // 
             this.labelDewPoint.AutoSize = true;
-            this.labelDewPoint.Location = new System.Drawing.Point(409, 46);
+            this.labelDewPoint.Location = new System.Drawing.Point(365, 46);
             this.labelDewPoint.Name = "labelDewPoint";
             this.labelDewPoint.Size = new System.Drawing.Size(218, 13);
             this.labelDewPoint.TabIndex = 6;
@@ -157,15 +158,15 @@
             this.labelMaxWindSpeed.Text = "Max Wind Speed";
             this.labelMaxWindSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button1
+            // buttonSetup
             // 
-            this.button1.Location = new System.Drawing.Point(368, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
+            this.buttonSetup.Location = new System.Drawing.Point(737, 12);
+            this.buttonSetup.Name = "buttonSetup";
+            this.buttonSetup.Size = new System.Drawing.Size(75, 23);
+            this.buttonSetup.TabIndex = 11;
+            this.buttonSetup.Text = "Setup";
+            this.buttonSetup.UseVisualStyleBackColor = true;
+            this.buttonSetup.Click += new System.EventHandler(this.buttonSetup_Click);
             // 
             // button2
             // 
@@ -187,14 +188,24 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Visible = false;
             // 
+            // labelAverageWindSpeed
+            // 
+            this.labelAverageWindSpeed.AutoSize = true;
+            this.labelAverageWindSpeed.Location = new System.Drawing.Point(374, 75);
+            this.labelAverageWindSpeed.Name = "labelAverageWindSpeed";
+            this.labelAverageWindSpeed.Size = new System.Drawing.Size(109, 13);
+            this.labelAverageWindSpeed.TabIndex = 14;
+            this.labelAverageWindSpeed.Text = "Average Wind Speed";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(824, 565);
+            this.Controls.Add(this.labelAverageWindSpeed);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonSetup);
             this.Controls.Add(this.labelMaxWindSpeed);
             this.Controls.Add(this.labelMinDewPoint);
             this.Controls.Add(this.labelMaxHumidity);
@@ -228,9 +239,10 @@
         private System.Windows.Forms.Label labelMaxHumidity;
         private System.Windows.Forms.Label labelMinDewPoint;
         private System.Windows.Forms.Label labelMaxWindSpeed;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonSetup;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label labelAverageWindSpeed;
     }
 }
 

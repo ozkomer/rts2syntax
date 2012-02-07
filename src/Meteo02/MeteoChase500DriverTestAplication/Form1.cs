@@ -50,7 +50,7 @@ namespace MeteoChase500DriverTestAplication
             this.labelHumidity.Text = "Humidity = " + (sm.RelativeHumidity * 100) +"%";
             this.labelPressure.Text = "Pressure = " + sm.BarometricPressure + " [mBar]";
             this.labelTemperature.Text = "Temperature = " + sm.AmbientTemperature + " [ºC]";
-
+            this.labelAverageWindSpeed.Text = "Average Wind Speed = " + sm.Weather_Analisis.AverageWindSpeed;
             StringBuilder sbDewpoint;
             sbDewpoint = new StringBuilder();
             sbDewpoint.Append("DewPoint=");
@@ -79,6 +79,11 @@ namespace MeteoChase500DriverTestAplication
         {
             Console.WriteLine("timerRefresh_Tick");
             this.refresh();
+        }
+
+        private void buttonSetup_Click(object sender, EventArgs e)
+        {
+            this.sm.SetupDialog();
         }
     }
 }
