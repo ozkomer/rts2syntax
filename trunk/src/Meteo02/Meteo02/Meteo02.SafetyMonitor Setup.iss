@@ -4,7 +4,7 @@
 ;
 [Setup]
 AppName=ASCOM Meteo02.SafetyMonitor Switches Driver
-AppVerName=ASCOM Meteo02.SafetyMonitor Switches Driver 0.7.0
+AppVerName=ASCOM Meteo02.SafetyMonitor Switches Driver 0.8.0
 AppVersion=0.7.0
 AppPublisher=Eduardo Maureira <emaureir@das.uchile.cl>
 AppPublisherURL=mailto:emaureir@das.uchile.cl
@@ -34,6 +34,7 @@ Name: "{cf}\ASCOM\Uninstall\Switches\Meteo02.SafetyMonitor"
 
 [Files]
 Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll"; DestDir: "{app}"
+Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll.config"; DestDir: "{app}"
 ; Require a read-me HTML to appear after installation, maybe driver's Help doc
 Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\LeameMeteo02.htm"; DestDir: "{app}"; Flags: isreadme
 ; TODO: Add other files needed by your driver here (add subfolders above)
