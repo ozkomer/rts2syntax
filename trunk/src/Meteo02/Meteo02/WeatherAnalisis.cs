@@ -27,7 +27,6 @@ namespace ASCOM.Meteo02
         /// </summary>
         private double averageWindSpeed;
 
-
         /// <summary>
         /// Utilizado por el timerUnsafe
         /// </summary>
@@ -40,7 +39,17 @@ namespace ASCOM.Meteo02
         /// </summary>
         private System.Timers.Timer timerUnsafe;
 
-        public static TimeSpan mediaHora = new TimeSpan(0, 30, 0);
+        /// <summary>
+        /// La estructura solo debe albergar datos de hace menos de 30 minutos.
+        /// Aqui es donde se especifica esta cantidad de Tiempo
+        /// </summary>
+        public static readonly TimeSpan mediaHora = new TimeSpan(0, 30, 0);
+
+        /// <summary>
+        /// El último dato recibido debe ser de hace menos de 5 minutos.
+        /// Aqui es donde se especifica esta cantidad de Tiempo
+        /// </summary>
+        public static readonly TimeSpan cincoMinutos = new TimeSpan(0,5,0);
 
         private static Properties.Settings settings = Properties.Settings.Default;
 
@@ -105,7 +114,14 @@ namespace ASCOM.Meteo02
                     safe = false;
                 }
 
-                // Si alguna de las consideraciones nos lleva a un flanco de bajada.
+                //Consideraciones para asegurar datos de hace menos de 5 minutos
+                if (!this.safeCincoMinutos())
+                {
+                    logger.Info("unsafe, razon:Ultimo dato es de hace mas de 5 minutos; ultimo=" + this.ultimo.ToString());
+                    safe = false;
+                }
+
+                // Si alguna de las consideraciones ANTERIORES nos lleva a un flanco de bajada.
                 // E.D. de safe a unsafe, entonces iniciamos el timer. Y por lo 
                 // Tando durante la siguiente media hora seguiremos en estado unsafe
                 // pase lo que pase.
@@ -159,7 +175,7 @@ namespace ASCOM.Meteo02
         {
             DateTime haceMediaHora;
             WeatherRow primero;
-            haceMediaHora = DateTime.Now.Subtract(mediaHora);
+            haceMediaHora = DateTime.Now.Subtract(WeatherAnalisis.mediaHora);
             while (this.Count > 0)
             {
                 primero = this.Peek();
@@ -174,6 +190,23 @@ namespace ASCOM.Meteo02
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Evalua si el ultimo registro fue recibido hace menos de 5 minutos.
+        /// </summary>
+        /// <returns></returns>
+        private bool safeCincoMinutos()
+        {
+            DateTime haceCincoMinutos;
+            haceCincoMinutos = DateTime.Now.Subtract(WeatherAnalisis.cincoMinutos);
+            // if (ultimo is earlier than haceCincoMinutos)
+            if (this.ultimo.FechaHora.CompareTo(haceCincoMinutos) < 0)
+            {
+                logger.Warn("Ultimo registro es de hace mas de 5 minutos. ultimo="+ultimo.ToString());
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

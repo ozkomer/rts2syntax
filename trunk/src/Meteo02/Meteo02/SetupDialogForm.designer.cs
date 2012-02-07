@@ -82,9 +82,9 @@ namespace ASCOM.Meteo02
             this.label2.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(8, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(262, 24);
+            this.label2.Size = new System.Drawing.Size(278, 24);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Chase 500 CTIO Weather";
+            this.label2.Text = "Chase 500 CTIO Database.";
             // 
             // labelMaxWindSpeed
             // 
@@ -158,7 +158,7 @@ namespace ASCOM.Meteo02
             this.Name = "SetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Chase 500 Meteorology";
+            this.Text = "Chase 500 Weather";
             this.Load += new System.EventHandler(this.SetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             this.ResumeLayout(false);
