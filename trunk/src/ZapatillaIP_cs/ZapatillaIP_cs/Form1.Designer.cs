@@ -31,6 +31,8 @@ namespace ZapatillaIP_cs
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPDU = new System.Windows.Forms.TabPage();
             this.groupBoxRelayArray = new System.Windows.Forms.GroupBox();
+            this.buttonSwitchOff = new System.Windows.Forms.Button();
+            this.buttonSwitchOn = new System.Windows.Forms.Button();
             this.checkBoxRelay16 = new System.Windows.Forms.CheckBox();
             this.checkBoxRelay15 = new System.Windows.Forms.CheckBox();
             this.checkBoxRelay14 = new System.Windows.Forms.CheckBox();
@@ -54,8 +56,6 @@ namespace ZapatillaIP_cs
             this.label2 = new System.Windows.Forms.Label();
             this.tbxHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonSwitchOn = new System.Windows.Forms.Button();
-            this.buttonSwitchOff = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPDU.SuspendLayout();
             this.groupBoxRelayArray.SuspendLayout();
@@ -111,6 +111,26 @@ namespace ZapatillaIP_cs
             this.groupBoxRelayArray.TabIndex = 0;
             this.groupBoxRelayArray.TabStop = false;
             this.groupBoxRelayArray.Text = "16 Relays";
+            // 
+            // buttonSwitchOff
+            // 
+            this.buttonSwitchOff.Location = new System.Drawing.Point(9, 120);
+            this.buttonSwitchOff.Name = "buttonSwitchOff";
+            this.buttonSwitchOff.Size = new System.Drawing.Size(75, 23);
+            this.buttonSwitchOff.TabIndex = 34;
+            this.buttonSwitchOff.Text = "Switch Off";
+            this.buttonSwitchOff.UseVisualStyleBackColor = true;
+            this.buttonSwitchOff.Click += new System.EventHandler(this.buttonSwitchOff_Click);
+            // 
+            // buttonSwitchOn
+            // 
+            this.buttonSwitchOn.Location = new System.Drawing.Point(413, 120);
+            this.buttonSwitchOn.Name = "buttonSwitchOn";
+            this.buttonSwitchOn.Size = new System.Drawing.Size(75, 23);
+            this.buttonSwitchOn.TabIndex = 33;
+            this.buttonSwitchOn.Text = "Switch On";
+            this.buttonSwitchOn.UseVisualStyleBackColor = true;
+            this.buttonSwitchOn.Click += new System.EventHandler(this.buttonSwitchOn_Click);
             // 
             // checkBoxRelay16
             // 
@@ -364,26 +384,6 @@ namespace ZapatillaIP_cs
             this.label1.TabIndex = 0;
             this.label1.Text = "Host";
             // 
-            // buttonSwitchOn
-            // 
-            this.buttonSwitchOn.Location = new System.Drawing.Point(413, 120);
-            this.buttonSwitchOn.Name = "buttonSwitchOn";
-            this.buttonSwitchOn.Size = new System.Drawing.Size(75, 23);
-            this.buttonSwitchOn.TabIndex = 33;
-            this.buttonSwitchOn.Text = "Switch On";
-            this.buttonSwitchOn.UseVisualStyleBackColor = true;
-            this.buttonSwitchOn.Click += new System.EventHandler(this.buttonSwitchOn_Click);
-            // 
-            // buttonSwitchOff
-            // 
-            this.buttonSwitchOff.Location = new System.Drawing.Point(9, 120);
-            this.buttonSwitchOff.Name = "buttonSwitchOff";
-            this.buttonSwitchOff.Size = new System.Drawing.Size(75, 23);
-            this.buttonSwitchOff.TabIndex = 34;
-            this.buttonSwitchOff.Text = "Switch Off";
-            this.buttonSwitchOff.UseVisualStyleBackColor = true;
-            this.buttonSwitchOff.Click += new System.EventHandler(this.buttonSwitchOff_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -393,6 +393,7 @@ namespace ZapatillaIP_cs
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "PDU Temp Compass";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPDU.ResumeLayout(false);
