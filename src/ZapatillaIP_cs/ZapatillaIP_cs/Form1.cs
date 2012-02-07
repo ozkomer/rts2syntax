@@ -220,6 +220,11 @@ namespace ZapatillaIP_cs
             switchRelays(true);
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
  
     }
 }
