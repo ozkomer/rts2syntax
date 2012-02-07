@@ -80,7 +80,7 @@ namespace ASCOM.Meteo02
                 this.hasErrors = true;
                 logger.Error("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
                 //Console.WriteLine("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
-                return;
+                //return;
             }
             this.hasErrors = false;
 
