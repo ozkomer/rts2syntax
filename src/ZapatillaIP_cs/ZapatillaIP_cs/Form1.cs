@@ -8,47 +8,22 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
+using ZxRelay16;
 
 namespace ZapatillaIP_cs
 {
     public partial class Form1 : Form
     {
-        TcpClient tcpclnt;
+
         List<CheckBox> relayCheckBox;
-        Boolean[] relayStatus;
-        byte port0;
-        byte port1;
-        byte[] message;
         static ZapatillaIP_cs.Properties.Settings settings = Properties.Settings.Default;
+        private ArduinoTcp arduinoTcp;
 
         public Form1()
         {
             InitializeComponent();
-            tcpclnt = new TcpClient();
-
-            try
-            {
-                tcpclnt.Connect(settings.ipAddress, (int) settings.port);
-            }
-            catch (SocketException e)
-            {
-                MessageBox.Show(e.Message);
-                //Application.Exit();
-                //this.Close();
-                //return;
-            }
-            
-            Console.WriteLine("Connected");
-
-            relayStatus = new Boolean[16];
-
-
-            message = new byte[4];
-            // Setea todo como energizado pone los botones en Verde
-            // y al mismo tiempo supone que la PDU esta 
-            // energizando todos los equipos.
-            port0 = 0;
-            port1 = 0;
+            this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
+            this.arduinoTcp.Connect();
             relayCheckBox = new List<CheckBox>();
             relayCheckBox.Add(checkBoxRelay1);
             relayCheckBox.Add(checkBoxRelay2);
@@ -73,24 +48,7 @@ namespace ZapatillaIP_cs
 
         private void readRelays()
         {
-            Stream stm;
-            stm = null;
-            if (tcpclnt.Connected)
-            {
-                stm = tcpclnt.GetStream();
-                stm.WriteByte(2);
-                byte p0, p1;
-                p0 = (byte)stm.ReadByte();
-                p1 = (byte)stm.ReadByte();
-                int stat;
-                stat = (p0 + (p1 << 8));
-                Console.WriteLine("p0=" + p0 + "  p1=" + p1 + "  stat=" + stat);
-                for (int i = 0; i < 16; i++)
-                {
-                    relayStatus[i] = ((stat % 2) == 0);
-                    stat /= 2;
-                }
-            }
+            this.arduinoTcp.readRelays();
             this.refreshcheckBoxRelayColors();
         }
 
@@ -100,7 +58,7 @@ namespace ZapatillaIP_cs
             for (int i = 0; i < 16; i++)
             {
                 boton = relayCheckBox[i];
-                if (relayStatus[i])
+                if (this.arduinoTcp.RelayStatus[i])
                 {
                     boton.BackColor = Color.LightGreen;
                 }
@@ -108,7 +66,7 @@ namespace ZapatillaIP_cs
                 {
                     boton.BackColor = Color.Pink;
                 }
-                if (!tcpclnt.Connected)
+                if (!this.arduinoTcp.Tcpclnt.Connected)
                 {
                     boton.Enabled = false;
                 }
@@ -117,35 +75,9 @@ namespace ZapatillaIP_cs
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            tcpclnt.Close();
+            this.arduinoTcp.Tcpclnt.Close();
         }
 
-        private void refreshPorts()
-        {
-            Console.WriteLine("refreshPorts:");
-            port0 = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                if (!relayStatus[i])
-                    port0 = (byte) (port0 | (((byte)1) << ((byte)i)));
-            }
-            port1 = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                if (!relayStatus[i+8])
-                    port1 = (byte)(port1 | (((byte)1) << ((byte)i)));
-            }
-            Console.WriteLine("port0="+port0+"  port1="+port1);
-
-            Stream stm = tcpclnt.GetStream();
-
-            Console.WriteLine("Transmitting.....");
-            message[0] = 1;
-            message[1] = port0;
-            message[2] = port1;
-            message[3] = (byte)(1 + port0 + port1);
-            stm.Write(message,0,4);
-        }
 
         private void buttonReadRelay_Click(object sender, EventArgs e)
         {
@@ -200,13 +132,12 @@ namespace ZapatillaIP_cs
             {
                 foreach (int indice in tickeds)
                 {
-                    Console.WriteLine("relayStatus[" + indice + "]=" + relayStatus[indice] + " ---> " + targetState);
+                    Console.WriteLine("relayStatus[" + indice + "]=" + this.arduinoTcp.RelayStatus[indice] + " ---> " + targetState);
                     relayCheckBox[indice].Checked = false;
-                    relayStatus[indice] = targetState;
-
+                    this.arduinoTcp.RelayStatus[indice] = targetState;
                 }
                 refreshcheckBoxRelayColors();
-                refreshPorts();
+                this.arduinoTcp.refreshPorts();
             }
         }
 
