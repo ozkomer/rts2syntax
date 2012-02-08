@@ -23,7 +23,7 @@ namespace ZapatillaIP_cs
         {
             InitializeComponent();
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
-            this.arduinoTcp.Connect();
+            //this.arduinoTcp.Connect();
             relayCheckBox = new List<CheckBox>();
             relayCheckBox.Add(checkBoxRelay1);
             relayCheckBox.Add(checkBoxRelay2);
@@ -42,8 +42,7 @@ namespace ZapatillaIP_cs
             relayCheckBox.Add(checkBoxRelay15);
             relayCheckBox.Add(checkBoxRelay16);
 
-
-            readRelays();
+            
         }
 
         private void readRelays()
@@ -81,7 +80,7 @@ namespace ZapatillaIP_cs
 
         private void buttonReadRelay_Click(object sender, EventArgs e)
         {
-            readRelays();
+            this.readRelays();
         }
 
         //private void buttonRelay_Click(object sender, EventArgs e)
@@ -154,6 +153,16 @@ namespace ZapatillaIP_cs
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonConnect_Click(object sender, EventArgs e)
+        {
+            this.arduinoTcp.Connect();
+            if (this.arduinoTcp.Tcpclnt.Connected)
+            {
+                this.tabControl1.Visible = true;
+                this.readRelays();
+            }
         }
 
  

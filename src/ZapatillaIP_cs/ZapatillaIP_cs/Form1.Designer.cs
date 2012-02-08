@@ -56,6 +56,7 @@ namespace ZapatillaIP_cs
             this.label2 = new System.Windows.Forms.Label();
             this.tbxHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.buttonConnect = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPDU.SuspendLayout();
             this.groupBoxRelayArray.SuspendLayout();
@@ -72,6 +73,7 @@ namespace ZapatillaIP_cs
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(608, 216);
             this.tabControl1.TabIndex = 1;
+            this.tabControl1.Visible = false;
             // 
             // tabPDU
             // 
@@ -330,13 +332,14 @@ namespace ZapatillaIP_cs
             // 
             // gbNetwork
             // 
+            this.gbNetwork.Controls.Add(this.buttonConnect);
             this.gbNetwork.Controls.Add(this.numericUpDown1);
             this.gbNetwork.Controls.Add(this.label2);
             this.gbNetwork.Controls.Add(this.tbxHost);
             this.gbNetwork.Controls.Add(this.label1);
             this.gbNetwork.Location = new System.Drawing.Point(26, 8);
             this.gbNetwork.Name = "gbNetwork";
-            this.gbNetwork.Size = new System.Drawing.Size(365, 49);
+            this.gbNetwork.Size = new System.Drawing.Size(450, 49);
             this.gbNetwork.TabIndex = 2;
             this.gbNetwork.TabStop = false;
             this.gbNetwork.Text = "Network";
@@ -383,6 +386,16 @@ namespace ZapatillaIP_cs
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Host";
+            // 
+            // buttonConnect
+            // 
+            this.buttonConnect.Location = new System.Drawing.Point(369, 14);
+            this.buttonConnect.Name = "buttonConnect";
+            this.buttonConnect.Size = new System.Drawing.Size(75, 23);
+            this.buttonConnect.TabIndex = 4;
+            this.buttonConnect.Text = "Connect";
+            this.buttonConnect.UseVisualStyleBackColor = true;
+            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
             // Form1
             // 
@@ -436,6 +449,7 @@ namespace ZapatillaIP_cs
         private System.Windows.Forms.CheckBox checkBoxRelay15;
         private System.Windows.Forms.Button buttonSwitchOff;
         private System.Windows.Forms.Button buttonSwitchOn;
+        private System.Windows.Forms.Button buttonConnect;
     }
 }
 

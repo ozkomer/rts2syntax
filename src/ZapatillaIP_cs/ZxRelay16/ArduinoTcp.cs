@@ -7,16 +7,56 @@ using System.IO;
 
 namespace ZxRelay16
 {
+    /// <summary>
+    /// Control de un Arreglo de Reles:
+    /// http://www.inexglobal.com/products.php?type=addon&cat=app_control&model=zxrelay16
+    /// Usando un arduino Mega2560 con modulo ethernet.
+    /// Por lo tanto el control del arreglo de reles es mediante
+    /// comandos de una sesion TCP/IP
+    /// </summary>
     public class ArduinoTcp
     {
-        private TcpClient tcpclnt;
+        /// <summary>
+        /// Cliente que se conecta al modulo Ethernet del arduino
+        /// </summary>
+        private TcpClient tcpCliente;
+
+        /// <summary>
+        /// Status de cada uno de los 16 relays.
+        /// true -> Dispositivo energizado.
+        /// </summary>
         private Boolean[] relayStatus;
+
+        /// <summary>
+        /// Status de los 8 primeros reles.
+        /// </summary>
         private byte port0;
+
+        /// <summary>
+        /// Status de los 8 ultimos reles.
+        /// </summary>
         private byte port1;
+
+        /// <summary>
+        /// Los comandos que entiende el arduino, corresponden
+        /// a secuencias de 4 bytes.
+        /// </summary>
         private byte[] message;
+
+        /// <summary>
+        /// Host del Ethernet Shiel del arduino
+        /// </summary>
         private string host;
+
+        /// <summary>
+        /// Puerto donde el software servidor del arduino espera clientes.
+        /// </summary>
         private int tcpPort;
 
+        /// <summary>
+        /// Status de cada uno de los 16 relays.
+        /// true -> Dispositivo energizado.
+        /// </summary>        
         public Boolean[] RelayStatus
         {
             get { return this.relayStatus; }
@@ -24,7 +64,7 @@ namespace ZxRelay16
 
         public TcpClient Tcpclnt
         {
-            get { return this.tcpclnt; }
+            get { return this.tcpCliente; }
         }
 
         public ArduinoTcp(String host, int tcpPort)
@@ -32,23 +72,16 @@ namespace ZxRelay16
             this.host = host;
             this.tcpPort = tcpPort;
             relayStatus = new Boolean[16];
-
             message = new byte[4];
-            // Setea todo como energizado pone los botones en Verde
-            // y al mismo tiempo supone que la PDU esta 
-            // energizando todos los equipos.
-            //port0 = 0;
-            //port1 = 0;
-
         }
 
         public void readRelays()
         {
             Stream stm;
             stm = null;
-            if (tcpclnt.Connected)
+            if (tcpCliente.Connected)
             {
-                stm = tcpclnt.GetStream();
+                stm = tcpCliente.GetStream();
                 stm.WriteByte(2);
                 byte p0, p1;
                 p0 = (byte)stm.ReadByte();
@@ -81,7 +114,7 @@ namespace ZxRelay16
             }
             Console.WriteLine("port0=" + port0 + "  port1=" + port1);
 
-            Stream stm = tcpclnt.GetStream();
+            Stream stm = tcpCliente.GetStream();
 
             Console.WriteLine("Transmitting.....");
             message[0] = 1;
@@ -93,15 +126,8 @@ namespace ZxRelay16
 
         public void Connect ()
         {
-            tcpclnt = new TcpClient();
-                tcpclnt.Connect(this.host, this.tcpPort);
-
-            Console.WriteLine("Connected");
+            tcpCliente = new TcpClient();
+            tcpCliente.Connect(this.host, this.tcpPort);            
         }
-
-
-        
-
-
     }
 }
