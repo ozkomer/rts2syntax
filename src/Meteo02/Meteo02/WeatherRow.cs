@@ -164,7 +164,7 @@ namespace ASCOM.Meteo02
             respuesta.Append("\t dewPoint="); respuesta.Append(this.dewPoint);
             respuesta.Append("\t Hum="); respuesta.Append(this.relativeHumidity);
             respuesta.Append("\t WindDir="); respuesta.Append(this.windDirection);
-            respuesta.Append("\t Wnd[knots/h]="); respuesta.Append(this.windSpeed);
+            respuesta.Append("\t Wnd[knots]="); respuesta.Append(this.windSpeed);
             return respuesta.ToString();
         }
 

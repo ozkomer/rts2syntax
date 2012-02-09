@@ -205,7 +205,7 @@
             // 
             // toolTipKnotsHora
             // 
-            this.toolTipKnotsHora.ToolTipTitle = "All wind Speeds are in [Knots/hour]";
+            this.toolTipKnotsHora.ToolTipTitle = "All wind Speeds are in [Knots]";
             // 
             // notifyIcon1
             // 
