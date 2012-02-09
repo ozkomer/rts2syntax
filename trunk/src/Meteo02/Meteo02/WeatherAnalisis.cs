@@ -23,7 +23,8 @@ namespace ASCOM.Meteo02
         private WeatherRow ultimo;
 
         /// <summary>
-        /// Velociad promedio del viento almacenado en esta estructura
+        /// Rapidez promedio del viento almacenado en esta estructura.
+        /// expresado en [knots/hora]
         /// </summary>
         private double averageWindSpeed;
 
@@ -134,6 +135,9 @@ namespace ASCOM.Meteo02
             return safe;
         }
 
+        /// <summary>
+        /// Como los valores promediados están en [knots/hora], el resultado tambien.
+        /// </summary>
         private void refreshAverageWindSpeed()
         {
             double suma;

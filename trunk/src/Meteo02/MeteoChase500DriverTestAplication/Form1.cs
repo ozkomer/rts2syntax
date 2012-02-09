@@ -27,7 +27,7 @@ namespace MeteoChase500DriverTestAplication
             InitializeComponent();
             this.labelMaxHumidity.Text = "Max Hum = " + (WeatherAnalisis.MaxHumidity * 100)+" %";
             this.labelMaxWindSpeed.Text = "Max Wind Speed = " + WeatherAnalisis.MaxWindSpeed_inKnots;
-            this.labelMinDewPoint.Text = "Min Dew Point Delta = " + WeatherAnalisis.MinDewPointDelta;
+            this.labelMinDewPoint.Text = "Min Dew Point Delta = " + WeatherAnalisis.MinDewPointDelta + " [ºC]";
 
             sm = new SafetyMonitor();
             this.timerRefresh.Start();
@@ -61,7 +61,7 @@ namespace MeteoChase500DriverTestAplication
             this.labelDewPoint.Text = sbDewpoint.ToString();
 
             this.labelWindDir.Text = "Wind Direction = " + sm.WindDirection+" [0=east, 90=North]";
-            this.labelWindSpeed.Text = "Wind Speed = " + sm.WindVelocity+" [mph]";
+            this.labelWindSpeed.Text = "Wind Speed = " + sm.WindVelocity;
 
             this.listBoxRegistros.Items.Clear();
             foreach (WeatherRow wr in this.sm.Weather_Analisis.Reverse())

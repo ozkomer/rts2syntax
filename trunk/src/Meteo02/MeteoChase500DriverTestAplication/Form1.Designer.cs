@@ -45,6 +45,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.labelAverageWindSpeed = new System.Windows.Forms.Label();
+            this.toolTipKnotsHora = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // labelHumidity
@@ -84,6 +85,7 @@
             this.labelWindSpeed.TabIndex = 3;
             this.labelWindSpeed.Text = "Wind Speed";
             this.labelWindSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTipKnotsHora.SetToolTip(this.labelWindSpeed, "Aplies for Speed, Average, and Max");
             // 
             // labelWindDir
             // 
@@ -125,7 +127,7 @@
             this.listBoxRegistros.Location = new System.Drawing.Point(7, 119);
             this.listBoxRegistros.Name = "listBoxRegistros";
             this.listBoxRegistros.ScrollAlwaysVisible = true;
-            this.listBoxRegistros.Size = new System.Drawing.Size(808, 433);
+            this.listBoxRegistros.Size = new System.Drawing.Size(841, 433);
             this.listBoxRegistros.TabIndex = 7;
             // 
             // labelMaxHumidity
@@ -157,6 +159,7 @@
             this.labelMaxWindSpeed.TabIndex = 10;
             this.labelMaxWindSpeed.Text = "Max Wind Speed";
             this.labelMaxWindSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTipKnotsHora.SetToolTip(this.labelMaxWindSpeed, "Aplies for Speed, Average, and Max");
             // 
             // buttonSetup
             // 
@@ -196,12 +199,17 @@
             this.labelAverageWindSpeed.Size = new System.Drawing.Size(109, 13);
             this.labelAverageWindSpeed.TabIndex = 14;
             this.labelAverageWindSpeed.Text = "Average Wind Speed";
+            this.toolTipKnotsHora.SetToolTip(this.labelAverageWindSpeed, "Aplies for Speed, Average, and Max");
+            // 
+            // toolTipKnotsHora
+            // 
+            this.toolTipKnotsHora.ToolTipTitle = "All wind Speeds are in [Knots/hour]";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 565);
+            this.ClientSize = new System.Drawing.Size(860, 565);
             this.Controls.Add(this.labelAverageWindSpeed);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -243,6 +251,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label labelAverageWindSpeed;
+        private System.Windows.Forms.ToolTip toolTipKnotsHora;
     }
 }
 

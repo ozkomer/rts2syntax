@@ -63,7 +63,10 @@ namespace ASCOM.Meteo02
         private Boolean hasErrors;
         #endregion
 
-
+        /// <summary>
+        /// La rapidez del viento lo convierte de (millas por hora) a (knots/hora)
+        /// </summary>
+        /// <param name="registro"></param>
         public WeatherRow(tololoDataSet.DataTableWeatherRow registro)
         {
 
@@ -160,8 +163,8 @@ namespace ASCOM.Meteo02
             respuesta.Append("\t Press="); respuesta.Append(this.barometricPressure);
             respuesta.Append("\t dewPoint="); respuesta.Append(this.dewPoint);
             respuesta.Append("\t Hum="); respuesta.Append(this.relativeHumidity);
-            respuesta.Append("\t windDir="); respuesta.Append(this.windDirection);
-            respuesta.Append("\t windSpeed="); respuesta.Append(this.windSpeed);
+            respuesta.Append("\t WindDir="); respuesta.Append(this.windDirection);
+            respuesta.Append("\t Wnd[knots/h]="); respuesta.Append(this.windSpeed);
             return respuesta.ToString();
         }
 
@@ -233,6 +236,7 @@ namespace ASCOM.Meteo02
         /// <summary>
         /// Rapidez del viento. 
         /// Velocidad es un vector (rapidez + direccion)
+        /// este valor está en knots/hora
         /// </summary>
         public float WindSpeed
         {
