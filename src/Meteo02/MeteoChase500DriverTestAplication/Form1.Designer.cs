@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.labelHumidity = new System.Windows.Forms.Label();
             this.labelPressure = new System.Windows.Forms.Label();
             this.labelTemperature = new System.Windows.Forms.Label();
@@ -46,6 +47,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.labelAverageWindSpeed = new System.Windows.Forms.Label();
             this.toolTipKnotsHora = new System.Windows.Forms.ToolTip(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // labelHumidity
@@ -205,6 +207,13 @@
             // 
             this.toolTipKnotsHora.ToolTipTitle = "All wind Speeds are in [Knots/hour]";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Chase500 Meteorology Analisis.";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,9 +234,12 @@
             this.Controls.Add(this.labelTemperature);
             this.Controls.Add(this.labelPressure);
             this.Controls.Add(this.labelHumidity);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.ShowInTaskbar = false;
             this.Text = "CTIO Environmental";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,6 +264,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label labelAverageWindSpeed;
         private System.Windows.Forms.ToolTip toolTipKnotsHora;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
