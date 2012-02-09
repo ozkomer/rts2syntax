@@ -15,6 +15,36 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0FECFC35BAF9769EAB7F32CC2D19032B"
+        "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0FECFC35BAF9769EAB7F32CC2D19032B"
+        "OwnerKey" = "8:_8553A63FF4D540FDB08F222A4F0C7857"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_54FA9EC06EF7584FD22F341209D227A9"
+        "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_77065E2B43A347B99E99AF4D8D38FD77"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8553A63FF4D540FDB08F222A4F0C7857"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -23,6 +53,24 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8553A63FF4D540FDB08F222A4F0C7857"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0FECFC35BAF9769EAB7F32CC2D19032B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_54FA9EC06EF7584FD22F341209D227A9"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -110,6 +158,88 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0FECFC35BAF9769EAB7F32CC2D19032B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ZxRelay16, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0FECFC35BAF9769EAB7F32CC2D19032B"
+                    {
+                    "Name" = "8:ZxRelay16.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ZxRelay16.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_54FA9EC06EF7584FD22F341209D227A9"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Serduino, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_54FA9EC06EF7584FD22F341209D227A9"
+                    {
+                    "Name" = "8:Serduino.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Serduino.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_77065E2B43A347B99E99AF4D8D38FD77"
+            {
+            "SourcePath" = "8:..\\ZapatillaIP_cs\\Resources\\Switch.ico"
+            "TargetName" = "8:Switch.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -150,7 +280,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_29FA7C45088B42159F84998F4D3C4C2A"
                     {
-                    "Name" = "8:orbit"
+                    "Name" = "8:Orbit"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -171,13 +301,14 @@
         "MsiBootstrapper"
         {
         "LangId" = "3:1033"
+        "RequiresElevation" = "11:FALSE"
         }
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:SetupPdu"
+        "ProductName" = "8:Frigobar_LimitSwitches"
         "ProductCode" = "8:{1DB1B735-81B2-4656-8938-FE4097414734}"
-        "PackageCode" = "8:{A48BC633-312D-4A04-AE6C-FADCC084BE28}"
+        "PackageCode" = "8:{E89CD5D1-7D2D-4335-ADBA-F1ECCC019593}"
         "UpgradeCode" = "8:{7D8C1628-2661-40FF-BED8-CD5C2A76D991}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -305,6 +436,20 @@
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_8553A63FF4D540FDB08F222A4F0C7857"
+            "Folder" = "8:_29FA7C45088B42159F84998F4D3C4C2A"
+            "WorkingFolder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Icon" = "8:_77065E2B43A347B99E99AF4D8D38FD77"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D1A819B05BFC47B890D5A49BEC5C2E5A"
+            {
+            "Name" = "8:Montura Limits"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
             "Folder" = "8:_29FA7C45088B42159F84998F4D3C4C2A"
             "WorkingFolder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
             "Icon" = "8:"
@@ -709,6 +854,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_71F6740DE75A4F959C80332C8FDA0E03"
+            {
+            "SourcePath" = "8:..\\Montura\\obj\\Release\\Montura.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{FCCD8881-1CEA-44A0-8222-8FA2AD0B30E9}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8553A63FF4D540FDB08F222A4F0C7857"
             {
             "SourcePath" = "8:..\\ZapatillaIP_cs\\obj\\Release\\ZapatillaIP_cs.exe"
@@ -737,9 +910,6 @@
                 {
                 }
             }
-        }
-        "VJSharpPlugin"
-        {
         }
     }
 }

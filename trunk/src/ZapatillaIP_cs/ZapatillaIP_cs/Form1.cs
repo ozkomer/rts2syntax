@@ -74,7 +74,10 @@ namespace ZapatillaIP_cs
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.arduinoTcp.Tcpclnt.Close();
+            if (this.arduinoTcp.Tcpclnt.Connected)
+            {
+                this.arduinoTcp.Tcpclnt.Close();
+            }
         }
 
 
