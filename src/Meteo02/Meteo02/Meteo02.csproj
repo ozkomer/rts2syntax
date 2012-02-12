@@ -172,6 +172,8 @@
     <Content Include="LeameMeteo02.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Stop-Normal-Red-icon.png" />
+    <None Include="Resources\Play-1-Normal-icon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

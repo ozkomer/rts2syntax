@@ -160,8 +160,7 @@ namespace Montura
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+            this.MostrarVentana();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -170,6 +169,65 @@ namespace Montura
             {
                 this.Hide();
             }
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ConfirmarClose();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.ApplicationExitCall)
+            {
+                return;
+            }
+            DialogResult respuesta;
+            respuesta = this.ConfirmarClose();
+            if (respuesta == DialogResult.No)
+            {
+                
+                e.Cancel = true;
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private DialogResult ConfirmarClose()
+        {
+            DialogResult respuesta;
+            respuesta = MessageBox.Show("Closing application. Continue?", "Accelerometers Airbag", MessageBoxButtons.YesNo);
+            if (respuesta == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            return respuesta;
+        }
+
+        /// <summary>
+        /// Muestra la ventana de esta aplicacion.
+        /// </summary>
+        private void MostrarVentana()
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.BringToFront();
+        }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.MostrarVentana();
         }
     }
 }
