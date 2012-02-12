@@ -393,6 +393,7 @@ namespace ZapatillaIP_cs
             this.ClientSize = new System.Drawing.Size(638, 294);
             this.Controls.Add(this.gbNetwork);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Power Distribution Unit";
