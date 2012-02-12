@@ -66,5 +66,19 @@ namespace MeteoChase500DriverTestAplication.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap Play_1_Normal_icon {
+            get {
+                object obj = ResourceManager.GetObject("Play_1_Normal_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Stop_Normal_Red_icon {
+            get {
+                object obj = ResourceManager.GetObject("Stop_Normal_Red_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
