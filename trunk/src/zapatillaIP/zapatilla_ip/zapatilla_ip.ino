@@ -22,16 +22,17 @@ byte port1=0;
 // the media access control (ethernet hardware) address for the shield:
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x82, 0x47 }; 
 //the IP address for the shield:
-//byte ip[] = { 139, 229, 12, 84 };// 1) La IP a usar seria la 139.229.12.84 . Por favor indicame nombre a utilizar para esta maquina -> frigobar
+byte ip[] = { 139, 229, 12, 84 };// 1) La IP a usar seria la 139.229.12.84 . Por favor indicame nombre a utilizar para esta maquina -> frigobar
 //the gateway for the shield:
-//byte gateway[] = { 139, 229, 12, 1 };
+byte gateway[] = { 139, 229, 12, 1 };
 //the subnet for the shield:
-//byte subnet[] = { 255, 255, 255, 128 };
-byte ip[] = { 139, 229, 65, 214 };// 139.229.65.214
+byte subnet[] = { 255, 255, 255, 0};
+
+//byte ip[] = { 139, 229, 65, 214 };// 139.229.65.214
 //the gateway for the shield:
-byte gateway[] = { 139, 229, 65, 193 };
+//byte gateway[] = { 139, 229, 65, 193 };
 //the subnet for the shield:
-byte subnet[] = { 255, 255, 255, 224 };
+//byte subnet[] = { 255, 255, 255, 224 };
 
 // Servidor de la Zapatilla IP
 EthernetServer server = EthernetServer(18008);
