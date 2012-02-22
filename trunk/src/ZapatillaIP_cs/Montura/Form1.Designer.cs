@@ -29,41 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            SpPerfChart.ChartPen chartPen13 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen14 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen15 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen16 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen17 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen18 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen19 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen20 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen21 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen22 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen23 = new SpPerfChart.ChartPen();
-            SpPerfChart.ChartPen chartPen24 = new SpPerfChart.ChartPen();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.serialPortMontura = new System.IO.Ports.SerialPort(this.components);
             this.timerReadSerial = new System.Windows.Forms.Timer(this.components);
-            this.perfChartRA_x = new SpPerfChart.PerfChart();
-            this.labelRA_X = new System.Windows.Forms.Label();
-            this.labelRA_Y = new System.Windows.Forms.Label();
-            this.perfChartRA_Y = new SpPerfChart.PerfChart();
-            this.labelRA_Z = new System.Windows.Forms.Label();
-            this.perfChartRA_Z = new SpPerfChart.PerfChart();
-            this.labelAlpha = new System.Windows.Forms.Label();
-            this.progressBarRisk = new System.Windows.Forms.ProgressBar();
             this.buttonContinue = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.groupBoxRA = new System.Windows.Forms.GroupBox();
+            this.groupBoxDEC = new System.Windows.Forms.GroupBox();
+            this.radioButtonRA_Home = new System.Windows.Forms.RadioButton();
+            this.radioButtonRA_East = new System.Windows.Forms.RadioButton();
+            this.radioButtonRA_West = new System.Windows.Forms.RadioButton();
+            this.radioButtonDecHome = new System.Windows.Forms.RadioButton();
             this.contextMenuStrip1.SuspendLayout();
+            this.groupBoxRA.SuspendLayout();
+            this.groupBoxDEC.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialPortMontura
@@ -75,200 +57,16 @@
             this.timerReadSerial.Interval = 250;
             this.timerReadSerial.Tick += new System.EventHandler(this.timerReadSerial_Tick);
             // 
-            // perfChartRA_x
-            // 
-            this.perfChartRA_x.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.perfChartRA_x.Location = new System.Drawing.Point(16, 26);
-            this.perfChartRA_x.Name = "perfChartRA_x";
-            this.perfChartRA_x.PerfChartStyle.AntiAliasing = true;
-            chartPen13.Color = System.Drawing.Color.Black;
-            chartPen13.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen13.Width = 1F;
-            this.perfChartRA_x.PerfChartStyle.AvgLinePen = chartPen13;
-            this.perfChartRA_x.PerfChartStyle.BackgroundColorBottom = System.Drawing.Color.DarkGreen;
-            this.perfChartRA_x.PerfChartStyle.BackgroundColorTop = System.Drawing.Color.DarkGreen;
-            chartPen14.Color = System.Drawing.Color.Black;
-            chartPen14.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen14.Width = 1F;
-            this.perfChartRA_x.PerfChartStyle.ChartLinePen = chartPen14;
-            chartPen15.Color = System.Drawing.Color.Black;
-            chartPen15.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen15.Width = 1F;
-            this.perfChartRA_x.PerfChartStyle.HorizontalGridPen = chartPen15;
-            this.perfChartRA_x.PerfChartStyle.ShowAverageLine = true;
-            this.perfChartRA_x.PerfChartStyle.ShowHorizontalGridLines = true;
-            this.perfChartRA_x.PerfChartStyle.ShowVerticalGridLines = true;
-            chartPen16.Color = System.Drawing.Color.Black;
-            chartPen16.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen16.Width = 1F;
-            this.perfChartRA_x.PerfChartStyle.VerticalGridPen = chartPen16;
-            this.perfChartRA_x.ScaleMode = SpPerfChart.ScaleMode.Relative;
-            this.perfChartRA_x.Size = new System.Drawing.Size(274, 100);
-            this.perfChartRA_x.TabIndex = 0;
-            this.perfChartRA_x.TimerInterval = 100;
-            this.perfChartRA_x.TimerMode = SpPerfChart.TimerMode.Disabled;
-            // 
-            // labelRA_X
-            // 
-            this.labelRA_X.AutoSize = true;
-            this.labelRA_X.Location = new System.Drawing.Point(16, 3);
-            this.labelRA_X.Name = "labelRA_X";
-            this.labelRA_X.Size = new System.Drawing.Size(35, 13);
-            this.labelRA_X.TabIndex = 1;
-            this.labelRA_X.Text = "RA_X";
-            // 
-            // labelRA_Y
-            // 
-            this.labelRA_Y.AutoSize = true;
-            this.labelRA_Y.Location = new System.Drawing.Point(16, 138);
-            this.labelRA_Y.Name = "labelRA_Y";
-            this.labelRA_Y.Size = new System.Drawing.Size(35, 13);
-            this.labelRA_Y.TabIndex = 3;
-            this.labelRA_Y.Text = "RA_Y";
-            // 
-            // perfChartRA_Y
-            // 
-            this.perfChartRA_Y.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.perfChartRA_Y.Location = new System.Drawing.Point(16, 161);
-            this.perfChartRA_Y.Name = "perfChartRA_Y";
-            this.perfChartRA_Y.PerfChartStyle.AntiAliasing = true;
-            chartPen17.Color = System.Drawing.Color.Black;
-            chartPen17.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen17.Width = 1F;
-            this.perfChartRA_Y.PerfChartStyle.AvgLinePen = chartPen17;
-            this.perfChartRA_Y.PerfChartStyle.BackgroundColorBottom = System.Drawing.Color.DarkGreen;
-            this.perfChartRA_Y.PerfChartStyle.BackgroundColorTop = System.Drawing.Color.DarkGreen;
-            chartPen18.Color = System.Drawing.Color.Black;
-            chartPen18.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen18.Width = 1F;
-            this.perfChartRA_Y.PerfChartStyle.ChartLinePen = chartPen18;
-            chartPen19.Color = System.Drawing.Color.Black;
-            chartPen19.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen19.Width = 1F;
-            this.perfChartRA_Y.PerfChartStyle.HorizontalGridPen = chartPen19;
-            this.perfChartRA_Y.PerfChartStyle.ShowAverageLine = true;
-            this.perfChartRA_Y.PerfChartStyle.ShowHorizontalGridLines = true;
-            this.perfChartRA_Y.PerfChartStyle.ShowVerticalGridLines = true;
-            chartPen20.Color = System.Drawing.Color.Black;
-            chartPen20.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen20.Width = 1F;
-            this.perfChartRA_Y.PerfChartStyle.VerticalGridPen = chartPen20;
-            this.perfChartRA_Y.ScaleMode = SpPerfChart.ScaleMode.Relative;
-            this.perfChartRA_Y.Size = new System.Drawing.Size(274, 100);
-            this.perfChartRA_Y.TabIndex = 2;
-            this.perfChartRA_Y.TimerInterval = 100;
-            this.perfChartRA_Y.TimerMode = SpPerfChart.TimerMode.Disabled;
-            // 
-            // labelRA_Z
-            // 
-            this.labelRA_Z.AutoSize = true;
-            this.labelRA_Z.Location = new System.Drawing.Point(16, 275);
-            this.labelRA_Z.Name = "labelRA_Z";
-            this.labelRA_Z.Size = new System.Drawing.Size(35, 13);
-            this.labelRA_Z.TabIndex = 5;
-            this.labelRA_Z.Text = "RA_Z";
-            // 
-            // perfChartRA_Z
-            // 
-            this.perfChartRA_Z.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.perfChartRA_Z.Location = new System.Drawing.Point(16, 298);
-            this.perfChartRA_Z.Name = "perfChartRA_Z";
-            this.perfChartRA_Z.PerfChartStyle.AntiAliasing = true;
-            chartPen21.Color = System.Drawing.Color.Black;
-            chartPen21.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen21.Width = 1F;
-            this.perfChartRA_Z.PerfChartStyle.AvgLinePen = chartPen21;
-            this.perfChartRA_Z.PerfChartStyle.BackgroundColorBottom = System.Drawing.Color.DarkGreen;
-            this.perfChartRA_Z.PerfChartStyle.BackgroundColorTop = System.Drawing.Color.DarkGreen;
-            chartPen22.Color = System.Drawing.Color.Black;
-            chartPen22.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen22.Width = 1F;
-            this.perfChartRA_Z.PerfChartStyle.ChartLinePen = chartPen22;
-            chartPen23.Color = System.Drawing.Color.Black;
-            chartPen23.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen23.Width = 1F;
-            this.perfChartRA_Z.PerfChartStyle.HorizontalGridPen = chartPen23;
-            this.perfChartRA_Z.PerfChartStyle.ShowAverageLine = true;
-            this.perfChartRA_Z.PerfChartStyle.ShowHorizontalGridLines = true;
-            this.perfChartRA_Z.PerfChartStyle.ShowVerticalGridLines = true;
-            chartPen24.Color = System.Drawing.Color.Black;
-            chartPen24.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-            chartPen24.Width = 1F;
-            this.perfChartRA_Z.PerfChartStyle.VerticalGridPen = chartPen24;
-            this.perfChartRA_Z.ScaleMode = SpPerfChart.ScaleMode.Relative;
-            this.perfChartRA_Z.Size = new System.Drawing.Size(274, 100);
-            this.perfChartRA_Z.TabIndex = 4;
-            this.perfChartRA_Z.TimerInterval = 100;
-            this.perfChartRA_Z.TimerMode = SpPerfChart.TimerMode.Disabled;
-            // 
-            // labelAlpha
-            // 
-            this.labelAlpha.AutoSize = true;
-            this.labelAlpha.Location = new System.Drawing.Point(6, 3);
-            this.labelAlpha.Name = "labelAlpha";
-            this.labelAlpha.Size = new System.Drawing.Size(44, 13);
-            this.labelAlpha.TabIndex = 6;
-            this.labelAlpha.Text = "Angle ~";
-            // 
-            // progressBarRisk
-            // 
-            this.progressBarRisk.BackColor = System.Drawing.Color.LightSalmon;
-            this.progressBarRisk.Location = new System.Drawing.Point(9, 19);
-            this.progressBarRisk.Name = "progressBarRisk";
-            this.progressBarRisk.Size = new System.Drawing.Size(100, 23);
-            this.progressBarRisk.Step = 20;
-            this.progressBarRisk.TabIndex = 7;
-            this.progressBarRisk.Value = 20;
-            // 
             // buttonContinue
             // 
             this.buttonContinue.Enabled = false;
-            this.buttonContinue.Location = new System.Drawing.Point(115, 19);
+            this.buttonContinue.Location = new System.Drawing.Point(335, 119);
             this.buttonContinue.Name = "buttonContinue";
             this.buttonContinue.Size = new System.Drawing.Size(75, 23);
             this.buttonContinue.TabIndex = 8;
             this.buttonContinue.Text = "Continue";
             this.buttonContinue.UseVisualStyleBackColor = true;
             this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(324, 452);
-            this.tabControl1.TabIndex = 9;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.labelAlpha);
-            this.tabPage1.Controls.Add(this.buttonContinue);
-            this.tabPage1.Controls.Add(this.progressBarRisk);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(316, 426);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Risk Level";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.perfChartRA_x);
-            this.tabPage2.Controls.Add(this.labelRA_X);
-            this.tabPage2.Controls.Add(this.perfChartRA_Y);
-            this.tabPage2.Controls.Add(this.labelRA_Y);
-            this.tabPage2.Controls.Add(this.labelRA_Z);
-            this.tabPage2.Controls.Add(this.perfChartRA_Z);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(316, 426);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Details";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // notifyIcon1
             // 
@@ -293,7 +91,7 @@
             // 
             this.abrirToolStripMenuItem.Image = global::Montura.Properties.Resources.Play_1_Normal_icon;
             this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
-            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.abrirToolStripMenuItem.Text = "Show";
             this.abrirToolStripMenuItem.Click += new System.EventHandler(this.abrirToolStripMenuItem_Click);
             // 
@@ -301,31 +99,104 @@
             // 
             this.salirToolStripMenuItem.Image = global::Montura.Properties.Resources.Stop_Normal_Red_icon;
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.salirToolStripMenuItem.Text = "Exit";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
+            // 
+            // groupBoxRA
+            // 
+            this.groupBoxRA.Controls.Add(this.radioButtonRA_West);
+            this.groupBoxRA.Controls.Add(this.radioButtonRA_East);
+            this.groupBoxRA.Controls.Add(this.radioButtonRA_Home);
+            this.groupBoxRA.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxRA.Name = "groupBoxRA";
+            this.groupBoxRA.Size = new System.Drawing.Size(398, 66);
+            this.groupBoxRA.TabIndex = 9;
+            this.groupBoxRA.TabStop = false;
+            this.groupBoxRA.Text = "RA";
+            // 
+            // groupBoxDEC
+            // 
+            this.groupBoxDEC.Controls.Add(this.radioButtonDecHome);
+            this.groupBoxDEC.Location = new System.Drawing.Point(12, 81);
+            this.groupBoxDEC.Name = "groupBoxDEC";
+            this.groupBoxDEC.Size = new System.Drawing.Size(246, 61);
+            this.groupBoxDEC.TabIndex = 10;
+            this.groupBoxDEC.TabStop = false;
+            this.groupBoxDEC.Text = "DEC";
+            // 
+            // radioButtonRA_Home
+            // 
+            this.radioButtonRA_Home.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.radioButtonRA_Home.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButtonRA_Home.Location = new System.Drawing.Point(164, 19);
+            this.radioButtonRA_Home.Name = "radioButtonRA_Home";
+            this.radioButtonRA_Home.Size = new System.Drawing.Size(82, 41);
+            this.radioButtonRA_Home.TabIndex = 0;
+            this.radioButtonRA_Home.TabStop = true;
+            this.radioButtonRA_Home.Text = "Home";
+            this.radioButtonRA_Home.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButtonRA_Home.UseVisualStyleBackColor = false;
+            // 
+            // radioButtonRA_East
+            // 
+            this.radioButtonRA_East.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.radioButtonRA_East.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButtonRA_East.Location = new System.Drawing.Point(310, 19);
+            this.radioButtonRA_East.Name = "radioButtonRA_East";
+            this.radioButtonRA_East.Size = new System.Drawing.Size(82, 41);
+            this.radioButtonRA_East.TabIndex = 1;
+            this.radioButtonRA_East.TabStop = true;
+            this.radioButtonRA_East.Text = "East";
+            this.radioButtonRA_East.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButtonRA_East.UseVisualStyleBackColor = false;
+            // 
+            // radioButtonRA_West
+            // 
+            this.radioButtonRA_West.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.radioButtonRA_West.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButtonRA_West.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonRA_West.Name = "radioButtonRA_West";
+            this.radioButtonRA_West.Size = new System.Drawing.Size(82, 41);
+            this.radioButtonRA_West.TabIndex = 2;
+            this.radioButtonRA_West.TabStop = true;
+            this.radioButtonRA_West.Text = "West";
+            this.radioButtonRA_West.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButtonRA_West.UseVisualStyleBackColor = false;
+            // 
+            // radioButtonDecHome
+            // 
+            this.radioButtonDecHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.radioButtonDecHome.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButtonDecHome.Location = new System.Drawing.Point(82, 10);
+            this.radioButtonDecHome.Name = "radioButtonDecHome";
+            this.radioButtonDecHome.Size = new System.Drawing.Size(82, 41);
+            this.radioButtonDecHome.TabIndex = 1;
+            this.radioButtonDecHome.TabStop = true;
+            this.radioButtonDecHome.Text = "Home";
+            this.radioButtonDecHome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButtonDecHome.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(347, 474);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(486, 200);
+            this.Controls.Add(this.groupBoxDEC);
+            this.Controls.Add(this.groupBoxRA);
+            this.Controls.Add(this.buttonContinue);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowInTaskbar = false;
-            this.Text = "Accelerometers";
+            this.Text = "Travel Switches";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.groupBoxRA.ResumeLayout(false);
+            this.groupBoxDEC.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -334,22 +205,17 @@
 
         private System.IO.Ports.SerialPort serialPortMontura;
         private System.Windows.Forms.Timer timerReadSerial;
-        private SpPerfChart.PerfChart perfChartRA_x;
-        private System.Windows.Forms.Label labelRA_X;
-        private System.Windows.Forms.Label labelRA_Y;
-        private SpPerfChart.PerfChart perfChartRA_Y;
-        private System.Windows.Forms.Label labelRA_Z;
-        private SpPerfChart.PerfChart perfChartRA_Z;
-        private System.Windows.Forms.Label labelAlpha;
-        private System.Windows.Forms.ProgressBar progressBarRisk;
         private System.Windows.Forms.Button buttonContinue;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem abrirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBoxRA;
+        private System.Windows.Forms.GroupBox groupBoxDEC;
+        private System.Windows.Forms.RadioButton radioButtonRA_Home;
+        private System.Windows.Forms.RadioButton radioButtonRA_West;
+        private System.Windows.Forms.RadioButton radioButtonRA_East;
+        private System.Windows.Forms.RadioButton radioButtonDecHome;
     }
 }
 
