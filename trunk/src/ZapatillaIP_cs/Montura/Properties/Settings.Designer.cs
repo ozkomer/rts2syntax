@@ -25,7 +25,7 @@ namespace Montura.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("139.229.65.214")]
+        [global::System.Configuration.DefaultSettingValueAttribute("139.229.12.84")]
         public string ipAddress {
             get {
                 return ((string)(this["ipAddress"]));

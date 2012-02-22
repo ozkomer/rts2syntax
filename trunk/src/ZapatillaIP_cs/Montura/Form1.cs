@@ -93,16 +93,13 @@ namespace Montura
             stat = new Serduino.Status(respuesta);
             stat.Analiza();
 
-
             RefreshColor(this.radioButtonRA_East, stat.RaLimitEast, Color.Pink, Color.LightYellow);
             RefreshColor(this.radioButtonRA_West, stat.RaLimitWest, Color.Pink, Color.LightYellow);
             RefreshColor(this.radioButtonRA_Home, stat.RaHome, Color.LightGreen, Color.LightYellow);
             RefreshColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
-
-
+            
             if ((!this.buttonContinue.Enabled) && ((stat.RaLimitEast) || (stat.RaLimitWest)))
             {
-                //this.timerReadSerial.Stop();
                 this.buttonContinue.Enabled = true;
                 this.ApagarMontura();
             }
