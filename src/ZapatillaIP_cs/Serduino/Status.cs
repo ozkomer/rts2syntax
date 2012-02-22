@@ -12,8 +12,8 @@ namespace Serduino
         private static Acelerometro aRA=  new Acelerometro ();
         private static Acelerometro aDEC = new Acelerometro();
         private bool[] interruptor;
-        private bool raLimit1;
-        private bool raLimit2;
+        private bool raLimitEast;
+        private bool raLimitWest;
         private bool raHome;
         private bool decHome;
 
@@ -24,17 +24,42 @@ namespace Serduino
             interruptor = new bool[3];
         }
 
-        public Acelerometro AcelerometroRA
+        public bool DecHome
         {
-            get { return aRA; }
-            set { aRA = value; }
+            get { return this.decHome; }
+            set { this.decHome = value; }
         }
 
-        public Acelerometro AcelerometroDEC
+        public bool RaLimitEast
         {
-            get { return aDEC; }
-            set { aDEC = value; }
+            get { return this.raLimitEast; }
+            set { this.raLimitEast = value; }
         }
+
+        public bool RaLimitWest
+        {
+            get { return this.raLimitWest; }
+            set { this.raLimitWest = value; }
+        }
+
+        public bool RaHome
+        {
+            get { return this.raHome; }
+            set { this.raHome = value; }
+        }
+
+
+        //public Acelerometro AcelerometroRA
+        //{
+        //    get { return aRA; }
+        //    set { aRA = value; }
+        //}
+
+        //public Acelerometro AcelerometroDEC
+        //{
+        //    get { return aDEC; }
+        //    set { aDEC = value; }
+        //}
 
         public void Analiza()
         {
@@ -57,20 +82,21 @@ namespace Serduino
             }
 
             this.decHome = interruptor[0];
-            this.raHome = (interruptor[1] & interruptor[2]);
-            if (!raHome)
+            this.raLimitEast = (interruptor[1] & interruptor[2]);
+            if (!raLimitEast)
             {
-                this.raLimit1 = interruptor[1];
-                this.raLimit2 = interruptor[2];
+                this.raHome = interruptor[1];
+                this.raLimitWest = interruptor[2];
             }
+
             #endregion
 
             StringBuilder mensaje;
             mensaje = new StringBuilder ();
             mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
             mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
-            mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimit1);
-            mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimit2);
+            mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimitEast);
+            mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimitWest);
             mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
             Console.WriteLine(mensaje.ToString());
 

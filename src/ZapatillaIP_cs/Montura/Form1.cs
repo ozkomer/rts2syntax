@@ -14,7 +14,6 @@ namespace Montura
     public partial class Form1 : Form
     {
         public char[] query;
-        private int riskLevel;
         private ArduinoTcp arduinoTcp;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
 
@@ -25,27 +24,21 @@ namespace Montura
             query[0] = '?';
             query[1] = '\n';
             InitializeComponent();
-            riskLevel = 0;
-            
-            //this.perfChartRA_x.ScaleMode = SpPerfChart.ScaleMode.Absolute;
-
-            this.perfChartRA_x.PerfChartStyle.ChartLinePen.Color = Color.Yellow;
-            this.perfChartRA_x.PerfChartStyle.AvgLinePen.Color = Color.SteelBlue;
-            this.perfChartRA_Y.PerfChartStyle.ChartLinePen.Color = Color.Pink;
-            this.perfChartRA_Y.PerfChartStyle.AvgLinePen.Color = Color.SteelBlue;
-            this.perfChartRA_Z.PerfChartStyle.ChartLinePen.Color = Color.Violet;
-            this.perfChartRA_Z.PerfChartStyle.AvgLinePen.Color = Color.SteelBlue;
 
             this.serialPortMontura.Open();
             this.timerReadSerial.Start();
+            this.radioButtonDecHome.Checked = false;
+            this.radioButtonRA_East.Checked = false;
+            this.radioButtonRA_Home.Checked = false;
+            this.radioButtonRA_West.Checked = false;
         }
 
         private void ApagarMontura()
         {
+            this.BringToFront();
             this.arduinoTcp.Connect();
             if (this.arduinoTcp.Tcpclnt.Connected)
             {
-                this.tabControl1.Visible = true;
                 this.arduinoTcp.readRelays(); // this.readRelays();
                 System.Threading.Thread.Sleep(250);
 
@@ -58,7 +51,7 @@ namespace Montura
                 this.arduinoTcp.RelayStatus[10] = false;//debe ser 10
                 this.arduinoTcp.refreshPorts();
                 System.Threading.Thread.Sleep(200);
-                
+
                 //this.arduinoTcp.readRelays();
                 //System.Threading.Thread.Sleep(200);
 
@@ -75,73 +68,44 @@ namespace Montura
             }
         }
 
+        private void RefreshColor(RadioButton ratioButton, Boolean discriminante, Color ColorTrue, Color ColorFalse)
+        {
+            if (discriminante)
+            {
+                ratioButton.BackColor = ColorTrue;
+            }
+            else
+            {
+                ratioButton.BackColor = ColorFalse;
+            }
+            ratioButton.Checked = discriminante;
+        }
+
         private void timerReadSerial_Tick(object sender, EventArgs e)
         {
             String respuesta;
             respuesta = "Tick";
-            serialPortMontura.Write (query, 0, 1);
+            serialPortMontura.Write(query, 0, 1);
             respuesta = serialPortMontura.ReadLine();
-         
+
             Console.WriteLine(respuesta);
             Status stat;
             stat = new Serduino.Status(respuesta);
             stat.Analiza();
-            this.perfChartRA_x.AddValue(stat.AcelerometroRA.RelativeX);
-            this.perfChartRA_Y.AddValue(stat.AcelerometroRA.RelativeY);
-            this.perfChartRA_Z.AddValue(stat.AcelerometroRA.RelativeZ);
-            StringBuilder raX,raY,raZ;
-            raX = new StringBuilder();
-            raX.Append("RA X: min=");
-            raX.Append(stat.AcelerometroRA.minX);
-            raX.Append("\t max=");
-            raX.Append(stat.AcelerometroRA.maxX);
-            this.labelRA_X.Text = raX.ToString();
 
-            raY = new StringBuilder();
-            raY.Append("RA y: min=");
-            raY.Append(stat.AcelerometroRA.minY);
-            raY.Append("\t max=");
-            raY.Append(stat.AcelerometroRA.maxY);
-            this.labelRA_Y.Text = raY.ToString();
 
-            raZ = new StringBuilder();
-            raZ.Append("RA Z: min=");
-            raZ.Append(stat.AcelerometroRA.minZ);
-            raZ.Append("\t max=");
-            raZ.Append(stat.AcelerometroRA.maxZ);
-            this.labelRA_Z.Text = raZ.ToString();
-            double alpha;
-            alpha = Acelerometro.getAlpha(stat.AcelerometroRA);
-            alpha = ((180 * alpha) / (Math.PI));
-            this.labelAlpha.Text = "Angle ~=" + alpha;
-            if ((alpha > 88.4) || (alpha < -74.5))
+            RefreshColor(this.radioButtonRA_East, stat.RaLimitEast, Color.Pink, Color.LightYellow);
+            RefreshColor(this.radioButtonRA_West, stat.RaLimitWest, Color.Pink, Color.LightYellow);
+            RefreshColor(this.radioButtonRA_Home, stat.RaHome, Color.LightGreen, Color.LightYellow);
+            RefreshColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
+
+
+            if ((!this.buttonContinue.Enabled) && ((stat.RaLimitEast) || (stat.RaLimitWest)))
             {
-                this.riskLevel++;
-            }
-            else
-            {
-                this.riskLevel--;
-            }
-            if (riskLevel < 0) { riskLevel = 0; }
-            if (riskLevel > 5) { this.riskLevel = 5; }
-            this.progressBarRisk.Value = (20 * riskLevel);
-            Color fore;
-            fore = Color.Green;
-            if (riskLevel > 1)
-            {
-                fore = Color.Yellow;
-            }
-            if (riskLevel > 3)
-            {
-                fore = Color.Red;
-            }
-            if (riskLevel == 5)
-            {
-                this.timerReadSerial.Stop();
+                //this.timerReadSerial.Stop();
                 this.buttonContinue.Enabled = true;
                 this.ApagarMontura();
             }
-            this.progressBarRisk.ForeColor = fore;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -151,8 +115,7 @@ namespace Montura
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            this.riskLevel = 0;
-            this.timerReadSerial.Start();
+            //this.timerReadSerial.Start();
             buttonContinue.Enabled = false;
         }
 
@@ -198,7 +161,7 @@ namespace Montura
             respuesta = this.ConfirmarClose();
             if (respuesta == DialogResult.No)
             {
-                
+
                 e.Cancel = true;
                 this.WindowState = FormWindowState.Normal;
             }
@@ -228,6 +191,11 @@ namespace Montura
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.MostrarVentana();
+        }
+
+        private void buttonApagar_Click(object sender, EventArgs e)
+        {
+            this.ApagarMontura();
         }
     }
 }
