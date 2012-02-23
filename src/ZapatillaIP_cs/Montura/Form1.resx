@@ -152,6 +152,9 @@
         gP/+AED//AAA//wAAD/4ABAP+AAdh/gAEGH4ABAw+AAAPPgAAD/8ABB//AA4f/4Af///gf///////w==
 </value>
   </data>
+  <metadata name="timerTelescopio.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>572, 17</value>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAIAEBAQAAAABAAoAQAAJgAAACAgEAAAAAQA6AIAAE4BAAAoAAAAEAAAACAAAAABAAQAAAAAAIAA
