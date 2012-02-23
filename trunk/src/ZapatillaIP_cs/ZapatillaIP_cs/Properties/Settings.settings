@@ -9,7 +9,7 @@
       <Value Profile="(Default)">relay2Label</Value>
     </Setting>
     <Setting Name="relay3Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay3Label</Value>
+      <Value Profile="(Default)">3600GTO</Value>
     </Setting>
     <Setting Name="relay4Label" Type="System.String" Scope="User">
       <Value Profile="(Default)">relay4Label</Value>

@@ -49,7 +49,7 @@ namespace ZapatillaIP_cs.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("relay3Label")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3600GTO")]
         public string relay3Label {
             get {
                 return ((string)(this["relay3Label"]));

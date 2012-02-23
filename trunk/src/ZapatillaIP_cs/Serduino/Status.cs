@@ -98,7 +98,7 @@ namespace Serduino
             mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimitEast);
             mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimitWest);
             mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
-            Console.WriteLine(mensaje.ToString());
+            //Console.WriteLine(mensaje.ToString());
 
         }
     }
