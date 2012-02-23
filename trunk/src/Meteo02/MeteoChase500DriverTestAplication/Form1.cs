@@ -33,7 +33,7 @@ namespace MeteoChase500DriverTestAplication
             sm = new SafetyMonitor();
             this.timerRefresh.Start();
             this.refresh();
-            logger.Info("Start");
+            logger.Info("End");
         }
 
         void refresh()
