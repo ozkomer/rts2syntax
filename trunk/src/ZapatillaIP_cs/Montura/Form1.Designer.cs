@@ -48,6 +48,7 @@
             this.labelTelescope = new System.Windows.Forms.Label();
             this.checkBoxInfrarojos = new System.Windows.Forms.CheckBox();
             this.timerTelescopio = new System.Windows.Forms.Timer(this.components);
+            this.buttonPin7Low = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBoxRA.SuspendLayout();
             this.groupBoxDEC.SuspendLayout();
@@ -233,11 +234,22 @@
             this.timerTelescopio.Interval = 500;
             this.timerTelescopio.Tick += new System.EventHandler(this.timerTelescopio_Tick);
             // 
+            // buttonPin7Low
+            // 
+            this.buttonPin7Low.Location = new System.Drawing.Point(264, 212);
+            this.buttonPin7Low.Name = "buttonPin7Low";
+            this.buttonPin7Low.Size = new System.Drawing.Size(65, 23);
+            this.buttonPin7Low.TabIndex = 13;
+            this.buttonPin7Low.Text = "Pin7 Low";
+            this.buttonPin7Low.UseVisualStyleBackColor = true;
+            this.buttonPin7Low.Click += new System.EventHandler(this.buttonPin7Low_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(421, 240);
+            this.Controls.Add(this.buttonPin7Low);
             this.Controls.Add(this.checkBoxInfrarojos);
             this.Controls.Add(this.groupBoxTelescope);
             this.Controls.Add(this.groupBoxRA);
@@ -282,6 +294,7 @@
         private System.Windows.Forms.CheckBox checkBoxInfrared;
         private System.Windows.Forms.CheckBox checkBoxInfrarojos;
         private System.Windows.Forms.Timer timerTelescopio;
+        private System.Windows.Forms.Button buttonPin7Low;
     }
 }
 

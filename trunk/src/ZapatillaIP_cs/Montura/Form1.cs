@@ -18,19 +18,32 @@ namespace Montura
     public partial class Form1 : Form
     {
         public char[] query;
+        public char[] pin7Low;
+        private Boolean raLimit;
+        private Boolean raLimitLast;
+
         private ArduinoTcp arduinoTcp;
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
+        private bool lastSlewing;
+
+
+        private static String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
 
         public Form1()
         {
             XmlConfigurator.Configure();
             logger.Info("Start");
+            raLimit = false;
+            raLimitLast = false;
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             query = new char[2];
             query[0] = '?';
             query[1] = '\n';
+            pin7Low = new char[2];
+            pin7Low[0] = '_';
+            pin7Low[1] = '\n';
             InitializeComponent();
 
             this.serialPortMontura.Open();
@@ -43,10 +56,28 @@ namespace Montura
             logger.Info("End");
         }
 
-        private void ApagarMontura()
+        /// <summary>
+        /// Avisa al Usuario que la montura ha sido desconectada
+        /// por los microcontroladores Arduino.
+        /// </summary>
+        private void notificarMontura(Status stat)
         {
-            logger.Info("Apagando Montura");
+            timerReadSerial.Stop();
+            logger.Info("notificarMontura");
             this.BringToFront();
+            StringBuilder mensaje;
+            mensaje = new StringBuilder();
+            mensaje.Append("La Montura ha alcanzado el limite ");
+            if (stat.RaLimitEast)
+            {
+                mensaje.Append("East");
+            }
+            if (stat.RaLimitWest)
+            {
+                mensaje.Append("West");
+            }
+            mensaje.Append(" en RA.\n\n");
+
             this.arduinoTcp.Connect();
             if (this.arduinoTcp.Tcpclnt.Connected)
             {
@@ -59,12 +90,20 @@ namespace Montura
                 //}
                 //Console.WriteLine("  ...");
                 //Solo modificamos el relay correspondiente a la montura
-                this.arduinoTcp.RelayStatus[2] = false;//debe ser 2
-                this.arduinoTcp.refreshPorts();
-                System.Threading.Thread.Sleep(200);
-
-                //this.arduinoTcp.readRelays();
+                //this.arduinoTcp.RelayStatus[2] = false;//debe ser 2
+                //this.arduinoTcp.refreshPorts();
                 //System.Threading.Thread.Sleep(200);
+
+                this.arduinoTcp.readRelays();
+                if (this.arduinoTcp.RelayStatus[2] == false)
+                {
+                    mensaje.Append("La montura esta apagada.\n\n");
+                }
+                else
+                {
+                    mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
+                }
+                System.Threading.Thread.Sleep(200);
 
                 //for (int i = 0; i < 16; i++)
                 //{
@@ -77,6 +116,26 @@ namespace Montura
                     this.arduinoTcp.Tcpclnt.Close();
                 }
             }
+
+            mensaje.Append("Procedimiento:\n");
+            mensaje.Append("1) Con aplicación PDU_chase, encienda la montura.\n");
+            mensaje.Append("2) Con alguna guitarra virtual (o real), desplaze la montura hacia el ");
+            if (stat.RaLimitEast)
+            {
+                mensaje.Append("WEST");
+            }
+            if (stat.RaLimitWest)
+            {
+                mensaje.Append("EAST");
+            }
+            mensaje.Append(", hasta Park 3");
+            DialogResult dr;
+            dr = MessageBox.Show(this, mensaje.ToString(), "RA Limit alert.");
+            if (dr.Equals(DialogResult.OK))
+            {
+                timerReadSerial.Start();
+            }
+
         }
 
         private void RefreshColor(RadioButton ratioButton, Boolean discriminante, Color ColorTrue, Color ColorFalse)
@@ -99,7 +158,7 @@ namespace Montura
             serialPortMontura.Write(query, 0, 1);
             respuesta = serialPortMontura.ReadLine();
 
-            //Console.WriteLine(respuesta);
+            Console.WriteLine(respuesta);
             Status stat;
             stat = new Serduino.Status(respuesta);
             stat.Analiza();
@@ -116,14 +175,21 @@ namespace Montura
             {
                 logger.Info("Cruzando DecHome.");
             }
-            if ((!this.buttonContinue.Enabled) && ((stat.RaLimitEast) || (stat.RaLimitWest)))
+
+            raLimit =((stat.RaLimitEast) || (stat.RaLimitWest));
+            if ((raLimit) && (!raLimitLast))
             {
-                this.buttonContinue.Enabled = true;
+                //                this.buttonContinue.Enabled = true;
                 logger.Info("RaLimitEast=" + stat.RaLimitEast);
                 logger.Info("RaLimitWest=" + stat.RaLimitWest);
-                this.ApagarMontura();
+                //Flanco de subida de la alerta
+                this.notificarMontura(stat);
             }
-
+            if ((!raLimit) && (raLimitLast))
+            {
+                this.pin7_Low();
+            }
+            raLimitLast = raLimit;
             //this.ProcesaTelescopio();
         }
 
@@ -212,14 +278,6 @@ namespace Montura
             this.MostrarVentana();
         }
 
-        private void buttonApagar_Click(object sender, EventArgs e)
-        {
-            this.ApagarMontura();
-        }
-
-        private bool lastSlewing;
-        private static String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
-
         private void InfraredControl(bool Encender)
         {
             logger.Info("InfraredControl, encender=" + Encender);
@@ -277,7 +335,7 @@ namespace Montura
 
 
                 Boolean slewing;
-                slewing = false; 
+                slewing = false;
                 try
                 {
                     slewing = telescopio.Slewing;
@@ -287,7 +345,7 @@ namespace Montura
                     slewing = false;
                     logger.Debug(e.Message);
                 }
-                
+
                 if ((this.checkBoxInfrared.Checked) && (slewing != lastSlewing))
                 {
                     this.InfraredControl(slewing);
@@ -327,6 +385,33 @@ namespace Montura
         private void timerTelescopio_Tick(object sender, EventArgs e)
         {
             this.ProcesaTelescopio();
+        }
+
+        /// <summary>
+        /// Envia una señal al arduino de los limits para que
+        /// baje el pin7 a un estado logico Cero==GND
+        /// </summary>
+        private void pin7_Low()
+        {
+            this.timerReadSerial.Stop();
+            logger.Info("buttonPin7Low_Click.");
+            String respuesta;
+            respuesta = "Tick";
+            serialPortMontura.Write(pin7Low, 0, 1);
+            respuesta = serialPortMontura.ReadLine();
+            logger.Info("respuesta=" + respuesta);
+            //Console.WriteLine(respuesta);
+            DialogResult dr;
+            dr = MessageBox.Show("Al presionar aceptar, La montura estará nuevamente protegida", "Pin7 Low");
+            if (dr.Equals(DialogResult.OK))
+            {
+                this.timerReadSerial.Start();
+            }
+        }
+
+        private void buttonPin7Low_Click(object sender, EventArgs e)
+        {
+            pin7_Low();
         }
     }
 }
