@@ -11,6 +11,12 @@ Eduardo Maureira, Enero 2012
 int i;
 int j;
 
+int incomingByte = 0;	// for incoming serial data
+
+boolean lastLimits;
+boolean currentLimits;
+int pinlimitsRA = 22;
+
 //.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
 byte zxRelayAddres = 0x20;
 
@@ -44,6 +50,9 @@ void setup()
   Serial.begin(9600);
   Serial.println("Bienvenidos a Zapatilla IP.");
   
+  pinMode( pinlimitsRA,INPUT);
+  lastLimits = LOW;
+  currentLimits =  LOW;
   Wire.begin();
   Wire.beginTransmission(zxRelayAddres);  // setup out direction registers
   Wire.write((byte)0x06);  // pointer
@@ -59,10 +68,13 @@ void setup()
   readRelays();
 }
   
-  int incomingByte = 0;	// for incoming serial data
-
 
 void loop() {
+  currentLimits= digitalRead( pinlimitsRA);
+  if ((lastLimits==LOW) && (currentLimits==HIGH))
+  {
+    apagarMontura();
+  }
   if (Serial.available() > 0) {
     // read the incoming byte:
     incomingByte = Serial.read();    
@@ -82,7 +94,15 @@ void loop() {
     procesaComandoTcpIP(letra);
 
   }
+  lastLimits = currentLimits;
 } // end loop
+
+void apagarMontura()
+{
+  bitSet(port0,2);// La montura esta en el rele 3.
+  Serial.println(" ... Apagando Montura.");
+  updateRelays();  
+}
   
 void apagarTodo()
 {
