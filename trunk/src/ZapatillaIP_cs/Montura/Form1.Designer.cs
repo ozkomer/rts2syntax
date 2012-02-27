@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.serialPortMontura = new System.IO.Ports.SerialPort(this.components);
             this.timerReadSerial = new System.Windows.Forms.Timer(this.components);
-            this.buttonContinue = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +48,8 @@
             this.checkBoxInfrarojos = new System.Windows.Forms.CheckBox();
             this.timerTelescopio = new System.Windows.Forms.Timer(this.components);
             this.buttonPin7Low = new System.Windows.Forms.Button();
+            this.buttonFlipCountReset = new System.Windows.Forms.Button();
+            this.buttonShowLog = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBoxRA.SuspendLayout();
             this.groupBoxDEC.SuspendLayout();
@@ -63,17 +64,6 @@
             // 
             this.timerReadSerial.Interval = 200;
             this.timerReadSerial.Tick += new System.EventHandler(this.timerReadSerial_Tick);
-            // 
-            // buttonContinue
-            // 
-            this.buttonContinue.Enabled = false;
-            this.buttonContinue.Location = new System.Drawing.Point(335, 212);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(75, 23);
-            this.buttonContinue.TabIndex = 8;
-            this.buttonContinue.Text = "Continue";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
             // 
             // notifyIcon1
             // 
@@ -186,6 +176,8 @@
             // 
             // groupBoxTelescope
             // 
+            this.groupBoxTelescope.Controls.Add(this.buttonShowLog);
+            this.groupBoxTelescope.Controls.Add(this.buttonFlipCountReset);
             this.groupBoxTelescope.Controls.Add(this.checkBoxInfrared);
             this.groupBoxTelescope.Controls.Add(this.labelTelescope);
             this.groupBoxTelescope.Location = new System.Drawing.Point(12, 12);
@@ -211,7 +203,7 @@
             // 
             this.labelTelescope.AutoSize = true;
             this.labelTelescope.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTelescope.Location = new System.Drawing.Point(32, 32);
+            this.labelTelescope.Location = new System.Drawing.Point(6, 29);
             this.labelTelescope.Name = "labelTelescope";
             this.labelTelescope.Size = new System.Drawing.Size(144, 19);
             this.labelTelescope.TabIndex = 0;
@@ -236,7 +228,7 @@
             // 
             // buttonPin7Low
             // 
-            this.buttonPin7Low.Location = new System.Drawing.Point(264, 212);
+            this.buttonPin7Low.Location = new System.Drawing.Point(339, 215);
             this.buttonPin7Low.Name = "buttonPin7Low";
             this.buttonPin7Low.Size = new System.Drawing.Size(65, 23);
             this.buttonPin7Low.TabIndex = 13;
@@ -244,16 +236,35 @@
             this.buttonPin7Low.UseVisualStyleBackColor = true;
             this.buttonPin7Low.Click += new System.EventHandler(this.buttonPin7Low_Click);
             // 
+            // buttonFlipCountReset
+            // 
+            this.buttonFlipCountReset.Location = new System.Drawing.Point(131, 58);
+            this.buttonFlipCountReset.Name = "buttonFlipCountReset";
+            this.buttonFlipCountReset.Size = new System.Drawing.Size(103, 23);
+            this.buttonFlipCountReset.TabIndex = 2;
+            this.buttonFlipCountReset.Text = "Reset Flip Count";
+            this.buttonFlipCountReset.UseVisualStyleBackColor = true;
+            this.buttonFlipCountReset.Click += new System.EventHandler(this.buttonFlipCountReset_Click);
+            // 
+            // buttonShowLog
+            // 
+            this.buttonShowLog.Location = new System.Drawing.Point(317, 58);
+            this.buttonShowLog.Name = "buttonShowLog";
+            this.buttonShowLog.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowLog.TabIndex = 3;
+            this.buttonShowLog.Text = "Show Log";
+            this.buttonShowLog.UseVisualStyleBackColor = true;
+            this.buttonShowLog.Click += new System.EventHandler(this.buttonShowLog_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(421, 240);
-            this.Controls.Add(this.buttonPin7Low);
             this.Controls.Add(this.checkBoxInfrarojos);
+            this.Controls.Add(this.buttonPin7Low);
             this.Controls.Add(this.groupBoxTelescope);
             this.Controls.Add(this.groupBoxRA);
-            this.Controls.Add(this.buttonContinue);
             this.Controls.Add(this.groupBoxDEC);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -278,7 +289,6 @@
 
         private System.IO.Ports.SerialPort serialPortMontura;
         private System.Windows.Forms.Timer timerReadSerial;
-        private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem abrirToolStripMenuItem;
@@ -295,6 +305,8 @@
         private System.Windows.Forms.CheckBox checkBoxInfrarojos;
         private System.Windows.Forms.Timer timerTelescopio;
         private System.Windows.Forms.Button buttonPin7Low;
+        private System.Windows.Forms.Button buttonFlipCountReset;
+        private System.Windows.Forms.Button buttonShowLog;
     }
 }
 

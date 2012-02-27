@@ -12,6 +12,8 @@ using ASCOM.DriverAccess;
 using ASCOM;
 using log4net;
 using log4net.Config;
+using ASCOM.DeviceInterface;
+using log4net.Appender;
 
 namespace Montura
 {
@@ -26,25 +28,42 @@ namespace Montura
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
-        private bool lastSlewing;
+
+        private int pierFlips;
+        private PierSide pierSide;
+        private PierSide pierSideLast;
+
+        /// <summary>
+        /// true si la montura del telescopio está en movimiento.
+        /// </summary>
+        private Boolean slewing;
+        /// <summary>
+        /// penultimo valor de la variable slewing
+        /// </summary>
+        private Boolean lastSlewing;
 
 
-        private static String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
+        private static readonly String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
 
         public Form1()
         {
             XmlConfigurator.Configure();
-            logger.Info("Start");
+            logger.Info("Consturctor Start.");
             raLimit = false;
             raLimitLast = false;
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             query = new char[2];
             query[0] = '?';
-            query[1] = '\n';
+            query[1] = '\n'; // revisar si este carcter se usa.
             pin7Low = new char[2];
             pin7Low[0] = '_';
-            pin7Low[1] = '\n';
+            pin7Low[1] = '\n'; // revisar si este carcter se usa.
             InitializeComponent();
+
+
+            pierFlips = 0;
+            pierSide = PierSide.pierUnknown;
+            pierSideLast = PierSide.pierUnknown;
 
             this.serialPortMontura.Open();
             this.timerReadSerial.Start();
@@ -53,7 +72,7 @@ namespace Montura
             this.radioButtonRA_Home.Checked = false;
             this.radioButtonRA_West.Checked = false;
             telescopio = new Telescope("AstroPhysicsV2.Telescope");
-            logger.Info("End");
+            logger.Info("Consturctor End.");
         }
 
         /// <summary>
@@ -81,18 +100,8 @@ namespace Montura
             this.arduinoTcp.Connect();
             if (this.arduinoTcp.Tcpclnt.Connected)
             {
-                this.arduinoTcp.readRelays(); // this.readRelays();
+                this.arduinoTcp.readRelays();
                 System.Threading.Thread.Sleep(250);
-
-                //for (int i = 0; i < 16; i++)
-                //{
-                //    Console.Write("\t" + this.arduinoTcp.RelayStatus[i]);
-                //}
-                //Console.WriteLine("  ...");
-                //Solo modificamos el relay correspondiente a la montura
-                //this.arduinoTcp.RelayStatus[2] = false;//debe ser 2
-                //this.arduinoTcp.refreshPorts();
-                //System.Threading.Thread.Sleep(200);
 
                 this.arduinoTcp.readRelays();
                 if (this.arduinoTcp.RelayStatus[2] == false)
@@ -104,12 +113,6 @@ namespace Montura
                     mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
                 }
                 System.Threading.Thread.Sleep(200);
-
-                //for (int i = 0; i < 16; i++)
-                //{
-                //    Console.Write("\t" + this.arduinoTcp.RelayStatus[i]);
-                //}
-                //Console.WriteLine("  ...");
 
                 if (this.arduinoTcp.Tcpclnt.Connected)
                 {
@@ -130,14 +133,21 @@ namespace Montura
             }
             mensaje.Append(", hasta Park 3");
             DialogResult dr;
+            logger.Info(mensaje.ToString());
             dr = MessageBox.Show(this, mensaje.ToString(), "RA Limit alert.");
             if (dr.Equals(DialogResult.OK))
             {
                 timerReadSerial.Start();
             }
-
         }
 
+        /// <summary>
+        /// Cambia el BackColor de un RadioButton para entregar feedback al usuario
+        /// </summary>
+        /// <param name="ratioButton"></param>
+        /// <param name="discriminante">variable para seleccionar el color.</param>
+        /// <param name="ColorTrue">Color a usar cuando discriminante=true.</param>
+        /// <param name="ColorFalse">Color a usar cuando discriminante=false.</param>
         private void RefreshColor(RadioButton ratioButton, Boolean discriminante, Color ColorTrue, Color ColorFalse)
         {
             if (discriminante)
@@ -151,35 +161,39 @@ namespace Montura
             ratioButton.Checked = discriminante;
         }
 
+        /// <summary>
+        /// Consulta al arduino de los limit Switches por su estado.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timerReadSerial_Tick(object sender, EventArgs e)
         {
-            String respuesta;
-            respuesta = "Tick";
+            String arduinoStatus;
+            arduinoStatus = "Tick";
             serialPortMontura.Write(query, 0, 1);
-            respuesta = serialPortMontura.ReadLine();
+            arduinoStatus = serialPortMontura.ReadLine();
 
-            Console.WriteLine(respuesta);
+            Console.WriteLine(arduinoStatus);
             Status stat;
-            stat = new Serduino.Status(respuesta);
+            stat = new Serduino.Status(arduinoStatus);
             stat.Analiza();
 
             RefreshColor(this.radioButtonRA_East, stat.RaLimitEast, Color.Pink, Color.LightYellow);
             RefreshColor(this.radioButtonRA_West, stat.RaLimitWest, Color.Pink, Color.LightYellow);
             RefreshColor(this.radioButtonRA_Home, stat.RaHome, Color.LightGreen, Color.LightYellow);
             RefreshColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
-            if (stat.RaHome)
+            if ((slewing) && (stat.RaHome))
             {
                 logger.Info("Cruzando RaHome.");
             }
-            if (stat.DecHome)
+            if ((slewing) && (stat.DecHome))
             {
                 logger.Info("Cruzando DecHome.");
             }
 
-            raLimit =((stat.RaLimitEast) || (stat.RaLimitWest));
+            raLimit = ((stat.RaLimitEast) || (stat.RaLimitWest));
             if ((raLimit) && (!raLimitLast))
             {
-                //                this.buttonContinue.Enabled = true;
                 logger.Info("RaLimitEast=" + stat.RaLimitEast);
                 logger.Info("RaLimitWest=" + stat.RaLimitWest);
                 //Flanco de subida de la alerta
@@ -190,21 +204,12 @@ namespace Montura
                 this.pin7_Low();
             }
             raLimitLast = raLimit;
-            //this.ProcesaTelescopio();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
-        private void buttonContinue_Click(object sender, EventArgs e)
-        {
-            logger.Info("buttonContinue_Click, Rehabilitando Airbag.");
-            buttonContinue.Enabled = false;
-        }
-
-
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
@@ -278,6 +283,11 @@ namespace Montura
             this.MostrarVentana();
         }
 
+
+        /// <summary>
+        /// Enciende/Apaga los leds infrarojos de las camara IP.
+        /// </summary>
+        /// <param name="Encender">true->Endender</param>
         private void InfraredControl(bool Encender)
         {
             logger.Info("InfraredControl, encender=" + Encender);
@@ -302,9 +312,11 @@ namespace Montura
             Console.WriteLine("" + url2 + " ---> " + resp2);
         }
 
+        /// <summary>
+        /// Lee el estado del telescopio desde los drivers de ASCOM.
+        /// </summary>
         private void ProcesaTelescopio()
         {
-            //this.timerTelescopio.Stop();
             StringBuilder mensaje;
             mensaje = new StringBuilder();
             Boolean conectado;
@@ -334,7 +346,6 @@ namespace Montura
                 }
 
 
-                Boolean slewing;
                 slewing = false;
                 try
                 {
@@ -359,6 +370,47 @@ namespace Montura
                 {
                     mensaje.Append("Stationary,");
                 }
+
+                #region PierSide
+                mensaje.Append("PierSide=");
+                this.pierSide = telescopio.SideOfPier;
+                //if (pierFlips == 0)
+                //{
+                //    this.pierSideLast = pierSide;
+                //}
+                String strPierSide;
+                strPierSide = "_undef";
+                switch (this.pierSide)
+                {
+                    case (PierSide.pierEast):
+                        strPierSide = "East";
+                        break;
+                    case PierSide.pierUnknown:
+                        strPierSide = "Unknown";
+                        break;
+                    case PierSide.pierWest:
+                        strPierSide = "West";
+                        break;
+                }
+                mensaje.Append(strPierSide);
+                // SI:
+                // 1) Si los ultimos dos estados estan bien determinados.
+                // 2) Ambos estados son diferentes
+                // ENtonces:
+                // Se ha detectado un  Trasito de la montura, o un GEM Flip.
+
+                if ((pierSide != PierSide.pierUnknown) &&  //1)
+                     (pierSideLast != PierSide.pierUnknown) && //1)
+                     (pierSide != pierSideLast))
+                {
+                    pierFlips++;
+                    logger.Info("#Flips=" + pierFlips + ". Actual pierside=" + strPierSide);
+                }
+                mensaje.Append("#Flips=");
+                mensaje.Append(pierFlips);
+
+                pierSideLast = pierSide;
+                #endregion
                 //mensaje.Append(" RA=");
                 //mensaje.Append(String.Format("{0:0.00}", ra));
                 //mensaje.Append(" DEC=");
@@ -412,6 +464,50 @@ namespace Montura
         private void buttonPin7Low_Click(object sender, EventArgs e)
         {
             pin7_Low();
+        }
+
+        private void buttonShowLog_Click(object sender, EventArgs e)
+        {
+            RollingFileAppender rootAppender = (RollingFileAppender)((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Appenders[0];
+            string filename = rootAppender.File;
+            Console.WriteLine("filename=" + filename);
+            OpenLink(filename);
+        }
+
+        public void OpenLink(string sUrl)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(sUrl);
+            }
+            catch (Exception exc1)
+            {
+                // System.ComponentModel.Win32Exception is a known exception that occurs when Firefox is default browser.  
+                // It actually opens the browser but STILL throws this exception so we can just ignore it.  If not this exception,
+                // then attempt to open the URL in IE instead.
+                if (exc1.GetType().ToString() != "System.ComponentModel.Win32Exception")
+                {
+                    // sometimes throws exception so we have to just ignore
+                    // this is a common .NET bug that no one online really has a great reason for so now we just need to try to open
+                    // the URL using IE if we can.
+                    try
+                    {
+                        System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo("IExplore.exe", sUrl);
+                        System.Diagnostics.Process.Start(startInfo);
+                        startInfo = null;
+                    }
+                    catch (Exception exc2)
+                    {
+                        // still nothing we can do so just show the error to the user here.
+                    }
+                }
+            }
+        }
+
+        private void buttonFlipCountReset_Click(object sender, EventArgs e)
+        {
+            this.pierFlips = 0;
+            logger.Info("Reseteando a: pierFlips=0");
         }
     }
 }
