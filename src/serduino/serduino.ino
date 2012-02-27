@@ -23,6 +23,7 @@
 int avals[6][SIZE_A];
 double asums[6];
 int avals_index = 0;
+int pinLimitRA=7;
 
 void setup()
 {
@@ -33,8 +34,14 @@ void setup()
   
  int i;
   
+ pinMode(pinLimitRA,OUTPUT);
+ digitalWrite (pinLimitRA,LOW);
+ 
  for (i = 8; i < 11; i++)
+ {
   pinMode(i, INPUT);
+ }
+  
  // fill sensor array
  for (i = 0; i < 6; i++)
  {
@@ -60,6 +67,8 @@ void sendSensor()
   sensorValue = sensorValue << 1;
   sensorValue |= digitalRead(i);
  }
+
+ 
  Serial.print(sensorValue, DEC);
  Serial.print(" ");
   
@@ -74,6 +83,11 @@ void sendSensor()
 
 void loop()
 {
+ if  (digitalRead(8)==1)//  digitalRead(10)==1
+ {
+   //sensorValue+=8;   
+   digitalWrite (pinLimitRA,HIGH);
+ }
  if (Serial.available())
  {
   char ch = Serial.read();
@@ -83,6 +97,7 @@ void loop()
     sendSensor();
     break;
    default:
+    digitalWrite (pinLimitRA,LOW);
     Serial.println("E unknow command");
   }   
  }
@@ -96,3 +111,5 @@ void loop()
  avals_index ++;
  avals_index %= SIZE_A;
 }
+
+
