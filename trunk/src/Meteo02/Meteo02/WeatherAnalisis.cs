@@ -15,7 +15,7 @@ namespace ASCOM.Meteo02
     /// y el Time-Span completo supera la media hora.    /// </summary>
     public class WeatherAnalisis : Queue<WeatherRow>
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(WeatherRow));
+        private static readonly ILog logger = LogManager.GetLogger(typeof(WeatherAnalisis));
 
         /// <summary>
         /// Ultimo registro ingresado.
@@ -131,6 +131,7 @@ namespace ASCOM.Meteo02
                     logger.Info("activando  timerUnsafe.");
                     this.timerUnsafe.Start();
                 }
+                logger.Info("safe="+safe);
             }
             return safe;
         }
@@ -142,7 +143,7 @@ namespace ASCOM.Meteo02
         {
             double suma;
             suma = 0;
-            logger.Info("Calculando AverageWindSpeed.");
+            logger.Debug("Calculando AverageWindSpeed.");
 
             foreach (WeatherRow registro in this)
             {
@@ -162,7 +163,7 @@ namespace ASCOM.Meteo02
             //if (ultimo is earlier than nuevo)
             if ((ultimo == null) || (ultimo.FechaHora.CompareTo(nuevo.FechaHora) < 0))
             {
-                logger.Info("Insertando nuevo registro. registro=" + nuevo);
+                logger.Debug("Insertando nuevo registro. registro=" + nuevo);
                 this.Enqueue(nuevo);
                 this.ultimo = nuevo;
                 this.aseguraMediaHora();

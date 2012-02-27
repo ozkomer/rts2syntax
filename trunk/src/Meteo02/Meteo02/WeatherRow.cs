@@ -20,8 +20,8 @@ namespace ASCOM.Meteo02
         with      a = 17.27  	
         and       b=237.7 [°C]   
          */
-        private const double aa = 17.27;
-        private const double bb = 237.7;//[°C] 
+        private static readonly double aa = 17.27;//[°C]
+        private static readonly double bb = 237.7;//[°C] 
 
         #region Variables de Instancia
         /// <summary>
@@ -82,8 +82,6 @@ namespace ASCOM.Meteo02
             {
                 this.hasErrors = true;
                 logger.Error("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
-                //Console.WriteLine("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
-                //return;
             }
             this.hasErrors = false;
 
@@ -96,7 +94,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
-                Console.WriteLine("Nuevo registro tiene humedad=null messaje=" + ex.Message);
+                logger.Error("Nuevo registro tiene humedad=null messaje=" + ex.Message);
             }
 
             try
@@ -105,7 +103,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
-                Console.WriteLine("Nuevo registro tiene temp=null messaje=" + ex.Message);
+                logger.Error("Nuevo registro tiene temp=null messaje=" + ex.Message);
             }
 
             try
@@ -114,7 +112,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
-                Console.WriteLine("Nuevo registro tiene barometricPressure=null messaje=" + ex.Message);
+                logger.Error("Nuevo registro tiene barometricPressure=null messaje=" + ex.Message);
             }
 
             try
@@ -123,7 +121,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
-                Console.WriteLine("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
+                logger.Error("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
             }
 
             try
@@ -132,7 +130,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
-                Console.WriteLine("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
+                logger.Error("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
             }
             this.refreshDewPoint();
         }
