@@ -24,7 +24,7 @@ namespace MeteoChase500DriverTestAplication
         public Form1()
         {
             XmlConfigurator.Configure();
-            logger.Info("Start");
+            logger.Info("Start MeteoChase500DiverTestApplication, version 2012_Feb_27");
             InitializeComponent();
             this.labelMaxHumidity.Text = "Max Hum = " + (WeatherAnalisis.MaxHumidity * 100)+" %";
             this.labelMaxWindSpeed.Text = "Max Wind Speed = " + WeatherAnalisis.MaxWindSpeed_inKnots;
