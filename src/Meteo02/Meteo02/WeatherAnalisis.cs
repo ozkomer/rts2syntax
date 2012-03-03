@@ -131,7 +131,7 @@ namespace ASCOM.Meteo02
                     logger.Info("activando  timerUnsafe.");
                     this.timerUnsafe.Start();
                 }
-                logger.Info("safe="+safe);
+                //logger.Info("safe="+safe);
             }
             return safe;
         }

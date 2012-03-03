@@ -137,7 +137,7 @@ namespace ASCOM.Meteo02
         public SafetyMonitor()
         {
             //XmlConfigurator.Configure();
-            logger.Info("Meteorologic monitor:Constructor Start");
+            logger.Debug("Meteorologic monitor:Constructor Start");
             dtWeatheTa = new DataTableWeatherTableAdapter();
             weather_Analisis = new WeatherAnalisis();
 
@@ -147,7 +147,7 @@ namespace ASCOM.Meteo02
             timerLeer.Interval = 30000;
             timerLeer.Elapsed += new System.Timers.ElapsedEventHandler(timerLeer_Elapsed);
             timerLeer.Start();
-            logger.Info("Meteorologic monitor:Constructor End");
+            logger.Debug("Meteorologic monitor:Constructor End");
         }
 
         void timerLeer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -161,7 +161,7 @@ namespace ASCOM.Meteo02
         /// </summary>
         void LeerUltimoRegistro()
         {
-            logger.Info("Start");
+            logger.Debug("Start");
             tololoDataSet.DataTableWeatherDataTable dtWeatherDT;
             tololoDataSet.DataTableWeatherRow registro;
             if (weather_Analisis.Count == 0)
@@ -193,7 +193,7 @@ namespace ASCOM.Meteo02
                     weather_Analisis.insertar(nuevo);
                 }
             }
-            logger.Info("End");
+            logger.Debug("End");
         }
 
         public WeatherAnalisis Weather_Analisis
