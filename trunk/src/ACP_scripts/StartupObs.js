@@ -147,6 +147,15 @@ function main()
     // ==========================
     // ADD ANYTHING ELSE YOU NEED
     // ==========================
+    Dome.OpenShutter();
+    
+    while(Dome.ShutterStatus!=0)
+    {
+     Util.WaitForMilliseconds(1000);
+     Console.PrintLine("Dome.ShutterStatus ="+Dome.ShutterStatus );     
+    }
+    
+    Console.PrintLine("Dome.ShutterStatus ="+Dome.ShutterStatus );
 
     Console.PrintLine("Startup complete");
     Console.Logging = false;
