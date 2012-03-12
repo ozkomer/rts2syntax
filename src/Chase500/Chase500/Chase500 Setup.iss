@@ -4,7 +4,7 @@
 ;
 [Setup]
 AppName=ASCOM Chase500 Dome Driver
-AppVerName=ASCOM Chase500 Dome Driver 0.5
+AppVerName=ASCOM Chase500 Dome Driver 0.51
 AppVersion=0.5
 AppPublisher=Eduardo Maureira <emaureir@gmail.com>
 AppPublisherURL=mailto:emaureir@gmail.com
@@ -33,12 +33,13 @@ Name: "{cf}\ASCOM\Uninstall\Dome\Chase500"
 ; TODO: Add subfolders below {app} as needed (e.g. Name: "{app}\MyFolder")
 
 [Files]
-Source: "C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\Chase500\bin\Release\ASCOM.Chase500.Dome.dll"; DestDir: "{app}"
-Source: "C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\Chase500\bin\Release\Interop.IObjectSafetyTLB.dll"; DestDir: "{app}"
-Source: "C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\Chase500\bin\Release\ModbusTCP.dll"; DestDir: "{app}"
-Source: "C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\Chase500\bin\Release\ModbusTCP.xml"; DestDir: "{app}"
+         
+Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ASCOM.Chase500.Dome.dll"; DestDir: "{app}"
+Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\Interop.IObjectSafetyTLB.dll"; DestDir: "{app}"
+Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ModbusTCP.dll"; DestDir: "{app}"
+Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ModbusTCP.xml"; DestDir: "{app}"
 ; Require a read-me HTML to appear after installation, maybe driver's Help doc
-Source: "C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\Chase500\LeaMe_Chase500.htm"; DestDir: "{app}"; Flags: isreadme
+Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\LeaMe_Chase500.htm"; DestDir: "{app}"; Flags: isreadme
 ; TODO: Add other files needed by your driver here (add subfolders above)
 
 
