@@ -130,6 +130,8 @@ namespace ASCOM.Chase500
 
         public const ushort ZREG_O1XT1 = 20;
 
+        public const UInt16 ZS_MAGNETIC_LOCK1 = 0;
+        public const UInt16 ZS_MAGNETIC_LOCK2 = 3;
         public const UInt16 ZS_SOUTH_OPEN = 4;
         public const UInt16 ZS_SOUTH_50 = 5;
         public const UInt16 ZS_SOUTH_CLOSE = 6;
@@ -392,7 +394,7 @@ namespace ASCOM.Chase500
 
         public bool CanSetAzimuth
         {
-            get { return true; }
+            get { return false; }
         }
 
         public bool CanSetPark

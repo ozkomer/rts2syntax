@@ -7,3 +7,16 @@ C:\Users\Eduardo\Documents\Visual Studio 2008\Projects\Chase500\Chase500\obj\Deb
 C:\Users\Eduardo\Documents\Visual Studio 2008\Projects\Chase500\Chase500\obj\Debug\Chase500.csproj.GenerateResource.Cache
 C:\Users\Eduardo\Documents\Visual Studio 2008\Projects\Chase500\Chase500\obj\Debug\ASCOM.Chase500.Dome.dll
 C:\Users\Eduardo\Documents\Visual Studio 2008\Projects\Chase500\Chase500\obj\Debug\ASCOM.Chase500.Dome.pdb
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Debug\LeaMe_Chase500.htm
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Debug\ASCOM.Chase500.Dome.dll
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Debug\ASCOM.Chase500.Dome.pdb
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Debug\ASCOM.Chase500.Dome.tlb
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Debug\Interop.IObjectSafetyTLB.dll
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\Interop.IObjectSafetyTLB.dll
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\Chase500.csproj.ResolveComReference.cache
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\ASCOM.Chase500.Properties.Resources.resources
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\ASCOM.Chase500.SetupDialogForm.resources
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\Chase500.csproj.GenerateResource.Cache
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\ASCOM.Chase500.Dome.dll
+C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\obj\Debug\ASCOM.Chase500.Dome.pdb
