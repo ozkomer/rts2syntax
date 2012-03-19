@@ -108,9 +108,9 @@ public class TololoWeather {
 			e1.printStackTrace();
 		}
 		this.weatherList = WeatherRow.getListFrom(resultSet);
-		if (weatherList.size()!=288)
+		if (weatherList.size()!=1440)
 		{
-			logger.error("weatherList.size()!=288;;weatherList.size()="+weatherList.size());
+			logger.error("weatherList.size()!=1440;;weatherList.size()="+weatherList.size());
 		}
 
 		logger.info("refreshWeather ();;End.");
@@ -183,7 +183,7 @@ public class TololoWeather {
 		wea.refreshWeather();
 		
 		WeatherRow wRow;
-		for (int i=0;i<wea.weatherList.size();i++)
+		for (int i=1000;i<wea.weatherList.size();i++)
 		{
 			wRow = wea.weatherList.elementAt(i);
 			
