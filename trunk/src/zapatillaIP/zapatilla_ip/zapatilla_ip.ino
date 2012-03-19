@@ -7,7 +7,7 @@ Eduardo Maureira, Enero 2012
 #include <Wire.h> // specify use of Wire.h library.
 #include <SPI.h>
 #include <Ethernet.h>
-
+#define BREATH_TIME 240
 int i;
 int j;
 
@@ -56,7 +56,9 @@ void setup()
   Wire.begin();
   Wire.beginTransmission(zxRelayAddres);  // setup out direction registers
   Wire.write((byte)0x06);  // pointer
+  delay(BREATH_TIME);
   Wire.write((byte)0x00);  // DDR Port0 all output
+  delay(BREATH_TIME);
   Wire.write((byte)0x00);  // DDR Port1 all output
   Wire.endTransmission(); 
   
@@ -91,6 +93,7 @@ void loop() {
     // to any clients connected to the server:
     byte letra;
     letra = client.read();
+    delay(BREATH_TIME);
     procesaComandoTcpIP(letra);
 
   }
@@ -242,11 +245,17 @@ void readRelays()
 {
     // read port0, port1
     Wire.beginTransmission(zxRelayAddres);
-    Wire.write((byte)0x00); // must act as a position pointer?
+   delay(BREATH_TIME);
+   Wire.write((byte)0x00); // must act as a position pointer?
+  delay(BREATH_TIME);
     Wire.endTransmission();
+  delay(BREATH_TIME);
     Wire.requestFrom((byte)zxRelayAddres, (byte)2);    // request 1 byte
+  delay(BREATH_TIME);
     port0 = Wire.read(); // receive a byte
+  delay(BREATH_TIME);
     port1 = Wire.read(); // receive a byte
+  delay(BREATH_TIME);
     Wire.endTransmission();
     
       Serial.print(" ... Status Actual port0=");
