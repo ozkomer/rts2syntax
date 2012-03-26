@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitsMonitor", "FitsMonitor\FitsMonitor.csproj", "{82DE7BAD-676A-47C6-A784-F5695451FCEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTransfer", "FileTransfer\FileTransfer.csproj", "{560E158A-435B-4699-92DF-4AFBE07FB844}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupFitsMonitor", "SetupFitsMonitor\SetupFitsMonitor.vdproj", "{81936845-863F-4C55-A542-35A57324758A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,12 @@ Global
 		{82DE7BAD-676A-47C6-A784-F5695451FCEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82DE7BAD-676A-47C6-A784-F5695451FCEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82DE7BAD-676A-47C6-A784-F5695451FCEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{560E158A-435B-4699-92DF-4AFBE07FB844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{560E158A-435B-4699-92DF-4AFBE07FB844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{560E158A-435B-4699-92DF-4AFBE07FB844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{560E158A-435B-4699-92DF-4AFBE07FB844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81936845-863F-4C55-A542-35A57324758A}.Debug|Any CPU.ActiveCfg = Debug
+		{81936845-863F-4C55-A542-35A57324758A}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
