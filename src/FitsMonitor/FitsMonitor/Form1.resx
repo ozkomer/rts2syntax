@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,14 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="IconAstronomy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconAstronomy.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <metadata name="fsWatchFits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAQAAAABAAoAQAAJgAAACAgEAAAAAQA6AIAAE4BAAAoAAAAEAAAACAAAAABAAQAAAAAAIAA
+        AAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/
+        AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAABwAAAHAAAAAAAAAAAABwCABwAAAAAAcAAAiAAAAABwAA
+        AAAAAABwAAgAgAAAAABwcIAAgAAAgAAAAIAAAAAAAHAAAAAAAHAIcAAAAAAAAABwAAAAAAAAAABwAAAA
+        AAAACAAAAAAAAAiABwAAAAAAAAAAAAAAAAAAAAAA/O8AANj/AADptwAA+PkAAOg7AAD5KQAA+BUAAHnx
+        AAD9gwAA/IMAAP/BAAD/dwAA/88AAP+bAAD//wAA//8AACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAA
+        AAAAAAAAEAAAABAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD/
+        /wD/AAAA/wD/AP//AAD///8AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhwAAAAAAAAAAAAAAAAAAAA
+        AIAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAB3AAAAAAAAAA
+        AABwAAAHAAAAAAAAAAAAAAAACAAACAAIAAAAAAAAAAAAAACAcACAAAgAAAAAAAAAAAAAAAcACAAHAAAA
+        AAAAAAAAAAAAcAAAAIgAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAcAAAgACAAAAAAACIgAAAAAB3Bw
+        CAAAAAAAAAAIgAAHCAAAAAAIAAAAAAAAAAAAAACABwAAcAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAAAA
+        AAgAcAAAAAAAAAAAAAAAAAcACHAAAAAAAAAAAAAAAAAAAABwAAAAAAAAgAAAAAAAAAAAAAcAAAAAAAAA
+        AAAAAAAIAAgAAAAAAAAAAAAAAAAAAAiAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADf////////////
+        /////t/////////n/////f////+/f//33///+Of//2D//3+ia///wnv//6O7///x/P//sTX///Ms/+Pw
+        Gv/54vj///k5///ruX//+oH///mB///+wP9//nv///7P////nf////f////3/////////////////w==
+</value>
   </data>
-  <data name="Play_1_Normal_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Play-1-Normal-icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Stop_Normal_Red_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Stop-Normal-Red-icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <metadata name="notifyIcon1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>131, 17</value>
+  </metadata>
+  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>244, 17</value>
+  </metadata>
+  <data name="notifyIcon1.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAQAAAABAAoAQAAJgAAACAgEAAAAAQA6AIAAE4BAAAoAAAAEAAAACAAAAABAAQAAAAAAIAA
+        AAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/
+        AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAABwAAAHAAAAAAAAAAAABwCABwAAAAAAcAAAiAAAAABwAA
+        AAAAAABwAAgAgAAAAABwcIAAgAAAgAAAAIAAAAAAAHAAAAAAAHAIcAAAAAAAAABwAAAAAAAAAABwAAAA
+        AAAACAAAAAAAAAiABwAAAAAAAAAAAAAAAAAAAAAA/O8AANj/AADptwAA+PkAAOg7AAD5KQAA+BUAAHnx
+        AAD9gwAA/IMAAP/BAAD/dwAA/88AAP+bAAD//wAA//8AACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAA
+        AAAAAAAAEAAAABAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD/
+        /wD/AAAA/wD/AP//AAD///8AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhwAAAAAAAAAAAAAAAAAAAA
+        AIAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAB3AAAAAAAAAA
+        AABwAAAHAAAAAAAAAAAAAAAACAAACAAIAAAAAAAAAAAAAACAcACAAAgAAAAAAAAAAAAAAAcACAAHAAAA
+        AAAAAAAAAAAAcAAAAIgAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAcAAAgACAAAAAAACIgAAAAAB3Bw
+        CAAAAAAAAAAIgAAHCAAAAAAIAAAAAAAAAAAAAACABwAAcAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAAAA
+        AAgAcAAAAAAAAAAAAAAAAAcACHAAAAAAAAAAAAAAAAAAAABwAAAAAAAAgAAAAAAAAAAAAAcAAAAAAAAA
+        AAAAAAAIAAgAAAAAAAAAAAAAAAAAAAiAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADf////////////
+        /////t/////////n/////f////+/f//33///+Of//2D//3+ia///wnv//6O7///x/P//sTX///Ms/+Pw
+        Gv/54vj///k5///ruX//+oH///mB///+wP9//nv///7P////nf////f////3/////////////////w==
+</value>
   </data>
 </root>
