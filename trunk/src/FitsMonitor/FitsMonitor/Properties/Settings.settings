@@ -1,7 +1,21 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FitsMonitor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WatchFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\chase\Documents\ACP Astronomy\Images</Value>
+    </Setting>
+    <Setting Name="Host" Type="System.String" Scope="User">
+      <Value Profile="(Default)">139.229.12.77</Value>
+    </Setting>
+    <Setting Name="Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)">chase</Value>
+    </Setting>
+    <Setting Name="SshHostKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ssh-rsa 2048 cb:fb:8d:12:39:4f:84:ca:53:ce:eb:44:a0:ad:be:ed</Value>
+    </Setting>
+    <Setting Name="RemoteBasePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/images/rawdata/</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
