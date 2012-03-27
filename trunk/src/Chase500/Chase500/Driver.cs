@@ -268,8 +268,8 @@ namespace ASCOM.Chase500
 
         public void OpenShutter()
         {
-            northRoof = Dome.OPEN;
-            southRoof = Dome.OPEN;
+            //northRoof = Dome.OPEN;
+            //southRoof = Dome.OPEN;
             this.OpenDome();
         }
 
@@ -305,11 +305,17 @@ namespace ASCOM.Chase500
             {
                 if (value)
                 {
-                    this.Connect();
+                    if (!this.zelioConn.connected)
+                    {
+                        this.Connect();
+                    }                     
                 }
                 else
                 {
-                    this.Disconnect();
+                    if (this.zelioConn.connected)
+                    {
+                        this.Disconnect();
+                    }
                 }
             }
         }
@@ -394,7 +400,7 @@ namespace ASCOM.Chase500
 
         public bool CanSetAzimuth
         {
-            get { return false; }
+            get { return true; }
         }
 
         public bool CanSetPark
@@ -578,10 +584,10 @@ namespace ASCOM.Chase500
         void domeMovingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this.Read_ZREG_O1XT1();
-            if ((shutterStatus == ShutterState.shutterClosing) && (this.IsClosed() == 3))
+            if ((shutterStatus == ShutterState.shutterClosing) && (this.IsClosed()))
             {
                 this.shutterStatus = ShutterState.shutterClosed;
-                if (this.domeMovingTimer.Enabled)
+                //if (this.domeMovingTimer.Enabled)
                 {
                     this.domeMovingTimer.Stop();
                 }
@@ -831,15 +837,15 @@ namespace ASCOM.Chase500
             }
             switch (this.southRoof)
             {
-                case 0:
+                case OPEN:
                     if (zregO1XT1[ZS_SOUTH_OPEN])
                         hits |= 0x02;
                     break;
-                case 1:
+                case HALF:
                     if (zregO1XT1[ZS_SOUTH_50])
                         hits |= 0x02;
                     break;
-                case 2:
+                case CLOSE:
                     if (zregO1XT1[ZS_SOUTH_CLOSE])
                         hits |= 0x02;
                     break;
@@ -853,21 +859,19 @@ namespace ASCOM.Chase500
 
         /// <summary>
         /// Al invocar a esta funcion, los valores de zregO1XT1 deben estar frescos.
+        /// Se leerá la info de los magnetic locks para determinar si 
+        /// la cupula esta cerrada.
         /// </summary>
         /// <returns></returns>
-        public int IsClosed()
+        public Boolean IsClosed()
         {
-            // check states of end switches..
-            int hits = 0;
-            if (zregO1XT1[ZS_SOUTH_CLOSE])
-            {
-                hits |= 0x01;
-            }
-            if (zregO1XT1[ZS_NORTH_CLOSE])
-            {
-                hits |= 0x02;
-            }
-            return hits;
+
+            Boolean respuesta;
+            respuesta = ( ( ! (Zreg_O1XT1[ZS_MAGNETIC_LOCK1]))
+                            &&
+                          ( ! (Zreg_O1XT1[ZS_MAGNETIC_LOCK2]))
+                        );
+            return respuesta;
         }
 
         #endregion
