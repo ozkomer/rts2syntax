@@ -86,11 +86,6 @@ namespace ASCOM.Chase500
         private Master zelioConn;
 
         /// <summary>
-        /// Host del PLC
-        /// </summary>
-        private String host;
-
-        /// <summary>
         /// Puerto de comunicaciones ModBus /TCP del PLC.
         /// </summary>
         private ushort port;
@@ -197,8 +192,7 @@ namespace ASCOM.Chase500
 
         public Dome()
         {
-            zelioConn = new Master();
-            this.host = null;
+            zelioConn = new Master();            
             this.port = 502;
             zregJ1XT1 = new Boolean[16];
             zregO1XT1 = new Boolean[16];
@@ -465,8 +459,11 @@ namespace ASCOM.Chase500
         /// </summary>
         public String Host
         {
-            get { return this.host; }
-            set { this.host = value; }
+            get { return Properties.Settings.Default.Host; }
+            set { 
+                Properties.Settings.Default.Host = value;
+                Properties.Settings.Default.Save();
+            }
         }
 
         /// <summary>
@@ -545,10 +542,10 @@ namespace ASCOM.Chase500
         public void Connect()
         {
             if (!zelioConn.connected)
-            {
-                this.host = "10.0.65.10";
+            {                
                 this.port = 502;
-                zelioConn.connect(this.host, this.port);
+                zelioConn.connect ( Properties.Settings.Default.Host, 
+                                    this.port);
             }
         }
 

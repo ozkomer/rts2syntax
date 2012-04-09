@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Text;
 
 namespace ASCOM.Chase500
 {
@@ -15,6 +16,8 @@ namespace ASCOM.Chase500
 
         private void CmdOkClick(object sender, EventArgs e)
         {
+            Properties.Settings.Default.Host = this.tbHost.Text;
+            Properties.Settings.Default.Save();
             Dispose();
         }
 
@@ -38,6 +41,20 @@ namespace ASCOM.Chase500
             {
                 MessageBox.Show(other.Message);
             }
+        }
+
+        private void tbHost_TextChanged(object sender, EventArgs e)
+        {
+            FeedbackModificacion();
+        }
+
+        private void FeedbackModificacion()
+        {
+            StringBuilder sb;
+            sb = new StringBuilder();
+            sb.Append ("(*) ");
+            sb.Append (Properties.Settings.Default.DriverName);
+            this.Text = sb.ToString();
         }
     }
 }
