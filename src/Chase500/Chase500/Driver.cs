@@ -44,6 +44,7 @@ namespace ASCOM.Chase500
     [ComVisible(true)]
     public class Dome : IDomeV2
     {
+        double dummyAzimuth;
 
         #region Variables de Instancia
         /// <summary>
@@ -84,11 +85,6 @@ namespace ASCOM.Chase500
         /// del protocolo ModBus Tcp/Ip
         /// </summary>
         private Master zelioConn;
-
-        /// <summary>
-        /// Puerto de comunicaciones ModBus /TCP del PLC.
-        /// </summary>
-        private ushort port;
 
         /// <summary>
         /// Timer encargado de refrescar la variable shutterStatus
@@ -193,12 +189,11 @@ namespace ASCOM.Chase500
         public Dome()
         {
             zelioConn = new Master();            
-            this.port = 502;
             zregJ1XT1 = new Boolean[16];
             zregO1XT1 = new Boolean[16];
 
-            northRoof = Dome.OPEN;
-            southRoof = Dome.OPEN;
+            northRoof = Properties.Settings.Default.NorthOpen;
+            southRoof = Properties.Settings.Default.SouthOpen;
             shutterStatus = ShutterState.shutterClosed;
 
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
@@ -284,6 +279,7 @@ namespace ASCOM.Chase500
 
         public void SlewToAzimuth(double azimuth)
         {
+            this.dummyAzimuth = azimuth;
             return;
         }
 
@@ -374,7 +370,7 @@ namespace ASCOM.Chase500
 
         public double Azimuth
         {
-            get { return 0; }
+            get { return this.dummyAzimuth; }
         }
 
         public bool CanFindHome
@@ -469,10 +465,13 @@ namespace ASCOM.Chase500
         /// <summary>
         /// Puerto para las comunicaciones ModBus del PLC.
         /// </summary>
-        public ushort Port
+        public Decimal Port
         {
-            get { return this.port; }
-            set { this.port = value; }
+            get { return Properties.Settings.Default.Port; }
+            set {
+                Properties.Settings.Default.Port = value;
+                Properties.Settings.Default.Save();
+            }
         }
 
         /// <summary>
@@ -480,8 +479,11 @@ namespace ASCOM.Chase500
         /// </summary>
         public ushort NorthRoof
         {
-            get { return this.northRoof; }
-            set { this.northRoof = value; }
+            get { return Properties.Settings.Default.NorthOpen; }
+            set { 
+                Properties.Settings.Default.NorthOpen = value;
+                Properties.Settings.Default.Save();
+            }
         }
 
         /// <summary>
@@ -489,8 +491,11 @@ namespace ASCOM.Chase500
         /// </summary>
         public ushort SouthRoof
         {
-            get { return this.southRoof; }
-            set { this.southRoof = value; }
+            get { return Properties.Settings.Default.SouthOpen; }
+            set {
+                Properties.Settings.Default.SouthOpen = value;
+                Properties.Settings.Default.Save();
+            }
         }
 
 
@@ -543,9 +548,8 @@ namespace ASCOM.Chase500
         {
             if (!zelioConn.connected)
             {                
-                this.port = 502;
-                zelioConn.connect ( Properties.Settings.Default.Host, 
-                                    this.port);
+                zelioConn.connect ( Properties.Settings.Default.Host,
+                                    (ushort) Properties.Settings.Default.Port);
             }
         }
 
@@ -645,8 +649,10 @@ namespace ASCOM.Chase500
             #region Genera Comando Open
             int valor;
             valor = 0;
+            this.northRoof = Properties.Settings.Default.NorthOpen;
+            this.southRoof = Properties.Settings.Default.SouthOpen;
             // Lado Norte
-            switch (northRoof)
+            switch (this.northRoof)
             {
                 case (Dome.OPEN):
                     valor += 1;
@@ -665,7 +671,7 @@ namespace ASCOM.Chase500
                     //valor += (1 << 3);
                     break;
             }
-            switch (southRoof)
+            switch (this.southRoof)
             {
                 case (Dome.OPEN):
                     valor += (1 << 4);

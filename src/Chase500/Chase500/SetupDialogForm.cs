@@ -12,11 +12,17 @@ namespace ASCOM.Chase500
         public SetupDialogForm()
         {
             InitializeComponent();
+            this.cbxNorth.SelectedIndex = Properties.Settings.Default.NorthOpen;
+            this.cbxSouth.SelectedIndex = Properties.Settings.Default.SouthOpen;
         }
 
         private void CmdOkClick(object sender, EventArgs e)
         {
             Properties.Settings.Default.Host = this.tbHost.Text;
+            Properties.Settings.Default.Port = this.nudPort.Value;
+            Properties.Settings.Default.NorthOpen = (ushort) this.cbxNorth.SelectedIndex;
+            Properties.Settings.Default.SouthOpen = (ushort) this.cbxSouth.SelectedIndex;
+
             Properties.Settings.Default.Save();
             Dispose();
         }
@@ -55,6 +61,21 @@ namespace ASCOM.Chase500
             sb.Append ("(*) ");
             sb.Append (Properties.Settings.Default.DriverName);
             this.Text = sb.ToString();
+        }
+
+        private void nudPort_ValueChanged(object sender, EventArgs e)
+        {
+            FeedbackModificacion();
+        }
+
+        private void cbxNorth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FeedbackModificacion();
+        }
+
+        private void cbxSouth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FeedbackModificacion();
         }
     }
 }
