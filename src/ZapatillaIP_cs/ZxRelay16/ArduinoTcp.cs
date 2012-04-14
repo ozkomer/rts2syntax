@@ -16,6 +16,7 @@ namespace ZxRelay16
     /// </summary>
     public class ArduinoTcp
     {
+        #region Variables de Instancia
         /// <summary>
         /// Cliente que se conecta al modulo Ethernet del arduino
         /// </summary>
@@ -52,6 +53,7 @@ namespace ZxRelay16
         /// Puerto donde el software servidor del arduino espera clientes.
         /// </summary>
         private int tcpPort;
+        #endregion
 
         /// <summary>
         /// Status de cada uno de los 16 relays.
