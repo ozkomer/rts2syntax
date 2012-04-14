@@ -116,7 +116,7 @@ namespace ZapatillaIP_cs
                 {
                     tickeds.Add(i);
                     //relayStatus[i] = targetState;
-                    message.AppendLine(relayCheckBox[i].Text);
+                    message.AppendLine(cbLocal.Text);
                 }
             }
             message.Append("serán ");
@@ -135,7 +135,9 @@ namespace ZapatillaIP_cs
                 foreach (int indice in tickeds)
                 {
                     Console.WriteLine("relayStatus[" + indice + "]=" + this.arduinoTcp.RelayStatus[indice] + " ---> " + targetState);
+                    // Se actualiza la interfaz para que ningun checkBox permanezca tickeado despues mover los switches
                     relayCheckBox[indice].Checked = false;
+                    // Se actualizan los estados en el arduino, pero no aun en el arreglo de relays
                     this.arduinoTcp.RelayStatus[indice] = targetState;
                 }
                 refreshcheckBoxRelayColors();
