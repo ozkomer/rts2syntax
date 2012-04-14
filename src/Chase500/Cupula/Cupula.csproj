@@ -99,10 +99,6 @@
       <Project>{4C4B8279-8AFE-441F-A244-388EFDE48B0C}</Project>
       <Name>Chase500</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ModbusClassTCP\ModbusTCP.csproj">
-      <Project>{F2485353-AF87-48FA-8E92-8A6B7779443F}</Project>
-      <Name>ModbusTCP</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
