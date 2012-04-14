@@ -48,7 +48,7 @@ namespace Montura
         public Form1()
         {
             XmlConfigurator.Configure();
-            logger.Info("Consturctor Start.");
+            logger.Info("Constructor Start.");
             raLimit = false;
             raLimitLast = false;
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
@@ -498,6 +498,7 @@ namespace Montura
                     }
                     catch (Exception exc2)
                     {
+                        logger.Error(exc2.Message);
                         // still nothing we can do so just show the error to the user here.
                     }
                 }
