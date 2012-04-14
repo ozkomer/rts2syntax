@@ -16,6 +16,10 @@ namespace ASCOM.OrbitATC02
         {
             Properties.Settings.Default.CommPort = tbCommPort.Text;
             Properties.Settings.Default.BaudRate = nudBaudRate.Value;
+            Properties.Settings.Default.StepSize = Double.Parse(tbStepSize.Text);
+            Properties.Settings.Default.refreshFirmwareInfo = this.cbRefreshFirmwareInfo.Checked;
+            Properties.Settings.Default.refreshStatus = this.cbRefreshStatus.Checked;
+            Properties.Settings.Default.refreshStatusTimer = this.nudRefreshStatusPeriod.Value;
             Properties.Settings.Default.Save();
             Dispose();
         }
@@ -44,10 +48,15 @@ namespace ASCOM.OrbitATC02
 
         private void SetupDialogForm_Load(object sender, EventArgs e)
         {
-
+            this.tbStepSize.Text = ""+Properties.Settings.Default.StepSize;
         }
 
         private void cbxBaudRate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbRefreshStatus_CheckedChanged(object sender, EventArgs e)
         {
 
         }

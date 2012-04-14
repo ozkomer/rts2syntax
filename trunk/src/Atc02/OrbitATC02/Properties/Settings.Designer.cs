@@ -25,7 +25,7 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.51")]
         public string DriverName {
             get {
                 return ((string)(this["DriverName"]));
@@ -56,6 +56,66 @@ namespace ASCOM.OrbitATC02.Properties {
             }
             set {
                 this["BaudRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double StepSize {
+            get {
+                return ((double)(this["StepSize"]));
+            }
+            set {
+                this["StepSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Aun no actualizado.")]
+        public string DeviceDescription {
+            get {
+                return ((string)(this["DeviceDescription"]));
+            }
+            set {
+                this["DeviceDescription"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public decimal refreshStatusTimer {
+            get {
+                return ((decimal)(this["refreshStatusTimer"]));
+            }
+            set {
+                this["refreshStatusTimer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool refreshStatus {
+            get {
+                return ((bool)(this["refreshStatus"]));
+            }
+            set {
+                this["refreshStatus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool refreshFirmwareInfo {
+            get {
+                return ((bool)(this["refreshFirmwareInfo"]));
+            }
+            set {
+                this["refreshFirmwareInfo"] = value;
             }
         }
     }

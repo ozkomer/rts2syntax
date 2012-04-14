@@ -72,7 +72,9 @@ namespace Atc02
         {
             Console.WriteLine("->" + OPENREM);
             serialPort1.Write(OPENREM);
-            LeerSerial(10);
+            String respuesta;
+            respuesta = LeerSerial(10).Trim();
+            Console.WriteLine("*"+respuesta+"*");
         }
 
         private void bReadSet_Click(object sender, EventArgs e)
@@ -86,11 +88,21 @@ namespace Atc02
         {
             Console.WriteLine("->" + UPDATEPC);
             serialPort1.Write(UPDATEPC);
-            LeerSerial(100);
+            String respuesta;
+            respuesta = LeerSerial(100).Trim();
+            String[] linea;
+            linea = respuesta.Split(("\n").ToCharArray());
+            for(int i=0;i<linea.Length;i++)
+            {
+                String line;
+                line = linea[i];
+                Console.WriteLine("Linea "+i+"=" + line);
+            }
         }
 
-        private void LeerSerial(int cantCaracteres)
+        private String LeerSerial(int cantCaracteres)
         {
+            String respuesta;
             Console.WriteLine("<---LeerSerial--->");
             Console.Write("Esperando respuesta ");
 
@@ -101,8 +113,10 @@ namespace Atc02
             }
             Console.WriteLine(".");
             System.Threading.Thread.Sleep(200);
-            Console.WriteLine(serialPort1.ReadExisting());
+            respuesta = serialPort1.ReadExisting();
+            Console.WriteLine(respuesta);
             Console.WriteLine("<---LeerSerial--->");
+            return respuesta;
         }
 
         private void bCloseRemote_Click(object sender, EventArgs e)

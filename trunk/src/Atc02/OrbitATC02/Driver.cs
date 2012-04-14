@@ -27,6 +27,7 @@ using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System.Globalization;
 using System.IO.Ports;
+using System.Text;
 
 namespace ASCOM.OrbitATC02
 {
@@ -42,7 +43,44 @@ namespace ASCOM.OrbitATC02
     [ComVisible(true)]
     public class Focuser : IFocuserV2
     {
-        SerialPort ttyATC;
+        /// <summary>
+        /// Puerto serial del ATC-02
+        /// </summary>
+        private SerialPort ttyATC;
+
+        /// <summary>
+        /// Status obtenido a traves del metodo UPDATEPC del firmware del ATC-02
+        /// </summary>
+        private AtcStatus atcStat;
+
+        /// <summary>
+        /// Se esta conectado cuando al enviar el mensaje OPENREM se recibe el mismo texto como respuesta.
+        /// Se esta DESconectado cuando al enviar el mensaje CLOSEREM se recibe el mismo texto como respuesta.
+        /// </summary>
+        private bool conectado;
+
+        /// <summary>
+        /// true si el motor del secundario esta en movimiento. O más especifico,
+        /// si se está ejecutando el método: Move().
+        /// </summary>
+        private bool enMovimiento;
+
+        /// <summary>
+        /// Step en que está actualmente el secundario. Se semisetea con el parámetro del
+        /// metodo Move(), pero se actualiza de manera definitiva con la respuesta del ATC al comando Move.
+        /// </summary>
+        private int posicion;
+
+        private System.Timers.Timer statusTimer;
+
+        //                                     0123456789
+        public readonly String OPENREM = "OPENREM   ";
+        public readonly String CLOSEREM = "CLOSEREM  ";
+        public readonly String READSETT = "READSETT  ";
+        public readonly String UPDATEPC = "UPDATEPC  ";
+        public readonly String SETFAN = "SETFAN ";
+        public readonly String SETBFL = "BFL ";
+        public readonly String FINDOPTIMA = "FINDOPTIMA";
 
         #region Constants
         //
@@ -85,10 +123,23 @@ namespace ASCOM.OrbitATC02
 
         public Focuser()
         {
+            this.conectado = false;
             this.ttyATC = new SerialPort(
-                Properties.Settings.Default.CommPort, 
+                Properties.Settings.Default.CommPort,
                 (int)Properties.Settings.Default.BaudRate
                 );
+            this.atcStat = null;
+            this.statusTimer = new  System.Timers.Timer();
+            this.statusTimer.Interval = (double) Properties.Settings.Default.refreshStatusTimer;
+            this.statusTimer.Elapsed += new System.Timers.ElapsedEventHandler(statusTimer_Elapsed);
+        }
+
+        void statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!enMovimiento)
+            {
+                this.RefreshAtcStatus();
+            }
         }
 
         #region Implementation of IFocuserV2
@@ -103,7 +154,34 @@ namespace ASCOM.OrbitATC02
 
         public string Action(string actionName, string actionParameters)
         {
-            throw new ASCOM.MethodNotImplementedException("Action");
+            String respuesta;
+            respuesta = null;
+            switch (actionName)
+            {
+                case "READSETT":
+                    respuesta = this.ReadSettings();
+                    break;
+                case "UPDATEPC":                    
+                    this.RefreshAtcStatus();
+                    if (this.atcStat == null)
+                    {
+                        respuesta = "NULL STATUS";
+                    }
+                    else
+                    {
+                        respuesta = this.atcStat.ToString();
+                    }
+                    break;
+                case "SETFAN":
+                    respuesta = this.SetFan(Int32.Parse(actionParameters));
+                    break;
+                case "FINDOPTIMA":
+                    respuesta = this.FindOptimal();
+                    break;
+                default:
+                    break;
+            }
+            return respuesta;
         }
 
         public void CommandBlind(string command, bool raw)
@@ -133,23 +211,91 @@ namespace ASCOM.OrbitATC02
 
         public void Move(int value)
         {
-            throw new System.NotImplementedException();
+            this.enMovimiento = true;
+            this.posicion = value;
+            Double bfl;
+            int newPosition;
+            StringBuilder comandoBFL;
+            String respuesta;
+            bfl = 130 + ( ((double) posicion) / 100.0 );
+            comandoBFL = new StringBuilder();
+            comandoBFL.Append(SETBFL);
+
+            comandoBFL.Append(bfl.ToString("000.00"));
+            Console.WriteLine("->" + comandoBFL);
+            ttyATC.Write(comandoBFL.ToString());
+
+            respuesta = LeerSerial(10).Trim();
+            String[] parte;
+            parte = respuesta.Split();
+            try
+            {
+                newPosition = 100 * (Int32.Parse(parte[1]) - 130);
+            }
+            catch (Exception )
+            {
+
+                newPosition = -1;
+            }
+            
+            this.posicion = newPosition;
+            this.enMovimiento = false;
         }
 
         public bool Connected
         {
-            get { throw new System.NotImplementedException(); }
-            set { throw new System.NotImplementedException(); }
+            get { return this.conectado; }
+            set
+            {
+                if (value == true)
+                {
+                    this.ttyATC = new SerialPort(
+                        Properties.Settings.Default.CommPort,
+                        (int)Properties.Settings.Default.BaudRate
+                        );
+                    ttyATC.Write(OPENREM);
+                    String respuesta;
+                    respuesta = LeerSerial(10);
+                    this.conectado = OPENREM.Contains(respuesta);
+                    if (Properties.Settings.Default.refreshStatus)
+                    {
+                        this.statusTimer.Start();
+                    }
+                }
+                else
+                {
+                    ttyATC.Write(CLOSEREM);
+                    String respuesta;
+                    respuesta = LeerSerial(10);
+                    this.conectado = (!(CLOSEREM.Contains(respuesta)));
+                    if (!conectado)
+                    {
+                        try
+                        {
+                            this.ttyATC.Close();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            conectado = true;
+                        }
+                    }
+                }
+            }
         }
 
         public string Description
         {
-            get { throw new System.NotImplementedException(); }
+            get { return Properties.Settings.Default.DeviceDescription; }
         }
 
         public string DriverInfo
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                String respuesta;
+                respuesta = "Chase500 ATC-02 Focuser. Desarrollado por Eduardo Maureira emaureir@gmail.com";
+                return respuesta;
+            }
         }
 
         public string DriverVersion
@@ -168,22 +314,30 @@ namespace ASCOM.OrbitATC02
 
         public string Name
         {
-            get { throw new System.NotImplementedException(); }
+            get { return "Chase500 ATC-02 Focuser."; }
         }
 
         public ArrayList SupportedActions
         {
-            get { return new ArrayList(); }
+            get {
+                ArrayList respuesta;
+                respuesta = new ArrayList();
+                respuesta.Add(READSETT);
+                respuesta.Add(UPDATEPC);
+                respuesta.Add(SETFAN);
+                respuesta.Add(FINDOPTIMA);
+                return respuesta; 
+            }
         }
 
         public bool Absolute
         {
-            get { throw new System.NotImplementedException(); }
+            get { return true; }
         }
 
         public bool IsMoving
         {
-            get { throw new System.NotImplementedException(); }
+            get { return this.enMovimiento; }
         }
 
         // use the V2 connected property
@@ -193,24 +347,30 @@ namespace ASCOM.OrbitATC02
             set { this.Connected = value; }
         }
 
+        /// <summary>
+        /// Maximum increment size allowed by the focuser; i.e. the maximum number of steps allowed in one move operation.
+        /// </summary>
         public int MaxIncrement
         {
-            get { throw new System.NotImplementedException(); }
+            get { return 8000; }
         }
 
+        /// <summary>
+        /// Maximum step position permitted.
+        /// </summary>
         public int MaxStep
         {
-            get { throw new System.NotImplementedException(); }
+            get { return 8000; }
         }
 
         public int Position
         {
-            get { throw new System.NotImplementedException(); }
+            get { return this.posicion; }
         }
 
         public double StepSize
         {
-            get { throw new System.NotImplementedException(); }
+            get { return Properties.Settings.Default.StepSize; }
         }
 
         public bool TempComp
@@ -221,14 +381,81 @@ namespace ASCOM.OrbitATC02
 
         public bool TempCompAvailable
         {
-            get { throw new System.NotImplementedException(); }
+            get { return false; }
         }
 
         public double Temperature
         {
-            get { throw new System.NotImplementedException(); }
+            get {
+                if ((this.atcStat == null) || (!this.statusTimer.Enabled))
+                {
+                    this.RefreshAtcStatus();
+                }
+                return this.atcStat.AmbientTemperature;
+            }
         }
 
+        #endregion
+        #region Metodos privados
+
+        private String ReadSettings()
+        {
+            Console.WriteLine("->" + READSETT);
+            this.ttyATC.Write(READSETT);
+            String respuesta;
+            respuesta = LeerSerial(130).Trim();
+            return respuesta;
+        }
+
+        private void RefreshAtcStatus()
+        {
+            Console.WriteLine("->" + UPDATEPC);
+            this.ttyATC.Write(UPDATEPC);
+            String rawStatus;
+            rawStatus = LeerSerial(100).Trim();
+            this.atcStat = new AtcStatus(rawStatus);            
+        }
+
+        private String FindOptimal()
+        {
+            Console.WriteLine("->" + FINDOPTIMA);
+            this.ttyATC.Write(FINDOPTIMA);
+            String respuesta;
+            respuesta = LeerSerial(10).Trim();
+            return respuesta;
+        }
+
+        private String SetFan(Int32 valor)
+        {
+            StringBuilder comandoFan;
+            comandoFan = new StringBuilder();
+            comandoFan.Append(SETFAN);
+            comandoFan.Append(valor.ToString("000"));
+            Console.WriteLine("->" + comandoFan);
+            ttyATC.Write(comandoFan.ToString());
+            String respuesta;
+            respuesta = LeerSerial(10).Trim();
+            return respuesta;
+        }
+
+        private String LeerSerial(int cantCaracteres)
+        {
+            String respuesta;
+            Console.WriteLine("<---LeerSerial--->");
+            Console.Write("Esperando respuesta ");
+
+            while (ttyATC.BytesToRead < cantCaracteres)
+            {
+                Console.Write(".");
+                System.Threading.Thread.Sleep(200);
+            }
+            Console.WriteLine(".");
+            System.Threading.Thread.Sleep(200);
+            respuesta = this.ttyATC.ReadExisting();
+            Console.WriteLine(respuesta);
+            Console.WriteLine("<---LeerSerial--->");
+            return respuesta;
+        }
         #endregion
     }
 }
