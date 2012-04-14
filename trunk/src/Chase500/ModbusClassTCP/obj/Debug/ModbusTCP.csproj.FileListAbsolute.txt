@@ -1,6 +1,0 @@
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\bin\Debug\ModbusTCP.dll
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\bin\Debug\ModbusTCP.pdb
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\bin\Debug\modbusTCP.xml
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\obj\Debug\ModbusTCP.dll
-C:\Users\Eduardo\Documents\OAN\oanSVN\src\Chase500\ModbusClassTCP\obj\Debug\ModbusTCP.pdb
