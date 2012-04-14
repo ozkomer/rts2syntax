@@ -28,9 +28,11 @@ namespace Cupula
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttonStartOpen = new System.Windows.Forms.Button();
             this.buttonStartClose = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.buttonStatusRead = new System.Windows.Forms.Button();
             this.checkBoxO1XT116 = new System.Windows.Forms.CheckBox();
             this.checkBoxO1XT115 = new System.Windows.Forms.CheckBox();
@@ -77,7 +79,7 @@ namespace Cupula
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.buttonSetup = new System.Windows.Forms.Button();
-            this.labelStatus = new System.Windows.Forms.Label();
+            this.cupulaMovingTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
             this.groupBoxJ1.SuspendLayout();
@@ -136,6 +138,15 @@ namespace Cupula
             this.groupBoxStatus.TabIndex = 2;
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Status=?";
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(248, 24);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(37, 13);
+            this.labelStatus.TabIndex = 25;
+            this.labelStatus.Text = "Status";
             // 
             // buttonStatusRead
             // 
@@ -687,14 +698,10 @@ namespace Cupula
             this.buttonSetup.UseVisualStyleBackColor = true;
             this.buttonSetup.Click += new System.EventHandler(this.buttonSetup_Click);
             // 
-            // labelStatus
+            // cupulaMovingTimer
             // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(248, 24);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(37, 13);
-            this.labelStatus.TabIndex = 25;
-            this.labelStatus.Text = "Status";
+            this.cupulaMovingTimer.Interval = 1000;
+            this.cupulaMovingTimer.Tick += new System.EventHandler(this.cupulaMovingTimer_Tick);
             // 
             // Form1
             // 
@@ -777,6 +784,7 @@ namespace Cupula
         private System.Windows.Forms.Label labelKeepOpen;
         private System.Windows.Forms.Button buttonSetup;
         private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Timer cupulaMovingTimer;
     }
 }
 

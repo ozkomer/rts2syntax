@@ -55,8 +55,8 @@ namespace Cupula
             this.checkBoxO1[indice] = this.checkBoxO1XT115; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT116; indice++;
 
-            cet.DeadManTimer.Elapsed += new System.Timers.ElapsedEventHandler(DeadManTimer_Elapsed);
-            cet.DomeMovingTimer.Elapsed += new System.Timers.ElapsedEventHandler(DomeMovingTimer_Elapsed);
+            //cet.DeadManTimer.Elapsed += new System.Timers.ElapsedEventHandler(DeadManTimer_Elapsed);
+            //cet.DomeMovingTimer.Elapsed += new System.Timers.ElapsedEventHandler(DomeMovingTimer_Elapsed);
 
         }
 
@@ -103,9 +103,9 @@ namespace Cupula
         private void buttonIsClosed_Click(object sender, EventArgs e)
         {
             this.statusRead();
-            int status;
+            Boolean status;
             status = cet.IsClosed();
-            buttonIsClosed.Text = ("Is closed=" + status);
+            buttonIsClosed.Text = ("C=" + status);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -169,7 +169,10 @@ namespace Cupula
             this.buttonStartClose.Enabled = false;
             this.buttonStartOpen.Enabled = false;
 
+            cet.NorthRoof = (ushort)comboBoxControlNorth.SelectedIndex;
+            cet.SouthRoof = (ushort)comboBoxControlSouth.SelectedIndex;
             cet.OpenShutter();
+            cupulaMovingTimer.Start();
         }
 
         private void buttonStartClose_Click(object sender, EventArgs e)
@@ -222,6 +225,33 @@ namespace Cupula
         private void buttonSetup_Click(object sender, EventArgs e)
         {
             cet.SetupDialog();
+        }
+
+        private void cupulaMovingTimer_Tick(object sender, EventArgs e)
+        {
+            System.Threading.Thread.Sleep(300);
+            switch (cet.ShutterStatus)
+            {
+                case ShutterState.shutterClosed:
+                    this.labelStatus.Text = "ShutterState=shutterClosed";
+                    this.buttonStartClose.Enabled = true;
+                    this.buttonStartOpen.Enabled = true;
+                    break;
+                case ShutterState.shutterClosing:
+                    this.labelStatus.Text = "ShutterState=shutterClosing";
+                    break;
+                case ShutterState.shutterOpen:
+                    this.labelStatus.Text = "ShutterState=shutterOpen";
+                    this.buttonStartClose.Enabled = true;
+                    this.buttonStartOpen.Enabled = true;
+                    break;
+                case ShutterState.shutterOpening:
+                    this.labelStatus.Text = "ShutterState=shutterOpening";
+                    break;
+
+            }
+            cupulaMovingTimer.Enabled = cet.DomeMovingTimer.Enabled;
+            Console.WriteLine("DomeMovingTimer.Enabled" + cet.DomeMovingTimer.Enabled);
         }
 
 
