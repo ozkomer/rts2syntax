@@ -82,5 +82,29 @@ namespace FitsMonitor.Properties {
                 this["RemoteBasePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public int FolderTotalDepth {
+            get {
+                return ((int)(this["FolderTotalDepth"]));
+            }
+            set {
+                this["FolderTotalDepth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RAW")]
+        public string DiscardFilePattern {
+            get {
+                return ((string)(this["DiscardFilePattern"]));
+            }
+            set {
+                this["DiscardFilePattern"] = value;
+            }
+        }
     }
 }

@@ -30,23 +30,32 @@ namespace FitsMonitor
 
         private void fsWatchFits_Created(object sender, System.IO.FileSystemEventArgs e)
         {
-            Copiar(e);
+            Copiar(e.FullPath);
         }
 
-        public void Copiar(FileSystemEventArgs e)
+        /// <summary>
+        /// Copia un archivo desde baade hacia zwicky.
+        /// </summary>
+        /// <param name="fullPath">Ruta del archivo de origen</param>
+        public void Copiar(String fullPath)
         {
-            String fullPath;
+            // Url del archivo en el sitio de Jose Maza
             StringBuilder url;
+            // Componentes del fullPath, separadas por el caracter '/'
             String[] ruta;
+            // Cantidad de componentes del arreglo ruta
             int ruta_size;
-            fullPath = e.FullPath;
+
             ruta = fullPath.Split(("" + Path.DirectorySeparatorChar).ToCharArray());
             ruta_size = ruta.Length;
-            if ((!(fullPath.Contains("RAW"))) ||
-                    (ruta_size != 9)
-                )
+            if (ruta_size != settings.FolderTotalDepth)
             {
-                Console.WriteLine("archivo no es un RAW fits, skipping");
+                logger.Warn("archivo descartado, debe estar en carpeta de profundidad " + settings.FolderTotalDepth + ".");
+                return;
+            }
+            if (fullPath.Contains(settings.DiscardFilePattern)) 
+            {
+                Console.WriteLine("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
                 return;
             }
             StringBuilder remotePath;
@@ -73,56 +82,6 @@ namespace FitsMonitor
             this.pictureBox1.ImageLocation = url.ToString();
             this.textBoxUrl.Text = url.ToString();
             FileTransfer.WinScpTransfer.Upload(fullPath, directorioRemoto, remoteFilename);
-            /*
-            #region  Abrir sesion
-            wscpSession = new Session();
-            SessionOptions sesionOptions;
-            sesionOptions = new SessionOptions();
-
-            sesionOptions.HostName = tbHost.Text;
-            sesionOptions.UserName = tbUser.Text;
-            //sesionOptions.Password = tbPassword.Text;
-            sesionOptions.Protocol = Protocol.Sftp;
-            sesionOptions.PortNumber = 22;
-            sesionOptions.SshHostKey = tbSshHostKey.Text;
-            wscpSession.Open(sesionOptions);
-            #endregion
-
-            WinSCP.RemoteDirectoryInfo remoteDirInfo;
-            if (wscpSession.Opened)
-            {
-                Console.WriteLine("Sesion Iniciada.");
-                remoteDirInfo = null;
-                try
-                {
-                    remoteDirInfo = wscpSession.ListDirectory(directorioRemoto);
-                }
-                catch (WinSCP.SessionRemoteException sre)
-                {
-                    Console.WriteLine("sre=" + sre.Message);
-                }
-                if ((remoteDirInfo == null) ||
-                     (remoteDirInfo.Files == null) ||
-                     (remoteDirInfo.Files.Count == 0))
-                {
-                    wscpSession.ExecuteCommand("mkdir " + directorioRemoto);
-                }
-
-                TransferOptions transferOptions;
-                transferOptions = new TransferOptions();
-                transferOptions.PreserveTimestamp = true;
-                transferOptions.TransferMode = TransferMode.Binary;
-                TransferOperationResult transferResult;
-                transferResult = wscpSession.PutFiles(fullPath, archivoRemoto.ToString(), false, transferOptions);
-                Console.WriteLine("transferResult.IsSuccess=" + transferResult.IsSuccess);
-                foreach (OperationResultBase orb in transferResult.Failures)
-                {
-                    Console.WriteLine("error-->" + orb.ToString());
-                }
-                wscpSession.Dispose();
-                Console.WriteLine("Sesion Finalizada.");
-            }
-             */ 
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -191,9 +150,44 @@ namespace FitsMonitor
             }
         }
 
-        private void fsWatchFits_Changed(object sender, FileSystemEventArgs e)
+        private void bCopiarOffline_Click(object sender, EventArgs e)
         {
-
+            logger.Debug("bCopiarOffline_Click");
+            DirectoryInfo dInfo;
+            dInfo = new DirectoryInfo(settings.WatchFolder);
+            ExploraCarpeta(dInfo, 0);
         }
+
+        /// <summary>
+        /// Metodo recursivo
+        /// </summary>
+        /// <param name="carpeta"></param>
+        /// <param name="profundidad"></param>
+        private void ExploraCarpeta(DirectoryInfo carpeta, int profundidad)
+        {
+            if (profundidad == 2)
+            {
+                FileInfo[] fInfo;
+                
+                fInfo = carpeta.GetFiles("*.fts");
+
+                foreach (FileInfo archivo in fInfo)
+                {
+                    this.Copiar(archivo.FullName);
+                    //logger.Debug(archivo.FullName);
+                }
+                return;
+            }
+            DirectoryInfo[] subcarpetas;
+            subcarpetas = carpeta.GetDirectories();
+            foreach (DirectoryInfo dInfo in subcarpetas)
+            {
+                if (profundidad < 2)
+                {
+                    ExploraCarpeta(dInfo, (profundidad + 1));
+                }
+            }
+        }
+
     }
 }

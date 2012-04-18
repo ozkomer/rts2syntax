@@ -37,6 +37,7 @@
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxUrl = new System.Windows.Forms.TextBox();
+            this.bCopiarOffline = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -50,7 +51,6 @@
             this.fsWatchFits.Path = global::FitsMonitor.Properties.Settings.Default.WatchFolder;
             this.fsWatchFits.SynchronizingObject = this;
             this.fsWatchFits.Created += new System.IO.FileSystemEventHandler(this.fsWatchFits_Created);
-            this.fsWatchFits.Changed += new System.IO.FileSystemEventHandler(this.fsWatchFits_Changed);
             // 
             // pictureBox1
             // 
@@ -102,6 +102,17 @@
             this.textBoxUrl.TabIndex = 1;
             this.textBoxUrl.Text = "http://www.das.uchile.cl/~jose/chase500/P1070498.JPG";
             // 
+            // bCopiarOffline
+            // 
+            this.bCopiarOffline.Location = new System.Drawing.Point(267, 76);
+            this.bCopiarOffline.Name = "bCopiarOffline";
+            this.bCopiarOffline.Size = new System.Drawing.Size(75, 23);
+            this.bCopiarOffline.TabIndex = 2;
+            this.bCopiarOffline.Text = "Offline";
+            this.bCopiarOffline.UseVisualStyleBackColor = true;
+            this.bCopiarOffline.Visible = false;
+            this.bCopiarOffline.Click += new System.EventHandler(this.bCopiarOffline_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -109,6 +120,7 @@
             this.ClientSize = new System.Drawing.Size(337, 342);
             this.Controls.Add(this.textBoxUrl);
             this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.bCopiarOffline);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.ShowInTaskbar = false;
@@ -132,6 +144,7 @@
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.TextBox textBoxUrl;
+        private System.Windows.Forms.Button bCopiarOffline;
     }
 }
 
