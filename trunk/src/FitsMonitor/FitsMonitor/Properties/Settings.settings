@@ -17,5 +17,11 @@
     <Setting Name="RemoteBasePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">/images/rawdata/</Value>
     </Setting>
+    <Setting Name="FolderTotalDepth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="DiscardFilePattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RAW</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
