@@ -46,5 +46,17 @@ namespace Montura.Properties {
                 this["port"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AstroPhysicsV2.Telescope")]
+        public string TelescopeProgId {
+            get {
+                return ((string)(this["TelescopeProgId"]));
+            }
+            set {
+                this["TelescopeProgId"] = value;
+            }
+        }
     }
 }
