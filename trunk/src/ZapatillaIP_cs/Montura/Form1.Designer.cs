@@ -43,13 +43,16 @@
             this.groupBoxDEC = new System.Windows.Forms.GroupBox();
             this.radioButtonDecHome = new System.Windows.Forms.RadioButton();
             this.groupBoxTelescope = new System.Windows.Forms.GroupBox();
+            this.buttonShowLog = new System.Windows.Forms.Button();
+            this.buttonFlipCountReset = new System.Windows.Forms.Button();
             this.checkBoxInfrared = new System.Windows.Forms.CheckBox();
             this.labelTelescope = new System.Windows.Forms.Label();
             this.checkBoxInfrarojos = new System.Windows.Forms.CheckBox();
             this.timerTelescopio = new System.Windows.Forms.Timer(this.components);
             this.buttonPin7Low = new System.Windows.Forms.Button();
-            this.buttonFlipCountReset = new System.Windows.Forms.Button();
-            this.buttonShowLog = new System.Windows.Forms.Button();
+            this.bSelect = new System.Windows.Forms.Button();
+            this.bSetup = new System.Windows.Forms.Button();
+            this.bConnect = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBoxRA.SuspendLayout();
             this.groupBoxDEC.SuspendLayout();
@@ -176,6 +179,9 @@
             // 
             // groupBoxTelescope
             // 
+            this.groupBoxTelescope.Controls.Add(this.bConnect);
+            this.groupBoxTelescope.Controls.Add(this.bSetup);
+            this.groupBoxTelescope.Controls.Add(this.bSelect);
             this.groupBoxTelescope.Controls.Add(this.buttonShowLog);
             this.groupBoxTelescope.Controls.Add(this.buttonFlipCountReset);
             this.groupBoxTelescope.Controls.Add(this.checkBoxInfrared);
@@ -187,12 +193,32 @@
             this.groupBoxTelescope.TabStop = false;
             this.groupBoxTelescope.Text = "Ascom Telescope";
             // 
+            // buttonShowLog
+            // 
+            this.buttonShowLog.Location = new System.Drawing.Point(317, 58);
+            this.buttonShowLog.Name = "buttonShowLog";
+            this.buttonShowLog.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowLog.TabIndex = 3;
+            this.buttonShowLog.Text = "Show Log";
+            this.buttonShowLog.UseVisualStyleBackColor = true;
+            this.buttonShowLog.Click += new System.EventHandler(this.buttonShowLog_Click);
+            // 
+            // buttonFlipCountReset
+            // 
+            this.buttonFlipCountReset.Location = new System.Drawing.Point(208, 58);
+            this.buttonFlipCountReset.Name = "buttonFlipCountReset";
+            this.buttonFlipCountReset.Size = new System.Drawing.Size(103, 23);
+            this.buttonFlipCountReset.TabIndex = 2;
+            this.buttonFlipCountReset.Text = "Reset Flip Count";
+            this.buttonFlipCountReset.UseVisualStyleBackColor = true;
+            this.buttonFlipCountReset.Click += new System.EventHandler(this.buttonFlipCountReset_Click);
+            // 
             // checkBoxInfrared
             // 
             this.checkBoxInfrared.AutoSize = true;
             this.checkBoxInfrared.Checked = true;
             this.checkBoxInfrared.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxInfrared.Location = new System.Drawing.Point(8, 64);
+            this.checkBoxInfrared.Location = new System.Drawing.Point(104, 62);
             this.checkBoxInfrared.Name = "checkBoxInfrared";
             this.checkBoxInfrared.Size = new System.Drawing.Size(98, 17);
             this.checkBoxInfrared.TabIndex = 1;
@@ -203,7 +229,7 @@
             // 
             this.labelTelescope.AutoSize = true;
             this.labelTelescope.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTelescope.Location = new System.Drawing.Point(6, 29);
+            this.labelTelescope.Location = new System.Drawing.Point(6, 36);
             this.labelTelescope.Name = "labelTelescope";
             this.labelTelescope.Size = new System.Drawing.Size(144, 19);
             this.labelTelescope.TabIndex = 0;
@@ -236,25 +262,35 @@
             this.buttonPin7Low.UseVisualStyleBackColor = true;
             this.buttonPin7Low.Click += new System.EventHandler(this.buttonPin7Low_Click);
             // 
-            // buttonFlipCountReset
+            // bSelect
             // 
-            this.buttonFlipCountReset.Location = new System.Drawing.Point(131, 58);
-            this.buttonFlipCountReset.Name = "buttonFlipCountReset";
-            this.buttonFlipCountReset.Size = new System.Drawing.Size(103, 23);
-            this.buttonFlipCountReset.TabIndex = 2;
-            this.buttonFlipCountReset.Text = "Reset Flip Count";
-            this.buttonFlipCountReset.UseVisualStyleBackColor = true;
-            this.buttonFlipCountReset.Click += new System.EventHandler(this.buttonFlipCountReset_Click);
+            this.bSelect.Location = new System.Drawing.Point(104, 10);
+            this.bSelect.Name = "bSelect";
+            this.bSelect.Size = new System.Drawing.Size(50, 23);
+            this.bSelect.TabIndex = 4;
+            this.bSelect.Text = "Select";
+            this.bSelect.UseVisualStyleBackColor = true;
+            this.bSelect.Click += new System.EventHandler(this.bSelect_Click);
             // 
-            // buttonShowLog
+            // bSetup
             // 
-            this.buttonShowLog.Location = new System.Drawing.Point(317, 58);
-            this.buttonShowLog.Name = "buttonShowLog";
-            this.buttonShowLog.Size = new System.Drawing.Size(75, 23);
-            this.buttonShowLog.TabIndex = 3;
-            this.buttonShowLog.Text = "Show Log";
-            this.buttonShowLog.UseVisualStyleBackColor = true;
-            this.buttonShowLog.Click += new System.EventHandler(this.buttonShowLog_Click);
+            this.bSetup.Location = new System.Drawing.Point(191, 10);
+            this.bSetup.Name = "bSetup";
+            this.bSetup.Size = new System.Drawing.Size(75, 23);
+            this.bSetup.TabIndex = 5;
+            this.bSetup.Text = "Setup";
+            this.bSetup.UseVisualStyleBackColor = true;
+            this.bSetup.Click += new System.EventHandler(this.bSetup_Click);
+            // 
+            // bConnect
+            // 
+            this.bConnect.Location = new System.Drawing.Point(316, 10);
+            this.bConnect.Name = "bConnect";
+            this.bConnect.Size = new System.Drawing.Size(75, 23);
+            this.bConnect.TabIndex = 6;
+            this.bConnect.Text = "Connect";
+            this.bConnect.UseVisualStyleBackColor = true;
+            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
             // 
             // Form1
             // 
@@ -307,6 +343,9 @@
         private System.Windows.Forms.Button buttonPin7Low;
         private System.Windows.Forms.Button buttonFlipCountReset;
         private System.Windows.Forms.Button buttonShowLog;
+        private System.Windows.Forms.Button bSetup;
+        private System.Windows.Forms.Button bSelect;
+        private System.Windows.Forms.Button bConnect;
     }
 }
 

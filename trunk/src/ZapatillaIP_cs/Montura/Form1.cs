@@ -71,8 +71,17 @@ namespace Montura
             this.radioButtonRA_East.Checked = false;
             this.radioButtonRA_Home.Checked = false;
             this.radioButtonRA_West.Checked = false;
-            telescopio = new Telescope("AstroPhysicsV2.Telescope");
-            logger.Info("Consturctor End.");
+            
+            try
+            {
+                this.telescopio = new Telescope(settings.TelescopeProgId);
+            }
+            catch (Exception)
+            {
+                this.telescopio = null;
+                logger.Error("Error al escoger telescopio ASCOM.");
+            }
+            logger.Info("Constructor End.");
         }
 
         /// <summary>
@@ -323,7 +332,19 @@ namespace Montura
             conectado = false;
             try
             {
-                conectado = telescopio.Connected;
+                if (this.telescopio != null)
+                {
+                    try
+                    {
+                        conectado = telescopio.Connected;
+                    }
+                    catch (NullReferenceException nref)
+                    {
+                        logger.Debug(nref.Message);
+                        conectado = false;
+                    }
+                }
+
             }
             catch (DriverAccessCOMException e)
             {
@@ -419,7 +440,9 @@ namespace Montura
             }
             else
             {
-                mensaje.Append("Desconectado");
+                mensaje.Append("Telescope ProdID=");
+                mensaje.Append( settings.TelescopeProgId);
+                mensaje.Append(" ;; Desconectado");
             }
             this.labelTelescope.Text = mensaje.ToString();
             //this.timerTelescopio.Start();
@@ -436,7 +459,10 @@ namespace Montura
 
         private void timerTelescopio_Tick(object sender, EventArgs e)
         {
-            this.ProcesaTelescopio();
+            if (this.telescopio != null)
+            {
+                this.ProcesaTelescopio();
+            }
         }
 
         /// <summary>
@@ -509,6 +535,38 @@ namespace Montura
         {
             this.pierFlips = 0;
             logger.Info("Reseteando a: pierFlips=0");
+        }
+
+        private void bSelect_Click(object sender, EventArgs e)
+        {
+            ASCOM.Utilities.Chooser selector;
+            selector = new ASCOM.Utilities.Chooser();
+            selector.DeviceType = "Telescope";
+            settings.TelescopeProgId = selector.Choose(settings.TelescopeProgId);
+            settings.Save();            
+        }
+
+        private void bSetup_Click(object sender, EventArgs e)        
+        {
+            this.telescopio.SetupDialog();
+        }
+
+        private void bConnect_Click(object sender, EventArgs e)
+        {
+            if (this.telescopio == null)
+                return;
+            if (bConnect.Text == "Connect")
+            {
+                this.telescopio = new Telescope(settings.TelescopeProgId);
+                this.telescopio.Connected = true;
+                bConnect.Text = "Disconnect";
+            }
+            else
+            {
+                this.telescopio.Connected = false;
+                this.telescopio.Dispose();
+                bConnect.Text = "Connect";
+            }
         }
     }
 }
