@@ -73,7 +73,7 @@ namespace ASCOM.OrbitATC02
 
         private System.Timers.Timer statusTimer;
 
-        //                                     0123456789
+        //                                0123456789
         public readonly String OPENREM = "OPENREM   ";
         public readonly String CLOSEREM = "CLOSEREM  ";
         public readonly String READSETT = "READSETT  ";
@@ -130,8 +130,9 @@ namespace ASCOM.OrbitATC02
                 );
             this.atcStat = null;
             this.statusTimer = new  System.Timers.Timer();
-            this.statusTimer.Interval = (double) Properties.Settings.Default.refreshStatusTimer;
+            this.statusTimer.Interval = (double)(1000 * ( Properties.Settings.Default.refreshStatusTimer));
             this.statusTimer.Elapsed += new System.Timers.ElapsedEventHandler(statusTimer_Elapsed);
+            this.enMovimiento = false;
         }
 
         void statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -139,6 +140,7 @@ namespace ASCOM.OrbitATC02
             if (!enMovimiento)
             {
                 this.RefreshAtcStatus();
+                this.posicion = (int) (100.0*(this.atcStat.FocusPosition - 130));
             }
         }
 
@@ -227,14 +229,16 @@ namespace ASCOM.OrbitATC02
 
             respuesta = LeerSerial(10).Trim();
             String[] parte;
-            parte = respuesta.Split();
+            int largoParte;
+            
+            parte = respuesta.Split((" ").ToCharArray());
+            largoParte = parte.Length;
             try
             {
-                newPosition = 100 * (Int32.Parse(parte[1]) - 130);
+                newPosition = (int)(100.0 * (Double.Parse(parte[largoParte-1]) - 130));
             }
             catch (Exception )
             {
-
                 newPosition = -1;
             }
             
@@ -253,9 +257,17 @@ namespace ASCOM.OrbitATC02
                         Properties.Settings.Default.CommPort,
                         (int)Properties.Settings.Default.BaudRate
                         );
+                    this.ttyATC.Open();
+                    Console.WriteLine("Esperando Conexion");
+                    while (this.ttyATC.IsOpen != true)
+                    {
+                        Console.Write(".");
+                        System.Threading.Thread.Sleep(300);
+                    }
+                    Console.WriteLine("conectado!!");
                     ttyATC.Write(OPENREM);
                     String respuesta;
-                    respuesta = LeerSerial(10);
+                    respuesta = LeerSerial(10).Trim();
                     this.conectado = OPENREM.Contains(respuesta);
                     if (Properties.Settings.Default.refreshStatus)
                     {
@@ -264,9 +276,10 @@ namespace ASCOM.OrbitATC02
                 }
                 else
                 {
+                    this.statusTimer.Stop();
                     ttyATC.Write(CLOSEREM);
                     String respuesta;
-                    respuesta = LeerSerial(10);
+                    respuesta = LeerSerial(10).Trim();
                     this.conectado = (!(CLOSEREM.Contains(respuesta)));
                     if (!conectado)
                     {

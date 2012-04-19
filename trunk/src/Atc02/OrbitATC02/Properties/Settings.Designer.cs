@@ -25,7 +25,7 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.51")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.58")]
         public string DriverName {
             get {
                 return ((string)(this["DriverName"]));
@@ -97,7 +97,7 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool refreshStatus {
             get {
                 return ((bool)(this["refreshStatus"]));
