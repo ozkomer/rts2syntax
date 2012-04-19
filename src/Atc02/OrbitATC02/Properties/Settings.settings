@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DriverName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Chase500 Focuser Setup V0.51</Value>
+      <Value Profile="(Default)">Chase500 Focuser Setup V0.58</Value>
     </Setting>
     <Setting Name="CommPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
@@ -21,7 +21,7 @@
       <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="refreshStatus" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="refreshFirmwareInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
