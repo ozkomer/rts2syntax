@@ -106,5 +106,41 @@ namespace FitsMonitor.Properties {
                 this["DiscardFilePattern"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int JpgFilenameLength {
+            get {
+                return ((int)(this["JpgFilenameLength"]));
+            }
+            set {
+                this["JpgFilenameLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\chase\\Documents\\Officina Stellare\\log")]
+        public string OfficinaStellareLog {
+            get {
+                return ((string)(this["OfficinaStellareLog"]));
+            }
+            set {
+                this["OfficinaStellareLog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\chase\\Documents\\Officina Stellare\\log\\Focuser - 120524-163756.log")]
+        public string AtcLogFile {
+            get {
+                return ((string)(this["AtcLogFile"]));
+            }
+            set {
+                this["AtcLogFile"] = value;
+            }
+        }
     }
 }
