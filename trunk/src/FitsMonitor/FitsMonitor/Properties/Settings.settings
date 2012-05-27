@@ -23,5 +23,14 @@
     <Setting Name="DiscardFilePattern" Type="System.String" Scope="User">
       <Value Profile="(Default)">RAW</Value>
     </Setting>
+    <Setting Name="JpgFilenameLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="OfficinaStellareLog" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\chase\Documents\Officina Stellare\log</Value>
+    </Setting>
+    <Setting Name="AtcLogFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\chase\Documents\Officina Stellare\log\Focuser - 120524-163756.log</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
