@@ -11,6 +11,7 @@ using FileTransfer;
 using log4net.Config;
 using log4net;
 using System.Globalization;
+using nom.tam.fits;
 
 namespace FitsMonitor
 {
@@ -61,7 +62,7 @@ namespace FitsMonitor
         /// <param name="fullPath">Ruta del archivo de origen</param>
         public void Copiar(String fullPath)
         {
-            // Url del archivo en el sitio de Jose Maza
+            // Url del archivo Sample en el sitio de Jose Maza
             StringBuilder url;
             // Componentes del fullPath, separadas por el caracter '/'
             String[] ruta;
@@ -80,6 +81,7 @@ namespace FitsMonitor
                 Console.WriteLine("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
                 return;
             }
+            CompletaFitsHeader(fullPath);
             StringBuilder remotePath;
             String directorioRemoto;
             String remoteFilename;
@@ -104,6 +106,65 @@ namespace FitsMonitor
             this.pictureBox1.ImageLocation = url.ToString();
             this.textBoxUrl.Text = url.ToString();
             FileTransfer.WinScpTransfer.Upload(fullPath, directorioRemoto, remoteFilename);
+        }
+
+        /// <summary>
+        /// Modifica el header de un archivo .fits, previo al envio 
+        /// del archivo a otro servidor.
+        /// </summary>
+        /// <param name="fullPath"></param>
+        public void CompletaFitsHeader(String fitsFullPath)
+        {
+            if (!LecturaFresca())
+            {
+                logger.Info("ATC02 sin datos recientes, no se actualizara Archivo fits '"+fitsFullPath+"'");
+                return;
+            }
+            DateTime Ahora;
+            Ahora = DateTime.Now;
+            Fits fitsFile;
+
+            fitsFile = new Fits(fitsFullPath);
+
+            BasicHDU hdu;
+            hdu = fitsFile.ReadHDU();
+            HeaderCard hcDATE_OBS;// [ISO 8601] UTC date/time of exposure start   
+            HeaderCard hcEXPOSURE;// [sec] Duration of exposure
+
+            hcDATE_OBS = hdu.Header.FindCard("DATE-OBS");
+            hcEXPOSURE = hdu.Header.FindCard("EXPOSURE");
+            DateTime dateObs;
+            dateObs = DateTime.Parse(hcDATE_OBS.Value);//// [ISO 8601] UTC date/time of exposure start
+            Double exposure;// [sec] Duration of exposure
+            exposure = Double.Parse(hcEXPOSURE.Value);
+
+            TimeSpan vejezFits; // Tiempo Transcurrido entre termino de exposición y el presente
+            vejezFits = Ahora.Subtract(dateObs);
+            double vejezSegundos;
+            vejezSegundos = ((vejezFits.TotalSeconds) - exposure);
+            logger.Info("Vejez archivo FITS="+vejezSegundos+"[segundos].");
+            // Si la vejez del archiv Fits es menor a veinte segundos
+            // entonces se modifica el encabezado del fits
+            // con la información del ATC02
+            if (vejezSegundos < 20)
+            {
+                HeaderCard hcFocStep;
+                HeaderCard hcPriTemp;
+                HeaderCard hcSecTemp;
+                HeaderCard hcAmbTemp;
+                logger.Info("Actualizando archivo FITS:" + fitsFullPath);
+                hcFocStep = hdu.Header.FindCard("FOCSTEP");
+                hcPriTemp = hdu.Header.FindCard("PRITEMP");
+                hcSecTemp = hdu.Header.FindCard("SECTEMP");
+                hcAmbTemp = hdu.Header.FindCard("AMBTEMP");
+
+                hcFocStep.Value = ("" + this.focstep);
+                hcPriTemp.Value = ("" + this.priTemp);
+                hcSecTemp.Value = ("" + this.secTemp);
+                hcAmbTemp.Value = ("" + this.ambTemp);
+                hdu.Header.Rewrite();
+            }
+            fitsFile.Close();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -170,14 +231,27 @@ namespace FitsMonitor
 
         private void bCopiarOffline_Click(object sender, EventArgs e)
         {
-            this.tabPage3.BackColor = Color.Yellow;
-            int deep;
-            logger.Debug("bCopiarOffline_Click");
-            deep = (int) numericUpDownSubFolderDeep.Value;
-            DirectoryInfo dInfo;
-            dInfo = new DirectoryInfo(tbOfflineFolder.Text);
-            ExploraCarpeta(dInfo, deep);
-            this.tabPage3.BackColor = Color.LightGray;
+            DialogResult result;
+            StringBuilder mensaje;
+            mensaje = new StringBuilder ();
+            mensaje.Append("Comenzara la copia de todos los archivos bajo la carpeta:\n\n");
+            mensaje.Append(tbOfflineFolder.Text);
+            mensaje.Append("\n\n");
+            mensaje.Append("Se buscarán archivos hasta en ");
+            mensaje.Append(this.numericUpDownSubFolderDeep.Value);
+            mensaje.Append(" nivel de profundidad.");
+            result = MessageBox.Show(mensaje.ToString(), "Copia ssh OffLine", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                this.tabPage3.BackColor = Color.Yellow;
+                int deep;
+                logger.Debug("bCopiarOffline_Click");
+                deep = (int)numericUpDownSubFolderDeep.Value;
+                DirectoryInfo dInfo;
+                dInfo = new DirectoryInfo(tbOfflineFolder.Text);
+                ExploraCarpeta(dInfo, deep);
+                this.tabPage3.BackColor = Color.LightGray;
+            }
         }
 
         /// <summary>

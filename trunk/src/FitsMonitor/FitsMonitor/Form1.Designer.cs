@@ -40,7 +40,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.labelLastDetectedValues = new System.Windows.Forms.Label();
+            this.labelLastDetectedLogFile = new System.Windows.Forms.Label();
             this.dataGridViewATC02 = new System.Windows.Forms.DataGridView();
+            this.ColumnParametro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.bLogFile = new System.Windows.Forms.Button();
             this.tbLogFile = new System.Windows.Forms.TextBox();
@@ -54,10 +58,6 @@
             this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
             this.backgroundWorkerATC02 = new System.ComponentModel.BackgroundWorker();
             this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
-            this.ColumnParametro = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labelLastDetectedLogFile = new System.Windows.Forms.Label();
-            this.labelLastDetectedValues = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -169,6 +169,26 @@
             this.tabPage2.Text = "Header";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // labelLastDetectedValues
+            // 
+            this.labelLastDetectedValues.AutoSize = true;
+            this.labelLastDetectedValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLastDetectedValues.Location = new System.Drawing.Point(109, 85);
+            this.labelLastDetectedValues.Name = "labelLastDetectedValues";
+            this.labelLastDetectedValues.Size = new System.Drawing.Size(129, 13);
+            this.labelLastDetectedValues.TabIndex = 5;
+            this.labelLastDetectedValues.Text = "Last Detected Values";
+            // 
+            // labelLastDetectedLogFile
+            // 
+            this.labelLastDetectedLogFile.AutoSize = true;
+            this.labelLastDetectedLogFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLastDetectedLogFile.Location = new System.Drawing.Point(102, 36);
+            this.labelLastDetectedLogFile.Name = "labelLastDetectedLogFile";
+            this.labelLastDetectedLogFile.Size = new System.Drawing.Size(136, 13);
+            this.labelLastDetectedLogFile.TabIndex = 4;
+            this.labelLastDetectedLogFile.Text = "Last Detected Log File";
+            // 
             // dataGridViewATC02
             // 
             this.dataGridViewATC02.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -180,6 +200,19 @@
             this.dataGridViewATC02.ReadOnly = true;
             this.dataGridViewATC02.Size = new System.Drawing.Size(345, 181);
             this.dataGridViewATC02.TabIndex = 3;
+            // 
+            // ColumnParametro
+            // 
+            this.ColumnParametro.HeaderText = "Parameter";
+            this.ColumnParametro.Name = "ColumnParametro";
+            this.ColumnParametro.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Value";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 200;
             // 
             // textBox1
             // 
@@ -227,7 +260,7 @@
             // labelSubFolderDeep
             // 
             this.labelSubFolderDeep.AutoSize = true;
-            this.labelSubFolderDeep.Location = new System.Drawing.Point(6, 37);
+            this.labelSubFolderDeep.Location = new System.Drawing.Point(201, 36);
             this.labelSubFolderDeep.Name = "labelSubFolderDeep";
             this.labelSubFolderDeep.Size = new System.Drawing.Size(87, 13);
             this.labelSubFolderDeep.TabIndex = 5;
@@ -235,7 +268,7 @@
             // 
             // numericUpDownSubFolderDeep
             // 
-            this.numericUpDownSubFolderDeep.Location = new System.Drawing.Point(110, 35);
+            this.numericUpDownSubFolderDeep.Location = new System.Drawing.Point(294, 34);
             this.numericUpDownSubFolderDeep.Maximum = new decimal(new int[] {
             2,
             0,
@@ -252,7 +285,7 @@
             // 
             // bOfflineFolder
             // 
-            this.bOfflineFolder.Location = new System.Drawing.Point(306, 3);
+            this.bOfflineFolder.Location = new System.Drawing.Point(3, 31);
             this.bOfflineFolder.Name = "bOfflineFolder";
             this.bOfflineFolder.Size = new System.Drawing.Size(48, 23);
             this.bOfflineFolder.TabIndex = 3;
@@ -264,9 +297,9 @@
             // 
             this.tbOfflineFolder.Location = new System.Drawing.Point(9, 5);
             this.tbOfflineFolder.Name = "tbOfflineFolder";
-            this.tbOfflineFolder.Size = new System.Drawing.Size(273, 20);
+            this.tbOfflineFolder.Size = new System.Drawing.Size(342, 20);
             this.tbOfflineFolder.TabIndex = 0;
-            this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images";
+            this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images\\20120116";
             this.tbOfflineFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // fsWatchFits
@@ -303,39 +336,6 @@
             this.timerAtc02.Enabled = true;
             this.timerAtc02.Interval = 15000;
             this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
-            // 
-            // ColumnParametro
-            // 
-            this.ColumnParametro.HeaderText = "Parameter";
-            this.ColumnParametro.Name = "ColumnParametro";
-            this.ColumnParametro.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Value";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 200;
-            // 
-            // labelLastDetectedLogFile
-            // 
-            this.labelLastDetectedLogFile.AutoSize = true;
-            this.labelLastDetectedLogFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLastDetectedLogFile.Location = new System.Drawing.Point(102, 36);
-            this.labelLastDetectedLogFile.Name = "labelLastDetectedLogFile";
-            this.labelLastDetectedLogFile.Size = new System.Drawing.Size(136, 13);
-            this.labelLastDetectedLogFile.TabIndex = 4;
-            this.labelLastDetectedLogFile.Text = "Last Detected Log File";
-            // 
-            // labelLastDetectedValues
-            // 
-            this.labelLastDetectedValues.AutoSize = true;
-            this.labelLastDetectedValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLastDetectedValues.Location = new System.Drawing.Point(109, 85);
-            this.labelLastDetectedValues.Name = "labelLastDetectedValues";
-            this.labelLastDetectedValues.Size = new System.Drawing.Size(129, 13);
-            this.labelLastDetectedValues.TabIndex = 5;
-            this.labelLastDetectedValues.Text = "Last Detected Values";
             // 
             // Form1
             // 
