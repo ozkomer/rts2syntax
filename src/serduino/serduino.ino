@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
  *
@@ -29,12 +29,19 @@ double accel[6]; // RA (x,y,z) ; DEC (x,y,z) accelerations
 int avals_index = 0;
 int pinLimitRA=7;
 
+// Vector unitario del acelerometro del eje de declinacion medido en un Zenith (Alt=90) de Pointing Calculado por astrometria.
 const double Zenith[]     = { 
   -0.2116771931 , 0.975214028  , 0.0644233307 };
+
+// Vector unitario del acelerometro del eje de ascension recta, medido en la mitad de la carrera del switch RA_HOME
 const double SouthPole[]  = { 
   0.3780225716  , 0.3874084811 , -0.84084101  };
+
 // Angulo entre el Zenith y la posición del tubo del telescopio. [en radianes].
 double zenithAngle;
+
+// Si el zenithAngle excede este valor [ en radianes ], se apagará la montura.
+const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
 // Angulo del eje contrapeso. [en radianes].
 double counterWeightAngle;
@@ -130,12 +137,9 @@ void sendSensor()
     Serial.print(asums[i] / SIZE_A, DEC);
     Serial.print(" ");
   }
-
-  refreshAccelerations();
   refreshCounterWeightAngle ();
   Serial.print(counterWeightAngle, DEC);
   Serial.print(" ");
-  refreshZenithAngle ();
   Serial.print(zenithAngle, DEC);
 
   Serial.println();
@@ -143,7 +147,9 @@ void sendSensor()
 
 void loop()
 {
-  if  (digitalRead(8)==1)//  Si se alcanza un LimitSwitch en RA
+  if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
+      ||                    // o
+        (zenithAngle>zenithAngleLimit) ) // El telescopio está definivamente mirando por debajo del horizonte
   {
     digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
   }
@@ -169,4 +175,7 @@ void loop()
   }
   avals_index ++;
   avals_index %= SIZE_A;
+  refreshAccelerations();
+  
+  refreshZenithAngle ();
 }
