@@ -17,6 +17,13 @@ namespace Serduino
         // Angulo del eje contrapeso. [en grados Sexagesimales].
         private double counterWeightAngle;
 
+        // Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
+        private double zenithAngleArduino;
+
+        // Angulo del eje contrapeso. [en grados Sexagesimales].
+        private double counterWeightAngleArduino;
+
+
         public static readonly Triplet Zenith =
             new Triplet(-0.2116771931, 0.975214028, 0.0644233307);
 
@@ -91,6 +98,23 @@ namespace Serduino
             get { return this.counterWeightAngle; }
         }
 
+        /// <summary>
+        /// Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
+        /// Este valor ha sido calculado por el Arduino.
+        /// </summary>
+        public double ZenithAngleArduino
+        {
+            get { return this.zenithAngleArduino; }
+        }
+
+        /// <summary>
+        /// Angulo del eje contrapeso. [en grados Sexagesimales].
+        /// </summary>
+        public double CounterWeightAngleArduino
+        {
+            get { return this.counterWeightAngleArduino; }
+        }
+
         private void refreshZenithAngle()
         {
             double angleRad;
@@ -113,6 +137,10 @@ namespace Serduino
         {
             String[] part;
             part = this.linea.Split((" ").ToCharArray());
+            for (int i = 0; i < part.Length; i++)
+            {
+                Console.WriteLine("part["+i+"]=" + part[i]);
+            }
             this.interruptores = Int16.Parse(part[0]);
             if (part.Length >= 6)
             {
@@ -126,6 +154,13 @@ namespace Serduino
                 aDEC.refreshAcceleration();
                 this.refreshZenithAngle();
                 this.refreshCounterWeightAngle();
+            }
+            if (part.Length >= 8)
+            {
+                this.counterWeightAngleArduino = Double.Parse(part[7]) *(180.0 / Math.PI);
+                this.zenithAngleArduino = Double.Parse(part[8]) *(180.0 / Math.PI);
+                //Console.WriteLine("DeltaAngles = (" + (this.counterWeightAngleArduino - this.counterWeightAngle) + "," + (this.zenithAngleArduino - this.zenithAngle) + ")");
+                Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino ) + "," + (this.zenithAngleArduino ) + ")");
             }
             #region analisis interruptores
             int valor;
