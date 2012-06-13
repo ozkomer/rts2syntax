@@ -21,9 +21,27 @@ namespace Montura
     {
         public char[] query;
         public char[] pin7Low;
-        private Boolean raLimit;
-        private Boolean raLimitLast;
 
+        /// <summary>
+        /// true si se ha alcanzado un limite en Ascencion recta.
+        /// </summary>
+        private Boolean raLimit; 
+
+        /// <summary>
+        /// Valor de raLimit en la medición anterior.
+        /// </summary>
+        private Boolean raLimitLast;  
+
+        /// <summary>
+        /// true si se ha alcanzado un limite en el angulo Zenital.
+        /// </summary>
+        private Boolean tiltLimit; 
+
+        /// <summary>
+        /// Valor de tiltLimit en la medición anterior.
+        /// </summary>
+        private Boolean tiltLimitLast; 
+        
         private ArduinoTcp arduinoTcp;
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
@@ -53,6 +71,8 @@ namespace Montura
             logger.Info("Constructor Start.");
             raLimit = false;
             raLimitLast = false;
+            tiltLimit = false;
+            tiltLimitLast = false;
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             query = new char[2];
             query[0] = '?';
@@ -90,8 +110,57 @@ namespace Montura
         /// <summary>
         /// Avisa al Usuario que la montura ha sido desconectada
         /// por los microcontroladores Arduino.
+        /// Razón, se sobrepasó el limite para el angulo Zenital.
         /// </summary>
-        private void notificarMontura(Status stat)
+        private void notificarMonturaZenith()
+        {
+            timerReadSerial.Stop();
+            logger.Info("notificarMontura");
+            this.BringToFront();
+            StringBuilder mensaje;
+            mensaje = new StringBuilder();
+            mensaje.Append("La Montura ha alcanzado el limite del ángulo Zenital.\n\n");
+
+            this.arduinoTcp.Connect();
+            if (this.arduinoTcp.Tcpclnt.Connected)
+            {
+                this.arduinoTcp.readRelays();
+                System.Threading.Thread.Sleep(250);
+
+                this.arduinoTcp.readRelays();
+                if (this.arduinoTcp.RelayStatus[2] == false)
+                {
+                    mensaje.Append("La montura está apagada.\n\n");
+                }
+                else
+                {
+                    mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
+                }
+                System.Threading.Thread.Sleep(200);
+
+                if (this.arduinoTcp.Tcpclnt.Connected)
+                {
+                    this.arduinoTcp.Tcpclnt.Close();
+                }
+            }
+
+            mensaje.AppendLine("Procedimiento:");
+            mensaje.AppendLine("1) Con aplicación PDU_chase, encienda la montura.");
+            mensaje.AppendLine("2) Con alguna guitarra virtual (o real), desplaze la montura hacia una posición segura.");
+            DialogResult dr;
+            logger.Info(mensaje.ToString());
+            dr = MessageBox.Show(this, mensaje.ToString(), "Zenith Angle Limit alert.");
+            if (dr.Equals(DialogResult.OK))
+            {
+                timerReadSerial.Start();
+            }
+        }
+
+        /// <summary>
+        /// Avisa al Usuario que la montura ha sido desconectada
+        /// por los microcontroladores Arduino. Razon, Se alcanzo limit switch en RA.
+        /// </summary>
+        private void notificarMonturaRA()
         {
             timerReadSerial.Stop();
             logger.Info("notificarMontura");
@@ -99,11 +168,11 @@ namespace Montura
             StringBuilder mensaje;
             mensaje = new StringBuilder();
             mensaje.Append("La Montura ha alcanzado el limite ");
-            if (stat.RaLimitEast)
+            if (this.stat.RaLimitEast)
             {
                 mensaje.Append("East");
             }
-            if (stat.RaLimitWest)
+            if (this.stat.RaLimitWest)
             {
                 mensaje.Append("West");
             }
@@ -118,7 +187,7 @@ namespace Montura
                 this.arduinoTcp.readRelays();
                 if (this.arduinoTcp.RelayStatus[2] == false)
                 {
-                    mensaje.Append("La montura esta apagada.\n\n");
+                    mensaje.Append("La montura está apagada.\n\n");
                 }
                 else
                 {
@@ -202,19 +271,31 @@ namespace Montura
                 logger.Info("Cruzando DecHome.");
             }
 
-            raLimit = ((stat.RaLimitEast) || (stat.RaLimitWest));
+            this.raLimit = ((stat.RaLimitEast) || (stat.RaLimitWest));
             if ((raLimit) && (!raLimitLast))
             {
                 logger.Info("RaLimitEast=" + stat.RaLimitEast);
                 logger.Info("RaLimitWest=" + stat.RaLimitWest);
                 //Flanco de subida de la alerta
-                this.notificarMontura(stat);
+                this.notificarMonturaRA();
             }
             if ((!raLimit) && (raLimitLast))
             {
                 this.pin7_Low();
             }
+
+            this.tiltLimit = (this.stat.ZenithAngleArduino > 105.0);
+            if ((tiltLimit) && (!tiltLimitLast))
+            {
+                logger.Info("Tilt Limit: ZenithAngle=" + stat.ZenithAngleArduino);
+                this.notificarMonturaZenith();
+            }
+            if ((!tiltLimit) && (tiltLimitLast))
+            {
+                this.pin7_Low();
+            }
             raLimitLast = raLimit;
+            tiltLimitLast = tiltLimit;
             ///////////////////
             StringBuilder mensaje;
             mensaje = new StringBuilder();
