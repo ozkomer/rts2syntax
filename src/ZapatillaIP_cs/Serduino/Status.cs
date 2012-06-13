@@ -5,12 +5,26 @@ using System.Text;
 
 namespace Serduino
 {
+     
     public class Status
     {
+        private Acelerometro aRA = new Acelerometro();
+        private Acelerometro aDEC = new Acelerometro();
+
+        // Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
+        private double zenithAngle;
+
+        // Angulo del eje contrapeso. [en grados Sexagesimales].
+        private double counterWeightAngle;
+
+        public static readonly Triplet Zenith =
+            new Triplet(-0.2116771931, 0.975214028, 0.0644233307);
+
+        public static readonly Triplet SouthPole =
+            new Triplet(0.3780225716, 0.3874084811 , -0.84084101);
+
         private String linea;
         private int interruptores;
-        private static Acelerometro aRA=  new Acelerometro ();
-        private static Acelerometro aDEC = new Acelerometro();
         private bool[] interruptor;
         private bool raLimitEast;
         private bool raLimitWest;
@@ -49,17 +63,51 @@ namespace Serduino
         }
 
 
-        //public Acelerometro AcelerometroRA
-        //{
-        //    get { return aRA; }
-        //    set { aRA = value; }
-        //}
+        public Acelerometro AcelerometroRA
+        {
+            get { return aRA; }
+            set { aRA = value; }
+        }
 
-        //public Acelerometro AcelerometroDEC
-        //{
-        //    get { return aDEC; }
-        //    set { aDEC = value; }
-        //}
+        public Acelerometro AcelerometroDEC
+        {
+            get { return aDEC; }
+            set { aDEC = value; }
+        }
+
+        /// <summary>
+        /// Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
+        /// </summary>
+        public double ZenithAngle
+        {
+            get { return this.zenithAngle; }
+        }
+
+        /// <summary>
+        /// Angulo del eje contrapeso. [en grados Sexagesimales].
+        /// </summary>
+        public double CounterWeightAngle
+        {
+            get { return this.counterWeightAngle; }
+        }
+
+        private void refreshZenithAngle()
+        {
+            double angleRad;
+            double crossProduct;
+            crossProduct = this.aDEC.AcelerationUnit.DotProduct(Status.Zenith);
+            angleRad = Math.Acos ( crossProduct);
+            this.zenithAngle = ((angleRad * 180.0) / Math.PI);
+        }
+
+        private void refreshCounterWeightAngle()
+        {
+            double angleRad;
+            double crossProduct;
+            crossProduct = this.aRA.AcelerationUnit.DotProduct(Status.SouthPole);
+            angleRad = Math.Acos(crossProduct);
+            this.counterWeightAngle = ((angleRad * 180.0) / Math.PI);
+        }
 
         public void Analiza()
         {
@@ -68,8 +116,16 @@ namespace Serduino
             this.interruptores = Int16.Parse(part[0]);
             if (part.Length >= 6)
             {
-                aRA.setValues(Double.Parse(part[1]), Double.Parse(part[2]), Double.Parse(part[3]));
-                aDEC.setValues(Double.Parse(part[4]), Double.Parse(part[5]), Double.Parse(part[6]));
+                Triplet analogReadRA;
+                Triplet analogReadDEC;
+                analogReadRA  = new Triplet(Double.Parse(part[1]), Double.Parse(part[2]), Double.Parse(part[3]));
+                analogReadDEC = new Triplet(Double.Parse(part[4]), Double.Parse(part[5]), Double.Parse(part[6]));
+                aRA.AnalogRead = analogReadRA;
+                aDEC.AnalogRead = analogReadDEC;
+                aRA.refreshAcceleration();
+                aDEC.refreshAcceleration();
+                this.refreshZenithAngle();
+                this.refreshCounterWeightAngle();
             }
             #region analisis interruptores
             int valor;
@@ -91,13 +147,15 @@ namespace Serduino
 
             #endregion
 
-            StringBuilder mensaje;
-            mensaje = new StringBuilder ();
-            mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
-            mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
-            mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimitEast);
-            mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimitWest);
-            mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
+            //StringBuilder mensaje;
+            //mensaje = new StringBuilder ();
+            //mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
+            //mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
+            //mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimitEast);
+            //mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimitWest);
+            //mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
+            //mensaje.Append("RA="); mensaje.Append(aRA.Acceleration.ToString());
+            //mensaje.Append("\t DEC="); mensaje.Append(aDEC.Acceleration.ToString());
             //Console.WriteLine(mensaje.ToString());
 
         }

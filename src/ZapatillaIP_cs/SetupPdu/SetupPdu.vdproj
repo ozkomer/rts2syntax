@@ -76,13 +76,13 @@
         "Entry"
         {
         "MsmKey" = "8:_65A830D6B507D845AFCFB80F41ED8B60"
-        "OwnerKey" = "8:_2BCB2FEE3053E6F096E7FE8E5D81EB2B"
+        "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_65A830D6B507D845AFCFB80F41ED8B60"
-        "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "OwnerKey" = "8:_2BCB2FEE3053E6F096E7FE8E5D81EB2B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -160,13 +160,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F671E4AA758376F8CB6F28BCFF09D6A9"
+        "OwnerKey" = "8:_65A830D6B507D845AFCFB80F41ED8B60"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F671E4AA758376F8CB6F28BCFF09D6A9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -191,12 +197,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2BCB2FEE3053E6F096E7FE8E5D81EB2B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_65A830D6B507D845AFCFB80F41ED8B60"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -306,7 +306,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SpPerfChart, Version=1.0.4436.11152, Culture=neutral, PublicKeyToken=5f66223a893f5e2f, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SpPerfChart, Version=1.0.4493.36836, Culture=neutral, PublicKeyToken=5f66223a893f5e2f, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_05DB6D79988C7204F42E6CA2CB1D7CB3"
@@ -728,6 +728,17 @@
             "Property" = "8:DesktopFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7EFB9781E96D4DF3BEAEA1E3C6152B52"
+                    {
+                    "Name" = "8:orBit"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_B210204769C04165A812666FA942E565"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_ECD4DAB10511467A81739586C4F671DD"
@@ -769,7 +780,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Frigobar_LimitSwitches"
         "ProductCode" = "8:{1DB1B735-81B2-4656-8938-FE4097414734}"
-        "PackageCode" = "8:{5D60AF05-A31B-41E5-BD56-A5A47B599C63}"
+        "PackageCode" = "8:{1321A8CD-59C6-4D16-A9A4-DD8DE690BBD6}"
         "UpgradeCode" = "8:{7D8C1628-2661-40FF-BED8-CD5C2A76D991}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -888,6 +899,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_401FDB2B81BE40739464722B2ADC8248"
+            {
+            "Name" = "8:PDU_chase"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_8553A63FF4D540FDB08F222A4F0C7857"
+            "Folder" = "8:_7EFB9781E96D4DF3BEAEA1E3C6152B52"
+            "WorkingFolder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Icon" = "8:_77065E2B43A347B99E99AF4D8D38FD77"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A795EC953A7F4246AE7D697D88B18AA6"
             {
             "Name" = "8:PDU_chase"
@@ -912,6 +937,20 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
             "Folder" = "8:_29FA7C45088B42159F84998F4D3C4C2A"
+            "WorkingFolder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
+            "Icon" = "8:_D97520D51AD441C39956F18A640ADE21"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E5284E10B70E4AB99C468D9FFDF5548C"
+            {
+            "Name" = "8:Montura Limits"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_71F6740DE75A4F959C80332C8FDA0E03"
+            "Folder" = "8:_7EFB9781E96D4DF3BEAEA1E3C6152B52"
             "WorkingFolder" = "8:_2B4BFC49F72F4FFF9E8237E21555AF5F"
             "Icon" = "8:_D97520D51AD441C39956F18A640ADE21"
             "Feature" = "8:"

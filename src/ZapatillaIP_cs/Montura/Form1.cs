@@ -32,6 +32,8 @@ namespace Montura
         private int pierFlips;
         private PierSide pierSide;
         private PierSide pierSideLast;
+        private Status stat;
+
 
         /// <summary>
         /// true si la montura del telescopio está en movimiento.
@@ -61,26 +63,27 @@ namespace Montura
             InitializeComponent();
 
 
+            stat = null;
             pierFlips = 0;
             pierSide = PierSide.pierUnknown;
             pierSideLast = PierSide.pierUnknown;
 
-            this.serialPortMontura.Open();
+            this.arduinoLimits.Open();
             this.timerReadSerial.Start();
             this.radioButtonDecHome.Checked = false;
             this.radioButtonRA_East.Checked = false;
             this.radioButtonRA_Home.Checked = false;
             this.radioButtonRA_West.Checked = false;
             
-            try
-            {
-                this.telescopio = new Telescope(settings.TelescopeProgId);
-            }
-            catch (Exception)
-            {
-                this.telescopio = null;
-                logger.Error("Error al escoger telescopio ASCOM.");
-            }
+            //try
+            //{
+            //    this.telescopio = new Telescope(settings.TelescopeProgId);
+            //}
+            //catch (Exception)
+            //{
+            //    this.telescopio = null;
+            //    logger.Error("Error al escoger telescopio ASCOM.");
+            //}
             logger.Info("Constructor End.");
         }
 
@@ -179,11 +182,10 @@ namespace Montura
         {
             String arduinoStatus;
             arduinoStatus = "Tick";
-            serialPortMontura.Write(query, 0, 1);
-            arduinoStatus = serialPortMontura.ReadLine();
+            arduinoLimits.Write(query, 0, 1);
+            arduinoStatus = arduinoLimits.ReadLine();
 
             Console.WriteLine(arduinoStatus);
-            Status stat;
             stat = new Serduino.Status(arduinoStatus);
             stat.Analiza();
 
@@ -213,6 +215,17 @@ namespace Montura
                 this.pin7_Low();
             }
             raLimitLast = raLimit;
+            ///////////////////
+            StringBuilder mensaje;
+            mensaje = new StringBuilder();
+            mensaje.Append("RA="); mensaje.Append(stat.AcelerometroRA.AcelerationUnit.ToString());
+            mensaje.Append("DEC="); mensaje.Append(stat.AcelerometroDEC.AcelerationUnit.ToString());
+            this.labelRaDec.Text = mensaje.ToString();
+            this.lblAlt.Text = ("z=" + stat.ZenithAngle+"\t cwA="+stat.CounterWeightAngle);
+            //Console.WriteLine(mensaje.ToString());
+            Console.WriteLine(mensaje.ToString());
+            
+            ///////////////////
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -229,7 +242,7 @@ namespace Montura
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
-                this.Hide();
+                //this.Hide();
             }
         }
 
@@ -344,7 +357,6 @@ namespace Montura
                         conectado = false;
                     }
                 }
-
             }
             catch (DriverAccessCOMException e)
             {
@@ -454,7 +466,9 @@ namespace Montura
 
         private void checkBoxInfrarojos_CheckedChanged(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;            
             this.InfraredControl(this.checkBoxInfrarojos.Checked);
+            this.Cursor = Cursors.Default;
         }
 
         private void timerTelescopio_Tick(object sender, EventArgs e)
@@ -475,8 +489,8 @@ namespace Montura
             logger.Info("buttonPin7Low_Click.");
             String respuesta;
             respuesta = "Tick";
-            serialPortMontura.Write(pin7Low, 0, 1);
-            respuesta = serialPortMontura.ReadLine();
+            arduinoLimits.Write(pin7Low, 0, 1);
+            respuesta = arduinoLimits.ReadLine();
             logger.Info("respuesta=" + respuesta);
             //Console.WriteLine(respuesta);
             DialogResult dr;
@@ -548,25 +562,63 @@ namespace Montura
 
         private void bSetup_Click(object sender, EventArgs e)        
         {
+            logger.Info("bSetup_Click");
+            if (this.telescopio == null)
+            {
+                logger.Info("this.telescopio == null");
+                nuevoTelescopio();                
+            }           
+            //if (!this.telescopio.Connected)
+            //{
+            //    logger.Info("Conectando Telescopio");
+            //    this.telescopio.Connected = true;                
+            //}
             this.telescopio.SetupDialog();
+        }
+
+        private void nuevoTelescopio()
+        {
+            logger.Info("nuevoTelescopio:"+settings.TelescopeProgId);
+            this.telescopio = new Telescope(settings.TelescopeProgId);
         }
 
         private void bConnect_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             if (this.telescopio == null)
-                return;
+            {
+                nuevoTelescopio();
+            }
             if (bConnect.Text == "Connect")
             {
-                this.telescopio = new Telescope(settings.TelescopeProgId);
-                this.telescopio.Connected = true;
+                nuevoTelescopio();
+                try
+                {
+                    this.telescopio.Connected = true;
+                }
+                catch (DriverAccessCOMException exc)
+                {
+                    logger.Error(exc.Message);
+                }                
                 bConnect.Text = "Disconnect";
+                this.timerTelescopio.Enabled = true;
             }
             else
             {
-                this.telescopio.Connected = false;
-                this.telescopio.Dispose();
+                try
+                {
+                    this.telescopio.Connected = false;
+                    this.telescopio.Dispose();
+                }
+                catch (DriverAccessCOMException exc)
+                {
+                    logger.Error(exc.Message);
+                }
+
                 bConnect.Text = "Connect";
+                this.timerTelescopio.Enabled = false;
             }
+            this.Cursor = Cursors.Default;
         }
     }
 }

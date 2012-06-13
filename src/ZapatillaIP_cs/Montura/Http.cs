@@ -27,36 +27,48 @@ namespace Montura
             HttpWReq.ContentType = "application/x-www-form-urlencoded";
             HttpWReq.ContentLength = baASCIIPostData.Length;
 
+            Stream streamReq;
+            streamReq = null;
             // Prepare web request and send the data.
-            Stream streamReq = HttpWReq.GetRequestStream();
-            streamReq.Write(baASCIIPostData, 0, baASCIIPostData.Length);
-
-            // grab the response
-            HttpWebResponse HttpWResp;
-            HttpWResp = null;
             try
             {
-                HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
+                streamReq = HttpWReq.GetRequestStream();
             }
-            catch (ProtocolViolationException e)
+            catch (WebException exc)
             {
+                logger.Debug("WebException "+exc.Message);
+            }
 
-                logger.Error(e.Message);
-            }
-            catch (NotSupportedException e)
-            {
-                logger.Error(e.Message);
-            }
+            return null;
+
+            //streamReq.Write(baASCIIPostData, 0, baASCIIPostData.Length);
+
+            //// grab the response
+            //HttpWebResponse HttpWResp;
+            //HttpWResp = null;
+            //try
+            //{
+            //    HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
+            //}
+            //catch (ProtocolViolationException e)
+            //{
+
+            //    logger.Error(e.Message);
+            //}
+            //catch (NotSupportedException e)
+            //{
+            //    logger.Error(e.Message);
+            //}
 
 
             
 
-            Stream streamResponse = HttpWResp.GetResponseStream();
+            //Stream streamResponse = HttpWResp.GetResponseStream();
 
-            // And read it out
-            StreamReader reader = new StreamReader(streamResponse);
-            String response = reader.ReadToEnd();
-            return response;
+            //// And read it out
+            //StreamReader reader = new StreamReader(streamResponse);
+            //String response = reader.ReadToEnd();
+            //return response;
 
         }
     }

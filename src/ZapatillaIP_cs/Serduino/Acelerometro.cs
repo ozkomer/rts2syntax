@@ -5,112 +5,101 @@ using System.Text;
 
 namespace Serduino
 {
+    public struct Triplet
+    {
+        public double X;
+        public double Y;
+        public double Z;
+
+        public Triplet(double x, double y, double z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+        }
+
+        public double DotProduct(Triplet B)
+        {
+            double respuesta;
+            respuesta = (this.X * B.X);
+            respuesta += (this.Y * B.Y);
+            respuesta += (this.Z * B.Z);
+            return respuesta;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder respuesta;
+            respuesta = new StringBuilder();
+            respuesta.Append("(");
+            respuesta.Append(X.ToString("0.0000"));
+            respuesta.Append(",");
+            respuesta.Append(Y.ToString("0.0000"));
+            respuesta.Append(",");
+            respuesta.Append(Z.ToString("0.0000"));
+            respuesta.Append("#");
+            respuesta.Append( ( (X*X) +  (Y*Y) + (Z*Z) ) );
+            respuesta.Append(")");
+
+            return respuesta.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Los datos recibidos provienen de un acelerómetro ADXL335.
+    /// Energizado a 3.3V (Vref), y digitalizado a 10 bits.
+    /// El rango de aceleraciones de este sensor es [-3g,3g].
+    /// Suponiendo una sensitividad de 0.55 volt/g, 
+    /// 
+    /// </summary>
     public class Acelerometro
     {
-        private double x;
-        private double y;
-        private double z;
-        public double maxX = Double.MinValue;
-        public double maxY = Double.MinValue;
-        public double maxZ = Double.MinValue;
+        public static readonly double VREF = 3.0;//[Volts]
+        public static readonly double VZEROG = (VREF/2);//[Volts]
+        public static readonly double BitsResolution = 10;//[bits]
+        public static readonly double MaxAnalogRead = (Math.Pow(2, BitsResolution) - 1);// Valor Escalar.
+        public static readonly double VoltsPerCount = (VREF / MaxAnalogRead);//[volts]
+        public static readonly double Sensitivity = 0.33;//0.55;//[Volt/g]
 
-        public double minX = Double.MaxValue;
-        public double minY = Double.MaxValue;
-        public double minZ = Double.MaxValue;
+        private Triplet analogRead;
+        private Triplet aceleration;
+        private Triplet acelerationUnit;
 
-        public void setValues (double x,double y,double z)
+        public Triplet AnalogRead
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-
-            if (this.x > maxX) maxX = this.x;
-            if (this.y > maxY) maxY = this.y;
-            if (this.z > maxZ) maxZ = this.z;
-
-            if (this.x < minX) minX = this.x;
-            if (this.y < minY) minY = this.y;
-            if (this.z < minZ) minZ = this.z;
+            get { return this.analogRead; }
+            set { this.analogRead = value; }
         }
 
-        public double X
+        public Triplet Acceleration
         {
-            get { return this.x; }
-            set { this.x = value; }
-        }
-        public double Y
-        {
-            get { return this.y; }
-            set { this.y = value; }
-        }
-        public double Z
-        {
-            get { return this.z; }
-            set { this.z = value; }
+            get { return this.aceleration; }
+            set { this.aceleration = value; }
         }
 
-        public int RelativeX
+        public Triplet AcelerationUnit
         {
-            get { return (int)(100.0 * ((this.x - minX) / (maxX - minX))); }
-        }
-        public int RelativeY
-        {
-            get { return (int)(100.0 * ((this.y - minY) / (maxY - minY))); }
-        }
-        public int RelativeZ
-        {
-            get { return (int)(100.0 * ((this.z - minZ) / (maxZ - minZ))); }
+            get { return this.acelerationUnit; }
+            set { this.acelerationUnit = value; }
         }
 
-        /// <summary>
-        /// Calculos en base a Acelerometro.ods
-        /// </summary>
-        /// <param name="acc"></param>
-        /// <returns></returns>
-        public static double getAlpha(Acelerometro acc)
+        public void refreshAcceleration()
         {
-            double c2, c3, d2, d3, e3, e5, f9;
-            c2 = 542; 
-            c3 = 81;
-            d2 = 554.5;
-            d3 = -33.5;
-            e3 = 87;
-            e5 = 510;
-            f9 = 1.35;//4.7123889804;
-            double alpha1, alpha2, alpha3;
-            double arg1, arg2, arg3;
-
-            #region alpha1
-            //Calculamos el argumento a entregar a la funcion arcoseno
-            arg1 = ((acc.x - c2) / (c3));
-            // aseguramos que el argumento esté en el rango de la funcion seno.
-            arg1 = Math.Max(-1, arg1);
-            arg1 = Math.Min(1, arg1);
-            // Calculamos el arcoseno
-            alpha1 = Math.Asin(arg1);
-            #endregion
-
-            #region alpha2
-            //Calculamos el argumento a entregar a la funcion arcoseno
-            arg2 = ((acc.y - d2) / (d3));
-            // aseguramos que el argumento esté en el rango de la funcion seno.
-            arg2 = Math.Max(-1, arg2);
-            arg2 = Math.Min(1, arg2);
-            // Calculamos el arcoseno
-            alpha2 = Math.Asin(arg2);
-            #endregion
-
-            #region alpha3
-            //Calculamos el argumento a entregar a la funcion arcoseno
-            arg3 = ((acc.z - e5) / (e3));
-            // aseguramos que el argumento esté en el rango de la funcion seno.
-            arg3 = Math.Max(-1, arg3);
-            arg3 = Math.Min(1, arg3);
-            // Calculamos el arcoseno
-            alpha3 = ((Math.Asin(arg3))+f9);
-            #endregion
-            Console.WriteLine("alfa123:\t" + alpha1 + "\t" + alpha2 + "\t" + alpha3);
-            return (0.9 * alpha1 + 0.1 * alpha2);
+            aceleration.X = ((analogRead.X * VoltsPerCount) - (VZEROG)) / Sensitivity;
+            aceleration.Y = ((analogRead.Y * VoltsPerCount) - (VZEROG)) / Sensitivity;
+            aceleration.Z = ((analogRead.Z * VoltsPerCount) - (VZEROG)) / Sensitivity;
+            double squareSum;
+            double CSquare;
+            double cRoot;
+            squareSum = ((aceleration.X * aceleration.X) +
+                            (aceleration.Y * aceleration.Y) +
+                            (aceleration.Z * aceleration.Z));
+            CSquare = (1.0f / squareSum);
+            cRoot = Math.Sqrt(CSquare);
+            acelerationUnit.X = (aceleration.X * cRoot);
+            acelerationUnit.Y = (aceleration.Y * cRoot);
+            acelerationUnit.Z = (aceleration.Z * cRoot);
         }
+
     }
 }
