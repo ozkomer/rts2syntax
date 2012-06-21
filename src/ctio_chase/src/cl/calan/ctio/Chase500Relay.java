@@ -37,15 +37,19 @@ public class Chase500Relay extends Thread {
         // figure out response
     	String updateInfo;
     	updateInfo = (new String( packet.getData())).trim();
+    	System.out.println("updateInfo="+updateInfo);
+    	updateInfo = updateInfo.replace("#", "");
     	String[] part;
     	part = updateInfo.split(" ");
     	this.cwAngle = Double.parseDouble(part[0]);
     	this.zenithAngle = Double.parseDouble(part[1]);
         StringBuilder mensaje;
         mensaje = new StringBuilder();
+        mensaje.append("#####");
         mensaje.append(this.cwAngle);
         mensaje.append(" ");
         mensaje.append(this.zenithAngle);
+        mensaje.append("#####");
         System.out.println("nuevoMensaje="+mensaje.toString());
         this.buf = mensaje.toString().getBytes();
     }
