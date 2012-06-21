@@ -589,25 +589,29 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		action=arg0.getActionCommand();
 		if (action.equals("socketTimer"))
 		{
-			DatagramPacket packet;
+			DatagramPacket packetSend;
 			
 			String mensaje;
-			packet = null;
+			packetSend = null;
 			mensaje = null;
 			try {
-				packet = new DatagramPacket(new byte[1],1,InetAddress.getByName("orbitlabs.dyndns.org"),19000);
+				packetSend = new DatagramPacket(new byte[1],1,InetAddress.getByName("orbitlabs.dyndns.org"),19000);
 			} catch (UnknownHostException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
 			try {
-				this.socket.send(packet);
-				packet = new DatagramPacket(new byte[50], 50);
-				this.socket.receive(packet);
+				this.socket.send(packetSend);
+				byte[] bbuffer;
+				DatagramPacket packetReceive;
+				bbuffer = new byte[50];
+				packetReceive = new DatagramPacket(bbuffer, 50);
+				this.socket.receive(packetReceive);
 				
-				mensaje = new String(packet.getData());
-				mensaje = mensaje.trim();
+				mensaje = new String(packetReceive.getData());
+				//System.out.println("mensaje=\t"+mensaje);
+				mensaje = mensaje.trim().replaceAll("_", "");
 			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -617,12 +621,13 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 			double cwA_Baade,zenithAngle_Baade;
 			int cwaSet,zSet;
 			String[] part;
+			//System.out.println("mensaje=\t"+mensaje);
 			part = mensaje.split(" ");
 			cwA_Baade = Double.parseDouble(part[0]);
 			zenithAngle_Baade = Double.parseDouble(part[1]);
 			cwaSet = (int) (cwA_Baade + 180.0);
 			zSet = (int) zenithAngle_Baade;
-			System.out.println("mensaje="+mensaje+"\t cwaSet="+cwaSet+"\t zSet"+zSet);
+			System.out.println("mensaje=("+mensaje+")\t cwaSet="+cwaSet+"\t zSet"+zSet);
 			this.sliderCWa.setValue(cwaSet);
 			this.sliderZenith.setValue(zSet);
 		}	
