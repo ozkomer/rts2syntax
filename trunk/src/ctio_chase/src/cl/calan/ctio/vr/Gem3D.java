@@ -13,6 +13,8 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -588,10 +590,20 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		if (action.equals("socketTimer"))
 		{
 			DatagramPacket packet;
+			
 			String mensaje;
+			packet = null;
 			mensaje = null;
-			packet = new DatagramPacket(new byte[50], 50);
 			try {
+				packet = new DatagramPacket(new byte[1],1,InetAddress.getByName("orbitlabs.dyndns.org"),19000);
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			try {
+				this.socket.send(packet);
+				packet = new DatagramPacket(new byte[50], 50);
 				this.socket.receive(packet);
 				
 				mensaje = new String(packet.getData());
