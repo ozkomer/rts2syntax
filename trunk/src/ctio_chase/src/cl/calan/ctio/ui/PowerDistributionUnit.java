@@ -48,7 +48,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 		//recurso = this.getClass().getResource();
 		//this.setIconImage(new ImageIcon("images/Switch.gif").getImage());
 		
-		this.setIconImage(new ImageIcon("./images/Switch.gif").getImage());
+		this.setIconImage(new ImageIcon("./images/switch.gif").getImage());
 		this.addComponentListener(this);
 		this.addWindowListener(this);
 		this.setResizable(false);
