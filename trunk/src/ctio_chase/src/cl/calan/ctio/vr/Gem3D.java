@@ -1,6 +1,7 @@
 package cl.calan.ctio.vr;
 
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -44,6 +47,8 @@ import com.threed.jpct.World;
 public class Gem3D implements MouseListener, MouseMotionListener,
 		ChangeListener, ActionListener {
 
+	public final static String UdpServerHost = "190.98.214.226";
+	public final static int UdpServerPort = 19000;
 	private World world;
 	private FrameBuffer buffer;
 	private Object3D observatorio;
@@ -52,6 +57,11 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 
 	private DatagramSocket socket;
 	private javax.swing.Timer socketTimer;
+	/**
+	 * Al Activarlo, se activa el socket timer, al desactivarlo, se desactiva
+	 * el socketTimer.
+	 */
+	private JCheckBox jcbChase500;
 	
 	/**
 	 * El tubo del telescopio no está centrado respecto al eje de ascension recta.
@@ -212,7 +222,10 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		
 		socketTimer = new javax.swing.Timer(1000, this);
 		socketTimer.setActionCommand("socketTimer");
-		socketTimer.start();
+		jcbChase500 = new JCheckBox("Chase500");
+		jcbChase500.setActionCommand("jcbChase500");
+		jcbChase500.addActionListener(this);
+		
 	}
 
 	/**
@@ -295,10 +308,14 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		canvas.addMouseMotionListener(this);
 		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
 		frame.setLayout(new FlowLayout());
-		frame.add(canvas);
-		frame.add(this.sliderCWa);
-		frame.add(sliderDEC);
-		frame.add(sliderZenith);
+		frame.add(canvas, BorderLayout.CENTER);
+		frame.add(jcbChase500, BorderLayout.BEFORE_FIRST_LINE);
+		JPanel panelControl;
+		panelControl = new JPanel(new FlowLayout());
+		panelControl.add(this.sliderCWa);
+		panelControl.add(sliderDEC);
+		panelControl.add(sliderZenith);
+		frame.add(panelControl, BorderLayout.EAST);
 		frame.pack();
 
 		while (frame.isShowing()) {
@@ -587,6 +604,16 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	public void actionPerformed(ActionEvent arg0) {
 		String action;
 		action=arg0.getActionCommand();
+		if (action.equals("jcbChase500"))
+		{
+			if (this.jcbChase500.isSelected())
+			{
+			 socketTimer.start();
+			}else
+			{
+			 socketTimer.stop();
+			}
+		}
 		if (action.equals("socketTimer"))
 		{
 			DatagramPacket packetSend;
@@ -595,7 +622,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 			packetSend = null;
 			mensaje = null;
 			try {
-				packetSend = new DatagramPacket(new byte[1],1,InetAddress.getByName("orbitlabs.dyndns.org"),19000);
+				packetSend = new DatagramPacket(new byte[1],1,InetAddress.getByName(Gem3D.UdpServerHost),Gem3D.UdpServerPort);
 			} catch (UnknownHostException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
