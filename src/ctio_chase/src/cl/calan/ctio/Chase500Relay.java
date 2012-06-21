@@ -19,6 +19,8 @@ public class Chase500Relay extends Thread {
     private double zenithAngle;
     private byte[] buf;
     private DatagramPacket packet;
+    private StringBuilder mensaje;
+
     
     public Chase500Relay() throws IOException {
         this("QuoteServerThread");
@@ -37,20 +39,20 @@ public class Chase500Relay extends Thread {
         // figure out response
     	String updateInfo;
     	updateInfo = (new String( packet.getData())).trim();
-    	System.out.println("updateInfo="+updateInfo);
+    	System.out.println("updateInfo=\t"+updateInfo);
     	updateInfo = updateInfo.replace("#", "");
     	String[] part;
     	part = updateInfo.split(" ");
     	this.cwAngle = Double.parseDouble(part[0]);
     	this.zenithAngle = Double.parseDouble(part[1]);
-        StringBuilder mensaje;
         mensaje = new StringBuilder();
-        mensaje.append("#####");
+        mensaje.append("_");
         mensaje.append(this.cwAngle);
         mensaje.append(" ");
         mensaje.append(this.zenithAngle);
-        mensaje.append("#####");
-        System.out.println("nuevoMensaje="+mensaje.toString());
+        mensaje.append("_");
+        System.out.println("nuevoMensaje=\t"+mensaje.toString());
+        buf = new byte[100];
         this.buf = mensaje.toString().getBytes();
     }
  
@@ -62,6 +64,7 @@ public class Chase500Relay extends Thread {
         while (continuar) {
             try { 
                 // receive request
+            	buf = new byte[100];
                 this.packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
                 
@@ -75,6 +78,8 @@ public class Chase500Relay extends Thread {
                     // send the response to the client at "address" and "port"
                     InetAddress address = packet.getAddress();
                     int port = packet.getPort();
+                    buf = new byte[100];
+                    this.buf = mensaje.toString().getBytes();
                     packet = new DatagramPacket(buf, buf.length, address, port);
                     socket.send(packet);
                     System.out.print(".");
