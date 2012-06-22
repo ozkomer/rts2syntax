@@ -652,7 +652,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 			part = mensaje.split(" ");
 			cwA_Baade = Double.parseDouble(part[0]);
 			zenithAngle_Baade = Double.parseDouble(part[1]);
-			cwaSet = (int) (cwA_Baade + 180.0);
+			cwaSet = (int) (cwA_Baade);
 			zSet = (int) zenithAngle_Baade;
 			System.out.println("mensaje=("+mensaje+")\t cwaSet="+cwaSet+"\t zSet"+zSet);
 			this.sliderCWa.setValue(cwaSet);
