@@ -16,6 +16,7 @@ public class Chase500Relay extends Thread {
  
     protected DatagramSocket socket = null;
     private double cwAngle;
+    private double decAngle;
     private double zenithAngle;
     private byte[] buf;
     private DatagramPacket packet;
@@ -44,10 +45,13 @@ public class Chase500Relay extends Thread {
     	String[] part;
     	part = updateInfo.split(" ");
     	this.cwAngle = Double.parseDouble(part[0]);
-    	this.zenithAngle = Double.parseDouble(part[1]);
+    	this.decAngle = Double.parseDouble(part[1]);
+    	this.zenithAngle = Double.parseDouble(part[2]);
         mensaje = new StringBuilder();
         mensaje.append("_");
         mensaje.append(this.cwAngle);
+        mensaje.append(" ");
+        mensaje.append(this.decAngle);
         mensaje.append(" ");
         mensaje.append(this.zenithAngle);
         mensaje.append("_");
@@ -66,6 +70,7 @@ public class Chase500Relay extends Thread {
                 // receive request
             	buf = new byte[100];
                 this.packet = new DatagramPacket(buf, buf.length);
+            	System.out.println("Esperando UDP.");
                 socket.receive(packet);
                 
                 if (packet.getAddress().getHostAddress().equals("139.229.12.76"))//(packet.getLength()>1) // Si el mensaje viene de Chase500
