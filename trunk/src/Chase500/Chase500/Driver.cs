@@ -44,7 +44,6 @@ namespace ASCOM.Chase500
     [ComVisible(true)]
     public class Dome : IDomeV2
     {
-        double dummyAzimuth;
 
         #region Variables de Instancia
         /// <summary>
@@ -279,8 +278,7 @@ namespace ASCOM.Chase500
 
         public void SlewToAzimuth(double azimuth)
         {
-            this.dummyAzimuth = azimuth;
-            return;
+            throw new System.NotImplementedException();
         }
 
         public void SyncToAzimuth(double azimuth)
@@ -312,7 +310,7 @@ namespace ASCOM.Chase500
 
         public string Description
         {
-            get { return "Chase500 Dome Driver."; }
+            get { return Properties.Settings.Default.DriverName; }
         }
 
         public string DriverInfo
@@ -322,7 +320,7 @@ namespace ASCOM.Chase500
                 StringBuilder respuesta;
                 respuesta = new StringBuilder();
                 respuesta.Append("Chase 500, control básico del domo.\n\r");
-                respuesta.Append("Domo basado en sistema hidráulico gobernado por un PLC\n\r");
+                respuesta.Append("Domo basado en sistema hidráulico gobernado por un PLC.\n\r");
                 respuesta.Append("Desarrollado por Eduardo Maureira. emaureir@das.uchile.cl\n\r");
 
                 return respuesta.ToString();
@@ -370,7 +368,7 @@ namespace ASCOM.Chase500
 
         public double Azimuth
         {
-            get { return this.dummyAzimuth; }
+            get { throw new System.NotImplementedException(); }
         }
 
         public bool CanFindHome
@@ -390,7 +388,7 @@ namespace ASCOM.Chase500
 
         public bool CanSetAzimuth
         {
-            get { return true; }
+            get { return false; }
         }
 
         public bool CanSetPark
@@ -426,29 +424,12 @@ namespace ASCOM.Chase500
 
         public bool Slewing
         {
-            get
-            {
-                if ((this.shutterStatus == ShutterState.shutterOpening)
-                    || (this.shutterStatus == ShutterState.shutterClosing))
-                {
-                    return true;
-                }
-                return false;
-            }
+            get { throw new System.NotImplementedException(); }
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Timer para reflejar en la interfaz gráfica el estado del Domo.
-        /// </summary>
-        public System.Timers.Timer DomeMovingTimer
-        {
-            get { return this.domeMovingTimer; }
-            set { this.domeMovingTimer = value; }
-        }
 
         /// <summary>
         /// Dirección IPv4 del PLC
