@@ -198,7 +198,7 @@
             this.dataGridViewATC02.Location = new System.Drawing.Point(6, 106);
             this.dataGridViewATC02.Name = "dataGridViewATC02";
             this.dataGridViewATC02.ReadOnly = true;
-            this.dataGridViewATC02.Size = new System.Drawing.Size(345, 181);
+            this.dataGridViewATC02.Size = new System.Drawing.Size(345, 198);
             this.dataGridViewATC02.TabIndex = 3;
             // 
             // ColumnParametro
