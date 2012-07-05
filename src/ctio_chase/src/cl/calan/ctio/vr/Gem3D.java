@@ -84,7 +84,6 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	 */
 	private SimpleVector decV;
 
-	
 	/**
 	 * Para mover el eje de ascencion recta manualmente. En un telescopio
 	 * convencional, este angulo corresponde a la ascención recta, el cual está en función
@@ -164,7 +163,8 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	 * Angulo complementario de la Latitud del Observatorio
 	 */
 	public static final float LAT_OBSERVATORY_COMP = (PI_HALF - LAT_OBSERVATORY);
-	
+	public static final SimpleVector vLat = new SimpleVector(Math.sin(LAT_OBSERVATORY_COMP), 0, Math.cos(LAT_OBSERVATORY_COMP));
+	private SimpleVector vA;
 
 	public static void main(String[] args) throws Exception {
 		new Gem3D().loop();
@@ -399,6 +399,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 			this.ascencionRecta.rotateY(diff);
 			cwAngleLast = cwA;		
 			this.refrescaZenithSlider();
+			testDec ();
 			System.out.println("---------</sliderCWa>------------");
 		}
 		if  ((e.getSource() == this.sliderDEC)) {
@@ -422,12 +423,13 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 			this.lastangleDEC = this.declination;
 			this.lastShiftX = shiftX;
 			this.lastShiftZ = shiftZ;
-			if (processDEC)
-			{
-				processZenith = false;
-				this.refrescaZenithSlider();
-				processZenith = true;
-			}
+//			if (processDEC)
+//			{
+//				processZenith = false;
+//				this.refrescaZenithSlider();
+//				processZenith = true;
+//			}
+			testDec ();
 			System.out.println("---------</sliderDEC>------------");
 		}
 		if ( (e.getSource() == this.sliderZenith)) {
@@ -573,13 +575,29 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		return respuesta;		
 	}
 	
+	public void testDec ()
+	{
+		SimpleVector decVector;
+		decVector = computeDeclination(this.cwA, (float) this.declination);
+		this.vA = new SimpleVector(-1.0 * Math.cos(LAT_OBSERVATORY_COMP) * Math.cos(this.cwA), 
+								   -1.0 * Math.sin(this.cwA),
+								   Math.sin(LAT_OBSERVATORY_COMP)*Math.cos(this.cwA));
+		double vAdotDec;
+		double angleDecLat;
+		
+//		vAdotDec = this.vA.calcDot(decVector);
+//		System.out.println("vAdotDec="+vAdotDec);		
+		angleDecLat = Gem3D.vLat.calcAngle(decVector);
+		System.out.println("angleDecLat="+angleDecLat*TO_GRAD);		
+	}
+	
 	public DeclinationError evaluaDeclinacion (double declinationTest, double expectedZenith)
 	{
 		DeclinationError respuesta;
 		SimpleVector decVector;
 		decVector = computeDeclination(this.cwA, (float) declinationTest);
 		double error;
-		error = Math.abs(decVector.calcAngle(ZENITH) - expectedZenith); // Error al suponer que solA es la respuesta correcta
+		error = Math.abs(decVector.calcAngle(ZENITH) - expectedZenith); // Error al suponer que decVector es la respuesta correcta
 		respuesta = new DeclinationError(declinationTest, error);
 		System.out.println("errorB="+error);
 		return respuesta;
@@ -645,18 +663,21 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 				e.printStackTrace();
 			}
 			
-			double cwA_Baade,zenithAngle_Baade;
-			int cwaSet,zSet;
+			double cwA_Baade, declinationAngle_Baade, zenithAngle_Baade;
+			int cwaSet, decSet, zSet;
 			String[] part;
 			//System.out.println("mensaje=\t"+mensaje);
 			part = mensaje.split(" ");
 			cwA_Baade = Double.parseDouble(part[0]);
-			zenithAngle_Baade = Double.parseDouble(part[1]);
+			declinationAngle_Baade = Double.parseDouble(part[1]);
+			zenithAngle_Baade = Double.parseDouble(part[2]);
 			cwaSet = (int) (cwA_Baade);
+			decSet = (int) declinationAngle_Baade;
 			zSet = (int) zenithAngle_Baade;
-			System.out.println("mensaje=("+mensaje+")\t cwaSet="+cwaSet+"\t zSet"+zSet);
+			System.out.println("mensaje=("+mensaje+")\t cwaSet="+cwaSet+"\t decSet="+decSet+"\t zSet="+zSet);
 			this.sliderCWa.setValue(cwaSet);
-			this.sliderZenith.setValue(zSet);
+			this.sliderDEC.setValue(-decSet);
+			//this.sliderZenith.setValue(zSet);
 		}	
 		
 	}	
