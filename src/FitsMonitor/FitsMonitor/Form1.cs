@@ -32,7 +32,7 @@ namespace FitsMonitor
         private double priTemp;
         private double secTemp;
         private double ambTemp;
-
+        private int setFan;
 
         public Form1()
         {
@@ -152,16 +152,19 @@ namespace FitsMonitor
                 HeaderCard hcPriTemp;
                 HeaderCard hcSecTemp;
                 HeaderCard hcAmbTemp;
+                HeaderCard hcSetFan;
                 logger.Info("Actualizando archivo FITS:" + fitsFullPath);
                 hcFocStep = hdu.Header.FindCard("FOCSTEP");
                 hcPriTemp = hdu.Header.FindCard("PRITEMP");
                 hcSecTemp = hdu.Header.FindCard("SECTEMP");
                 hcAmbTemp = hdu.Header.FindCard("AMBTEMP");
+                hcSetFan = hdu.Header.FindCard("SETFAN");
 
                 hcFocStep.Value = ("" + this.focstep);
                 hcPriTemp.Value = ("" + this.priTemp);
                 hcSecTemp.Value = ("" + this.secTemp);
                 hcAmbTemp.Value = ("" + this.ambTemp);
+                hcSetFan.Value  = ("" + this.setFan);
                 hdu.Header.Rewrite();
             }
             fitsFile.Close();
@@ -495,21 +498,28 @@ namespace FitsMonitor
                     fila[1] = textoFecha.ToString();
                     addOrder++;
                 }
-                if ((addOrder==1) && (linea[i].Contains("PRITE")))
+                if ((addOrder == 1) && (linea[i].Contains("SETFAN")))
+                {
+                    fila[0] = "SETFAN";
+                    this.setFan = Int32.Parse(lastPart);
+                    fila[1] = this.setFan.ToString();
+                    addOrder++;
+                }
+                if ((addOrder == 2) && (linea[i].Contains("PRITE")))
                 {
                     fila[0] = "PRITE";                    
                     this.priTemp = Double.Parse(lastPart);
                     fila[1] = this.priTemp.ToString();
                     addOrder++;
                 }
-                if ((addOrder==2) && (linea[i].Contains("SECTE")))
+                if ((addOrder==3) && (linea[i].Contains("SECTE")))
                 {
                     fila[0] = "SECTE";
                     this.secTemp = Double.Parse(lastPart);
                     fila[1] = this.secTemp.ToString();
                     addOrder++;
                 }
-                if ((addOrder == 3) && (linea[i].Contains("BFL")))
+                if ((addOrder == 4) && (linea[i].Contains("BFL")))
                 {
                     fila[0] = "BFL";
                     this.bfl = Double.Parse(lastPart);
@@ -520,13 +530,13 @@ namespace FitsMonitor
                     fila[1] = this.focstep.ToString();
                     addOrder++;
                 }
-                if ((addOrder == 4) && (linea[i].Contains("AMBTE")))
+                if ((addOrder == 5) && (linea[i].Contains("AMBTE")))
                 {
                     fila[0] = "AMBTE";
                     this.ambTemp = Double.Parse(lastPart);
                     fila[1] = this.ambTemp.ToString();
                     addOrder++;
-                }
+                }                
                 //fila[0] = part[0];
                 //fila[1] = part[part.Length - 1];
                 if ((fila[0]!=null) && (fila[0].Length>0))
