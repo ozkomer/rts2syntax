@@ -45,10 +45,10 @@
       <Value Profile="(Default)">relay14Label</Value>
     </Setting>
     <Setting Name="relay15Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay15Label</Value>
+      <Value Profile="(Default)">NW Cam</Value>
     </Setting>
     <Setting Name="relay16Label" Type="System.String" Scope="User">
-      <Value Profile="(Default)">relay16Label</Value>
+      <Value Profile="(Default)">NE Cam</Value>
     </Setting>
     <Setting Name="ipAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">139.229.12.84</Value>
