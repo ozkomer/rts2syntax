@@ -11,5 +11,11 @@
     <Setting Name="TelescopeProgId" Type="System.String" Scope="User">
       <Value Profile="(Default)">AstroPhysicsV2.Telescope</Value>
     </Setting>
+    <Setting Name="UdpServerHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">190.98.214.226</Value>
+    </Setting>
+    <Setting Name="UdpServerPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">19000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -14,6 +14,7 @@ using log4net;
 using log4net.Config;
 using ASCOM.DeviceInterface;
 using log4net.Appender;
+using System.Net.Sockets;
 
 namespace Montura
 {
@@ -51,7 +52,7 @@ namespace Montura
         private PierSide pierSide;
         private PierSide pierSideLast;
         private Status stat;
-
+        private UdpClient udpClient;
 
         /// <summary>
         /// true si la montura del telescopio está en movimiento.
@@ -61,7 +62,6 @@ namespace Montura
         /// penultimo valor de la variable slewing
         /// </summary>
         private Boolean lastSlewing;
-
 
         private static readonly String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
 
@@ -73,6 +73,7 @@ namespace Montura
             raLimitLast = false;
             tiltLimit = false;
             tiltLimitLast = false;
+            this.udpClient = new UdpClient();
             this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             query = new char[2];
             query[0] = '?';
@@ -81,7 +82,6 @@ namespace Montura
             pin7Low[0] = '_';
             pin7Low[1] = '\n'; // revisar si este carcter se usa.
             InitializeComponent();
-
 
             stat = null;
             pierFlips = 0;
@@ -254,7 +254,7 @@ namespace Montura
             arduinoLimits.Write(query, 0, 1);
             arduinoStatus = arduinoLimits.ReadLine();
 
-            Console.WriteLine(arduinoStatus);
+            //Console.WriteLine(arduinoStatus);
             stat = new Serduino.Status(arduinoStatus);
             stat.Analiza();
 
@@ -284,7 +284,7 @@ namespace Montura
                 this.pin7_Low();
             }
 
-            this.tiltLimit = (this.stat.ZenithAngleArduino > 105.0);
+            this.tiltLimit = (this.stat.ZenithCounter !=0);
             if ((tiltLimit) && (!tiltLimitLast))
             {
                 logger.Info("Tilt Limit: ZenithAngle=" + stat.ZenithAngleArduino);
@@ -297,15 +297,25 @@ namespace Montura
             raLimitLast = raLimit;
             tiltLimitLast = tiltLimit;
             ///////////////////
-            StringBuilder mensaje;
-            mensaje = new StringBuilder();
-            mensaje.Append("RA="); mensaje.Append(stat.AcelerometroRA.AcelerationUnit.ToString());
-            mensaje.Append("DEC="); mensaje.Append(stat.AcelerometroDEC.AcelerationUnit.ToString());
-            this.labelRaDec.Text = mensaje.ToString();
-            this.lblAlt.Text = ("z=" + stat.ZenithAngle+"\t cwA="+stat.CounterWeightAngle);
+            StringBuilder mensajeAcelerations;
+            StringBuilder mensajeAngles;
+
+            mensajeAcelerations = new StringBuilder();
+            mensajeAcelerations.Append("RA="); mensajeAcelerations.Append(stat.AcelerometroRA.AcelerationUnit.ToString());
+            mensajeAcelerations.Append("DEC="); mensajeAcelerations.Append(stat.AcelerometroDEC.AcelerationUnit.ToString());
+            //mensajeConsola.Append("cwa[°]="); mensajeConsola.Append(stat.CounterWeightAngle);
+            this.labelRaDec.Text = mensajeAcelerations.ToString();
+            mensajeAngles = new StringBuilder();
+            mensajeAngles.Append("[°] cwA="); mensajeAngles.Append(stat.CounterWeightAngle.ToString("0.00"));
+            mensajeAngles.Append("\t d="); mensajeAngles.Append(stat.DeclinationAngle.ToString("0.00"));
+            mensajeAngles.Append("\t z="); mensajeAngles.Append(stat.ZenithAngle.ToString("0.00"));
+            this.lblAlt.Text = (mensajeAngles.ToString());
             //Console.WriteLine(mensaje.ToString());
-            Console.WriteLine(mensaje.ToString());
-            
+            Byte[] sendBytes;
+            sendBytes = Encoding.ASCII.GetBytes("#" + stat.CounterWeightAngle + " " + stat.DeclinationAngle + " " + stat.ZenithAngle + "#");
+            Console.WriteLine(mensajeAcelerations.ToString());
+            this.udpClient.Connect(settings.UdpServerHost, settings.UdpServerPort);
+            udpClient.Send(sendBytes, sendBytes.Length);
             ///////////////////
         }
 
@@ -366,6 +376,7 @@ namespace Montura
             respuesta = MessageBox.Show("Closing application. Continue?", "Accelerometers Airbag", MessageBoxButtons.YesNo);
             if (respuesta == DialogResult.Yes)
             {
+                this.udpClient.Close();
                 Application.Exit();
             }
             return respuesta;
