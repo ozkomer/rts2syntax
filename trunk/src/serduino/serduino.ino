@@ -1,4 +1,4 @@
-/* 
+﻿/*
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
  *
@@ -16,10 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 #define SIZE_A  30
-
-
 
 // array for average values of sensors
 int avals[6][SIZE_A];
@@ -31,11 +28,11 @@ int pinLimitRA=7;
 
 // Vector unitario del acelerometro del eje de declinacion medido en un Zenith (Alt=90) de Pointing Calculado por astrometria.
 const double Zenith[]     = { 
-  -0.2116771931 , 0.975214028  , 0.0644233307 };
+0.0432176974265464, 0.9981445059953040, 0.0427206054666359 };
 
 // Vector unitario del acelerometro del eje de ascension recta, medido en la mitad de la carrera del switch RA_HOME
 const double SouthPole[]  = { 
-  0.3780225716  , 0.3874084811 , -0.84084101  };
+0.326877543892625, 0.384813411837579, -0.863162057776674 };
 
 // Angulo entre el Zenith y la posición del tubo del telescopio. [en radianes].
 double zenithAngle;
@@ -43,8 +40,17 @@ double zenithAngle;
 // Si el zenithAngle excede este valor [ en radianes ], se apagará la montura.
 const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
+//7000>Valor obtenido haciendo un arranque de la montura desde park1 hasta el meridiano opuesto(forzando un transito).
+// El valor obtenido fue 3247, pero se permitira una holgura de 7000 conteos de posiciones mas alla  del limite del Zenith.
+//10>Ahora se ha optado por usar solo park3, esto evita siempre (en teoria), que la montura pase por debajo del horizonte.
+const unsigned long zenithLimitCounter = 10;//7000; 
+
 // Angulo del eje contrapeso. [en radianes].
 double counterWeightAngle;
+
+//Cada vez que el zenithAngle excede el zenithAngleLimit, esta variable se incrementa en 1.
+// si esta variable supera el valor zenithLimitCounter, se ordena apagar la montura, y se setea esta variable en cero
+unsigned long  zenithCounter;
 
 void setup()
 {
@@ -53,6 +59,8 @@ void setup()
 
   Serial.begin(9600);
 
+  zenithCounter = 0;
+  zenithAngle =0;
   int i;
 
   pinMode(pinLimitRA,OUTPUT);
@@ -127,13 +135,11 @@ void sendSensor()
     sensorValue |= digitalRead(i);
   }
 
-
   Serial.print(sensorValue, DEC);
   Serial.print(" ");
 
   for (i = 0; i < 6; i++)
   {
-
     Serial.print(asums[i] / SIZE_A, DEC);
     Serial.print(" ");
   }
@@ -141,17 +147,28 @@ void sendSensor()
   Serial.print(counterWeightAngle, DEC);
   Serial.print(" ");
   Serial.print(zenithAngle, DEC);
-
+  Serial.print(" ");
+  Serial.print(zenithCounter, DEC);
   Serial.println();
 }
 
 void loop()
 {
+  if (zenithAngle>zenithAngleLimit) // Si el telescopio esta en una posicion insegura
+  { 
+    zenithCounter++; // incrementamos el contador
+  }
+  
+  if (zenithAngle<1.57079633) // Si el telescopio ha vuelto a una posicion segura
+  {
+    zenithCounter = 0; // Reiniciamos el contador
+  }
   if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
       ||                    // o
-        (zenithAngle>zenithAngleLimit) ) // El telescopio está definivamente mirando por debajo del horizonte
+        (zenithCounter>zenithLimitCounter) ) // El telescopio está hace tiempo definivamente mirando por debajo del horizonte
   {
     digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
+    zenithCounter = 0;
   }
   if (Serial.available())
   {
