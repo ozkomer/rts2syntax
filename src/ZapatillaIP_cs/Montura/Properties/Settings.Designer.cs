@@ -58,5 +58,29 @@ namespace Montura.Properties {
                 this["TelescopeProgId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("190.98.214.226")]
+        public string UdpServerHost {
+            get {
+                return ((string)(this["UdpServerHost"]));
+            }
+            set {
+                this["UdpServerHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("19000")]
+        public int UdpServerPort {
+            get {
+                return ((int)(this["UdpServerPort"]));
+            }
+            set {
+                this["UdpServerPort"] = value;
+            }
+        }
     }
 }

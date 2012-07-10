@@ -317,7 +317,7 @@
             // lblAlt
             // 
             this.lblAlt.AutoSize = true;
-            this.lblAlt.Location = new System.Drawing.Point(91, 238);
+            this.lblAlt.Location = new System.Drawing.Point(19, 221);
             this.lblAlt.Name = "lblAlt";
             this.lblAlt.Size = new System.Drawing.Size(24, 13);
             this.lblAlt.TabIndex = 15;
@@ -328,8 +328,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(421, 268);
-            this.Controls.Add(this.lblAlt);
             this.Controls.Add(this.labelRaDec);
+            this.Controls.Add(this.lblAlt);
             this.Controls.Add(this.groupBoxTelescope);
             this.Controls.Add(this.buttonPin7Low);
             this.Controls.Add(this.checkBoxInfrarojos);
