@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_8905234013A88878A0CB4EE588B2B5F0"
-        "OwnerKey" = "8:_B8B60665CA3A1613740DA02398CC9A13"
+        "MsmKey" = "8:_61FDD587703466853966921FCA1CF184"
+        "OwnerKey" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8905234013A88878A0CB4EE588B2B5F0"
+        "MsmKey" = "8:_95D94D5AC734A98764CD4D38C41B80C2"
         "OwnerKey" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,20 +33,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B8B60665CA3A1613740DA02398CC9A13"
-        "OwnerKey" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_DBFA932D2C434D3EA66F6EC1D8CF7E79"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_E9DC71A8302925B0B7FEC6B2D8AAE0F4"
+        "OwnerKey" = "8:_61FDD587703466853966921FCA1CF184"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E9DC71A8302925B0B7FEC6B2D8AAE0F4"
+        "OwnerKey" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F2B345752D6B91483A8CB1450473FEF1"
-        "OwnerKey" = "8:_B8B60665CA3A1613740DA02398CC9A13"
+        "OwnerKey" = "8:_61FDD587703466853966921FCA1CF184"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -58,25 +64,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8905234013A88878A0CB4EE588B2B5F0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B8B60665CA3A1613740DA02398CC9A13"
+        "OwnerKey" = "8:_61FDD587703466853966921FCA1CF184"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F2B345752D6B91483A8CB1450473FEF1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E9DC71A8302925B0B7FEC6B2D8AAE0F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_95D94D5AC734A98764CD4D38C41B80C2"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -97,6 +109,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    {
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -113,6 +146,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    {
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -142,20 +196,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8905234013A88878A0CB4EE588B2B5F0"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_61FDD587703466853966921FCA1CF184"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WinSCP, Version=1.0.0.235, Culture=neutral, PublicKeyToken=b5f19f5762436b89, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:FileTransfer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_8905234013A88878A0CB4EE588B2B5F0"
+                    "_61FDD587703466853966921FCA1CF184"
                     {
-                    "Name" = "8:WinSCP.dll"
+                    "Name" = "8:FileTransfer.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:WinSCP.dll"
+            "SourcePath" = "8:FileTransfer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BE710650A7A9488782C82633D01CAA7D"
@@ -173,20 +227,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B8B60665CA3A1613740DA02398CC9A13"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_95D94D5AC734A98764CD4D38C41B80C2"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:FileTransfer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CSharpFITS_v1.1, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B8B60665CA3A1613740DA02398CC9A13"
+                    "_95D94D5AC734A98764CD4D38C41B80C2"
                     {
-                    "Name" = "8:FileTransfer.dll"
+                    "Name" = "8:CSharpFITS_v1.1.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:FileTransfer.dll"
+            "SourcePath" = "8:CSharpFITS_v1.1.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BE710650A7A9488782C82633D01CAA7D"
@@ -222,6 +276,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E9DC71A8302925B0B7FEC6B2D8AAE0F4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WinSCP, Version=1.0.0.235, Culture=neutral, PublicKeyToken=b5f19f5762436b89, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E9DC71A8302925B0B7FEC6B2D8AAE0F4"
+                    {
+                    "Name" = "8:WinSCP.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WinSCP.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BE710650A7A9488782C82633D01CAA7D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F2B345752D6B91483A8CB1450473FEF1"
@@ -334,7 +419,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Fits Monitor"
         "ProductCode" = "8:{27EA3FD6-C616-4EC4-BBDA-193EA4D80E3D}"
-        "PackageCode" = "8:{93900E14-C76C-4500-A92C-CFB843ED3227}"
+        "PackageCode" = "8:{5E3E0622-AA6B-4D8E-99A8-08FE28D4ABC3}"
         "UpgradeCode" = "8:{BE072F7A-AC56-467A-9810-441C312F3290}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"

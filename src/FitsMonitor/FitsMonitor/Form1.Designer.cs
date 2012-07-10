@@ -49,6 +49,7 @@
             this.bLogFile = new System.Windows.Forms.Button();
             this.tbLogFile = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.bCorrectNames = new System.Windows.Forms.Button();
             this.labelSubFolderDeep = new System.Windows.Forms.Label();
             this.numericUpDownSubFolderDeep = new System.Windows.Forms.NumericUpDown();
             this.bOfflineFolder = new System.Windows.Forms.Button();
@@ -245,6 +246,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.bCorrectNames);
             this.tabPage3.Controls.Add(this.labelSubFolderDeep);
             this.tabPage3.Controls.Add(this.numericUpDownSubFolderDeep);
             this.tabPage3.Controls.Add(this.bOfflineFolder);
@@ -256,6 +258,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "OffLine";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // bCorrectNames
+            // 
+            this.bCorrectNames.Location = new System.Drawing.Point(36, 129);
+            this.bCorrectNames.Name = "bCorrectNames";
+            this.bCorrectNames.Size = new System.Drawing.Size(90, 23);
+            this.bCorrectNames.TabIndex = 6;
+            this.bCorrectNames.Text = "CorrectNames";
+            this.bCorrectNames.UseVisualStyleBackColor = true;
+            this.bCorrectNames.Click += new System.EventHandler(this.bCorrectNames_Click);
             // 
             // labelSubFolderDeep
             // 
@@ -318,6 +330,7 @@
             this.fsWatchOfficinaStelare.NotifyFilter = System.IO.NotifyFilters.Size;
             this.fsWatchOfficinaStelare.Path = global::FitsMonitor.Properties.Settings.Default.OfficinaStellareLog;
             this.fsWatchOfficinaStelare.SynchronizingObject = this;
+            this.fsWatchOfficinaStelare.Created += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Created);
             this.fsWatchOfficinaStelare.Changed += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Changed);
             // 
             // folderBrowserOffline
@@ -346,7 +359,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(402, 393);
             this.Name = "Form1";
-            this.ShowInTaskbar = false;
             this.Text = "Fits Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -397,6 +409,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnParametro;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Label labelLastDetectedValues;
+        private System.Windows.Forms.Button bCorrectNames;
     }
 }
 

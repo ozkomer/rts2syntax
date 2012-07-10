@@ -298,6 +298,11 @@ namespace FitsMonitor
         /// <param name="e"></param>
         private void fsWatchOfficinaStelare_Changed(object sender, FileSystemEventArgs e)
         {
+            fsVigilaOfficinaStelare(e);
+        }
+
+        private void fsVigilaOfficinaStelare(FileSystemEventArgs e)
+        {
             if (e.FullPath != settings.AtcLogFile)
             {
                 if (this.backgroundWorkerATC02.IsBusy)
@@ -617,6 +622,174 @@ namespace FitsMonitor
                 this.BackColor = Color.Pink;
                 this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
             }
+        }
+
+        private void bCorrectNames_Click(object sender, EventArgs e)
+        {
+            this.fsWatchFits.EnableRaisingEvents = false;
+            DirectoryInfo dInfo;
+            dInfo = new DirectoryInfo(tbOfflineFolder.Text);
+            this.tabPage3.BackColor = Color.LightBlue;
+            this.tabPage3.Refresh();
+            logger.Info("bCorrectNames_Click:");
+            exploraCorrectNames(dInfo);
+            this.tabPage3.BackColor = Color.LightGray;
+        }
+
+        /// <summary>
+        /// Explora la carpeta, en el orden requerido para que
+        /// - las correcciones en nombres de archivo sean previas a.
+        /// - las correcciones en nombres de carpetas.
+        /// </summary>
+        /// <param name="carpeta"></param>
+        private void exploraCorrectNames(DirectoryInfo carpeta)
+        {
+            logger.Info("Explorando:"+carpeta.FullName);
+            DirectoryInfo[] subCarpetas;
+            FileInfo[] archivos;
+            subCarpetas = carpeta.GetDirectories();
+            
+            archivos = carpeta.GetFiles();
+
+            foreach (FileInfo archivoFits in archivos)
+            {
+                correctFits(archivoFits);
+            }
+            foreach (DirectoryInfo subFolder in subCarpetas)
+            {
+                exploraCorrectNames(subFolder); // Llamada recursiva
+            }
+            foreach (DirectoryInfo subFolder in subCarpetas)
+            {
+                correctFolderName(subFolder);
+            }
+        }
+
+        /// <summary>
+        /// Corrige el nombre un archivo "fits". 
+        /// Dejando intacta la ruta (carpeta) original.
+        /// 
+        /// Además si es un archivo fits, corrige el contenido del campo
+        /// object en la misma lógica que la corrección del nombre del archivo.
+        /// 
+        /// Primero se corrige el contenido del archivo y luego el nombre.
+        /// </summary>
+        /// <param name="archivo"></param>
+        private void correctFits(FileInfo archivo)
+        {
+            logger.Info("correctFits:archivo=" + archivo.Name);
+            String ruta;
+            String oldFileName;
+            String newFileName;
+            String extension;
+            String oldFullFilename;
+            String newFullFilename;
+
+            Boolean requiereRename; //True solo si se detecta que es pertinente un rename
+            requiereRename = false;
+
+            ruta = archivo.DirectoryName;
+            oldFileName = archivo.Name;
+            extension = archivo.Extension;
+            newFileName = archivo.Name;
+            oldFullFilename = archivo.FullName;
+            
+            if (extension == ".fts")
+            {
+                requiereRename = true;
+                logger.Info(";.fts->.fits");
+                newFileName = newFileName.Replace(".fts", ".fits");
+            }
+            if (oldFileName.Contains("+"))
+            {
+                requiereRename = true;
+                logger.Info(";'+'->'p'");
+                newFileName = newFileName.Replace("+", "p");
+                ///////////////
+                if ((extension == ".fts") || (extension == ".fits"))
+                {
+                    Fits fitsFile;
+                    String strObject; // El string que hay que corregir.
+                    String strCorrectedObject;
+                    fitsFile = new Fits(oldFullFilename);
+                    BasicHDU hdu;
+                    hdu = fitsFile.ReadHDU();
+                    HeaderCard hcOBJECT;// Target object name  <---- Asi esta comentado en MaximDL
+                    hcOBJECT = hdu.Header.FindCard("OBJECT");
+                    strObject = hcOBJECT.Value;
+                    if (strObject.Contains("+"))
+                    {
+                        strCorrectedObject = strObject.Replace("+", "p");
+                        hcOBJECT.Value = strCorrectedObject;
+                    }
+                    hdu.Header.Rewrite();
+                    fitsFile.Close();
+                }
+
+                ///////////////
+            }
+            if (requiereRename)
+            {
+
+                newFullFilename = ruta + Path.DirectorySeparatorChar + newFileName;
+
+                logger.Info(";"+oldFullFilename+"->"+newFullFilename);
+                try
+                {
+                    archivo.MoveTo(newFullFilename);
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e.Message);
+                }
+            }
+
+            //Console.WriteLine("#");
+        }
+
+        /// <summary>
+        /// Corrige el nombre el último tramo de una carpeta.
+        /// Dejando intacta la ruta padre de la carpeta.
+        /// </summary>
+        /// <param name="carpeta"></param>
+        private void correctFolderName(DirectoryInfo carpeta)
+        {
+            String ruta;
+            String nombreCarpeta;
+            String nuevoNombreCarpeta;
+            String oldFolderName;
+            String newFolderName;
+            oldFolderName = carpeta.FullName;
+            ruta = carpeta.Parent.FullName;
+            nombreCarpeta = carpeta.Name;
+
+            logger.Info("correctFolderName:" + oldFolderName);
+            if (carpeta.Name.Contains("+"))
+            {
+                logger.Info(";'+'->'p'");
+                nuevoNombreCarpeta = nombreCarpeta.Replace("+", "p");
+                newFolderName = ruta + Path.DirectorySeparatorChar + nuevoNombreCarpeta;
+                logger.Info(";" + oldFolderName + "->" + newFolderName);
+                try
+                {
+                    carpeta.MoveTo(newFolderName);
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e.Message);
+                }
+            }
+            
+            //if (carpeta.Name.Contains("_"))
+            //{
+            //    Console.Write(";'_'->''");
+            //}
+            //Console.WriteLine("#");
+        }
+
+        private void fsWatchOfficinaStelare_Created(object sender, FileSystemEventArgs e)
+        {
+            fsVigilaOfficinaStelare(e);
         }
 
     }
