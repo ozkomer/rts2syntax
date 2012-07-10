@@ -28,7 +28,6 @@ namespace Cupula
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.buttonStartOpen = new System.Windows.Forms.Button();
             this.buttonStartClose = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
@@ -79,7 +78,6 @@ namespace Cupula
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.buttonSetup = new System.Windows.Forms.Button();
-            this.cupulaMovingTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxControl.SuspendLayout();
             this.groupBoxJ1.SuspendLayout();
@@ -319,11 +317,11 @@ namespace Cupula
             this.checkBoxO1XT104.AutoSize = true;
             this.checkBoxO1XT104.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT104.Enabled = false;
-            this.checkBoxO1XT104.Location = new System.Drawing.Point(595, 48);
+            this.checkBoxO1XT104.Location = new System.Drawing.Point(557, 48);
             this.checkBoxO1XT104.Name = "checkBoxO1XT104";
-            this.checkBoxO1XT104.Size = new System.Drawing.Size(41, 17);
+            this.checkBoxO1XT104.Size = new System.Drawing.Size(79, 17);
             this.checkBoxO1XT104.TabIndex = 11;
-            this.checkBoxO1XT104.Text = "NA";
+            this.checkBoxO1XT104.Text = "Magnetic 2";
             this.checkBoxO1XT104.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBoxO1XT104.UseVisualStyleBackColor = true;
             // 
@@ -358,11 +356,11 @@ namespace Cupula
             this.checkBoxO1XT101.AutoSize = true;
             this.checkBoxO1XT101.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT101.Enabled = false;
-            this.checkBoxO1XT101.Location = new System.Drawing.Point(6, 48);
+            this.checkBoxO1XT101.Location = new System.Drawing.Point(92, 48);
             this.checkBoxO1XT101.Name = "checkBoxO1XT101";
-            this.checkBoxO1XT101.Size = new System.Drawing.Size(165, 17);
+            this.checkBoxO1XT101.Size = new System.Drawing.Size(79, 17);
             this.checkBoxO1XT101.TabIndex = 8;
-            this.checkBoxO1XT101.Text = "south fully opened limit switch";
+            this.checkBoxO1XT101.Text = "Magnetic 1";
             this.checkBoxO1XT101.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBoxO1XT101.UseVisualStyleBackColor = true;
             // 
@@ -370,7 +368,7 @@ namespace Cupula
             // 
             this.buttonIsClosed.Location = new System.Drawing.Point(134, 19);
             this.buttonIsClosed.Name = "buttonIsClosed";
-            this.buttonIsClosed.Size = new System.Drawing.Size(75, 23);
+            this.buttonIsClosed.Size = new System.Drawing.Size(103, 23);
             this.buttonIsClosed.TabIndex = 1;
             this.buttonIsClosed.Text = "Is Closed?";
             this.buttonIsClosed.UseVisualStyleBackColor = true;
@@ -378,9 +376,9 @@ namespace Cupula
             // 
             // buttonIsOpened
             // 
-            this.buttonIsOpened.Location = new System.Drawing.Point(29, 19);
+            this.buttonIsOpened.Location = new System.Drawing.Point(11, 19);
             this.buttonIsOpened.Name = "buttonIsOpened";
-            this.buttonIsOpened.Size = new System.Drawing.Size(75, 23);
+            this.buttonIsOpened.Size = new System.Drawing.Size(93, 23);
             this.buttonIsOpened.TabIndex = 0;
             this.buttonIsOpened.Text = "Is Opened?";
             this.buttonIsOpened.UseVisualStyleBackColor = true;
@@ -698,11 +696,6 @@ namespace Cupula
             this.buttonSetup.UseVisualStyleBackColor = true;
             this.buttonSetup.Click += new System.EventHandler(this.buttonSetup_Click);
             // 
-            // cupulaMovingTimer
-            // 
-            this.cupulaMovingTimer.Interval = 1000;
-            this.cupulaMovingTimer.Tick += new System.EventHandler(this.cupulaMovingTimer_Tick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -784,7 +777,6 @@ namespace Cupula
         private System.Windows.Forms.Label labelKeepOpen;
         private System.Windows.Forms.Button buttonSetup;
         private System.Windows.Forms.Label labelStatus;
-        private System.Windows.Forms.Timer cupulaMovingTimer;
     }
 }
 

@@ -38,10 +38,10 @@ namespace Cupula
             this.checkBoxJ1[indice] = this.checkBoxJ1XT108; indice++;
 
             indice = 0;
-            this.checkBoxO1[indice] = this.checkBoxO1XT101; indice++;
+            this.checkBoxO1[Dome.ZS_MAGNETIC_LOCK1] = this.checkBoxO1XT101; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT102; indice++;
             this.checkBoxO1[indice] = this.checkBoxO1XT103; indice++;
-            this.checkBoxO1[indice] = this.checkBoxO1XT104; indice++;
+            this.checkBoxO1[Dome.ZS_MAGNETIC_LOCK2] = this.checkBoxO1XT104; indice++;
             this.checkBoxO1[Dome.ZS_SOUTH_OPEN] = this.checkBoxO1XT105; indice++;
             this.checkBoxO1[Dome.ZS_SOUTH_50] = this.checkBoxO1XT106; indice++;
             this.checkBoxO1[Dome.ZS_SOUTH_CLOSE] = this.checkBoxO1XT107; indice++;
@@ -105,7 +105,7 @@ namespace Cupula
             this.statusRead();
             Boolean status;
             status = cet.IsClosed();
-            buttonIsClosed.Text = ("C=" + status);
+            buttonIsClosed.Text = ("IsClosed=" + status);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -121,7 +121,7 @@ namespace Cupula
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            cet.Host = "10.0.65.10";
+            cet.Host = "139.229.12.88";
             cet.Port = 502;
             cet.Connect();
         }
@@ -136,6 +136,7 @@ namespace Cupula
                 color = (cet.Zreg_O1XT1[i] ? Color.LightGreen : Color.LightPink);
                 this.checkBoxO1[i].BackColor = color;
             }
+            this.refreshStatus();
         }
 
         private void buttonStatusRead_Click(object sender, EventArgs e)
@@ -172,7 +173,7 @@ namespace Cupula
             cet.NorthRoof = (ushort)comboBoxControlNorth.SelectedIndex;
             cet.SouthRoof = (ushort)comboBoxControlSouth.SelectedIndex;
             cet.OpenShutter();
-            cupulaMovingTimer.Start();
+            //cupulaMovingTimer.Start();
         }
 
         private void buttonStartClose_Click(object sender, EventArgs e)
@@ -227,9 +228,8 @@ namespace Cupula
             cet.SetupDialog();
         }
 
-        private void cupulaMovingTimer_Tick(object sender, EventArgs e)
+        private void refreshStatus()
         {
-            System.Threading.Thread.Sleep(300);
             switch (cet.ShutterStatus)
             {
                 case ShutterState.shutterClosed:
@@ -250,9 +250,14 @@ namespace Cupula
                     break;
 
             }
-            cupulaMovingTimer.Enabled = cet.DomeMovingTimer.Enabled;
-            Console.WriteLine("DomeMovingTimer.Enabled" + cet.DomeMovingTimer.Enabled);
         }
+
+        //private void cupulaMovingTimer_Tick(object sender, EventArgs e)
+        //{
+        //    System.Threading.Thread.Sleep(300);
+        //    cupulaMovingTimer.Enabled = cet.DomeMovingTimer.Enabled;
+        //    Console.WriteLine("DomeMovingTimer.Enabled" + cet.DomeMovingTimer.Enabled);
+        //}
 
 
 
