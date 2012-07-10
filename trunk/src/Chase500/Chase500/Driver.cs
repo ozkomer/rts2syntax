@@ -98,10 +98,10 @@ namespace ASCOM.Chase500
 
         #region constantes
 
-        public const long USEC_SEC = 1000000;
-        public const long SLEEP_BETWEEN_COMMANDS_MILISECS = 500;
-        public const long DEADMAN_MILISECS = 5000;
-        public const long DOMESTATUS_MILISECS = 1000;
+        //public const long USEC_SEC = 1000000;
+        //public const long SLEEP_BETWEEN_COMMANDS_MILISECS = 500;
+        public const long DEADMAN_MILISECS    = 20000;
+        public const long DOMESTATUS_MILISECS =  1000;
         /*
         public const UInt16 ZC_NORTH_OPEN = 0x0001;
         public const UInt16 ZC_SOUTH_OPEN = 0x0010;
@@ -145,6 +145,8 @@ namespace ASCOM.Chase500
         public const ushort CLOSE = 2;
         #endregion
 
+        private static TraceLogger sysLog = new TraceLogger();
+
 
         #region Constants
         //
@@ -187,6 +189,9 @@ namespace ASCOM.Chase500
 
         public Dome()
         {
+            sysLog.Enabled = true;
+
+            sysLog.LogMessageCrLf(driverDescription, "Dome()");
             zelioConn = new Master();            
             zregJ1XT1 = new Boolean[16];
             zregO1XT1 = new Boolean[16];
@@ -194,6 +199,7 @@ namespace ASCOM.Chase500
             northRoof = Properties.Settings.Default.NorthOpen;
             southRoof = Properties.Settings.Default.SouthOpen;
             shutterStatus = ShutterState.shutterClosed;
+            sysLog.LogMessageCrLf(driverDescription, "zelioConn.connected=" + zelioConn.connected);
 
             Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
             deadManTimer = new System.Timers.Timer(DEADMAN_MILISECS);
@@ -527,6 +533,8 @@ namespace ASCOM.Chase500
         /// </summary>
         public void Connect()
         {
+            sysLog.LogMessageCrLf(driverDescription,"Iniciando sesión ModBus con el PLC.");
+
             if (!zelioConn.connected)
             {                
                 zelioConn.connect ( Properties.Settings.Default.Host,
@@ -541,6 +549,7 @@ namespace ASCOM.Chase500
         {
             if (zelioConn.connected)
             {
+                sysLog.LogMessageCrLf(driverDescription,"Finalizando sesión ModBus con el PLC.");
                 zelioConn.disconnect();
             }
         }
@@ -560,14 +569,19 @@ namespace ASCOM.Chase500
             zelioConn.WriteSingleRegister(0, ZREG_J2XT1, deadMan);
             deadManStatus++;
             deadManStatus = (byte)(deadManStatus % 2);
-            Console.WriteLine("deadMan_Elapsed");
+            sysLog.LogMessageCrLf(driverDescription, "deadMan_Elapsed.");
         }
 
         void domeMovingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            sysLog.LogMessageCrLf(driverDescription,"domeMovingTimer_Elapsed.");
+
             this.Read_ZREG_O1XT1();
+            sysLog.LogMessageCrLf(driverDescription,"shutterStatus="+shutterStatus);
+
             if ((shutterStatus == ShutterState.shutterClosing) && (this.IsClosed()))
             {
+                sysLog.LogMessageCrLf(driverDescription,"shutterClosing->shutterClosed.");
                 this.shutterStatus = ShutterState.shutterClosed;
                 //if (this.domeMovingTimer.Enabled)
                 {
@@ -576,12 +590,14 @@ namespace ASCOM.Chase500
             }
             if ((shutterStatus == ShutterState.shutterOpening) && (this.IsOpened() >= 2))
             {
+                sysLog.LogMessageCrLf(driverDescription,"shutterOpening->IsOpened.");
                 this.shutterStatus = ShutterState.shutterOpen;
                 if (this.domeMovingTimer.Enabled)
                 {
                     this.domeMovingTimer.Stop();
                 }
             }
+            Console.WriteLine("domeMovingTimer_Elapsed");
         }
 
         /// <summary>
@@ -732,7 +748,8 @@ namespace ASCOM.Chase500
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                sysLog.LogMessageCrLf(driverDescription, "Read_PLC:"+e.Message);
+                //Console.WriteLine(e.Message);
                 return null;
             }
             ulong total;
@@ -742,7 +759,8 @@ namespace ASCOM.Chase500
                 total = (total << (8 * i));
                 total += regs[i];
             }
-            Console.WriteLine("Read_PLC: total=" + total);
+            sysLog.LogMessageCrLf(driverDescription, "Read_PLC: total=" + total);
+            //Console.WriteLine("Read_PLC: total=" + total);
             Boolean[] respuesta;
             respuesta = new Boolean[8 * cantBytes];
             for (int i = 0; i < respuesta.Length; i++)
