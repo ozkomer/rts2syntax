@@ -17,18 +17,34 @@ namespace Serduino
         // Angulo del eje contrapeso. [en grados Sexagesimales].
         private double counterWeightAngle;
 
+        // Angulo del eje Declinación. [en grados Sexagesimales].
+        private double declinationAngle;
+
         // Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
         private double zenithAngleArduino;
 
         // Angulo del eje contrapeso. [en grados Sexagesimales].
         private double counterWeightAngleArduino;
 
+        //Conteo enviado por el arduino, correspondiente a la cantidad de veces que se ha
+        // sobrepasado el limite del angulo zenital
+        private long zenithCounter;
+
+        static Serduino.Properties.Settings settings = Properties.Settings.Default;
 
         public static readonly Triplet Zenith =
-            new Triplet(-0.2116771931, 0.975214028, 0.0644233307);
+            new Triplet(settings.ZenithX, settings.ZenithY, settings.ZenithZ);
 
         public static readonly Triplet SouthPole =
-            new Triplet(0.3780225716, 0.3874084811 , -0.84084101);
+            new Triplet(settings.SouthPoleX, settings.SouthPoleY, settings.SouthPoleZ);
+
+        public static Triplet[] RotationMatrix = { 
+     new Triplet (0.54418865073238800, -0.02893708217268780, -0.83844525622584100),
+     new Triplet (-0.41818134356041000, 0.85704495941331000, -0.30097941326799400),
+     new Triplet (0.72729097774569900, 0.51441898155926000, 0.45429499130803600)
+                                                 };
+        //public static readonly Triplet SouthPoleB =
+        //    new Triplet(0.89048047955066900, 0.45291181233736400, 0.04356112591060290 );
 
         private String linea;
         private int interruptores;
@@ -37,8 +53,7 @@ namespace Serduino
         private bool raLimitWest;
         private bool raHome;
         private bool decHome;
-
-
+        
         public Status(String linea)
         {
             this.linea = linea;
@@ -99,6 +114,14 @@ namespace Serduino
         }
 
         /// <summary>
+        /// Angulo del eje Declinación. [en grados Sexagesimales].
+        /// </summary>
+        public double DeclinationAngle
+        {
+            get { return this.declinationAngle; }
+        }
+
+        /// <summary>
         /// Angulo entre el Zenith y la posición del tubo del telescopio. [en grados Sexagesimales].
         /// Este valor ha sido calculado por el Arduino.
         /// </summary>
@@ -115,21 +138,59 @@ namespace Serduino
             get { return this.counterWeightAngleArduino; }
         }
 
+        public long ZenithCounter
+        {
+            get { return this.zenithCounter; }
+        }
+
         private void refreshZenithAngle()
         {
             double angleRad;
-            double crossProduct;
-            crossProduct = this.aDEC.AcelerationUnit.DotProduct(Status.Zenith);
-            angleRad = Math.Acos ( crossProduct);
+            double dotProduct;
+            dotProduct = Triplet.dotProduct( this.aDEC.AcelerationUnit, Status.Zenith);
+            angleRad = Math.Acos ( dotProduct);
             this.zenithAngle = ((angleRad * 180.0) / Math.PI);
+        }
+
+        private void refreshDeclinationAngle()
+        {
+            double angleRad;
+            double dotProduct;
+            Triplet DECcrossSouthPole;
+            Byte OctantDECcrossSouthPole;
+            Triplet SouthPoleB;
+            SouthPoleB = Triplet.matrixProduct(Status.RotationMatrix, this.aRA.AcelerationUnit);
+            dotProduct = Triplet.dotProduct( this.aDEC.AcelerationUnit, SouthPoleB);
+            DECcrossSouthPole = Triplet.crossProduct(this.aDEC.AcelerationUnit, SouthPoleB);
+            OctantDECcrossSouthPole = Triplet.Octant(DECcrossSouthPole);
+            //Console.WriteLine("ARcrossSouthPole=" + ARcrossSouthPole.ToString());
+            Console.WriteLine("OctantDECcrossSouthPole=" + OctantDECcrossSouthPole.ToString());
+            angleRad = Math.Acos(dotProduct);
+            if (OctantDECcrossSouthPole < 6)
+            {
+                angleRad *= -1.0;
+            }
+            this.declinationAngle = ((angleRad * 180.0) / Math.PI);
+            //Console.WriteLine("DEC_RA[º]=" + decRad);
         }
 
         private void refreshCounterWeightAngle()
         {
             double angleRad;
-            double crossProduct;
-            crossProduct = this.aRA.AcelerationUnit.DotProduct(Status.SouthPole);
-            angleRad = Math.Acos(crossProduct);
+            double dotProduct;
+            Triplet ARcrossSouthPole;
+            Byte OctantARcrossSouthPole;
+            dotProduct = Triplet.dotProduct( this.aRA.AcelerationUnit, Status.SouthPole);
+            ARcrossSouthPole = Triplet.crossProduct(this.aRA.AcelerationUnit, Status.SouthPole);
+            OctantARcrossSouthPole = Triplet.Octant(ARcrossSouthPole);
+            //Console.WriteLine("ARcrossSouthPole=" + ARcrossSouthPole.ToString());
+            //Console.WriteLine("OctantARcrossSouthPole=" + OctantARcrossSouthPole.ToString());
+            angleRad = Math.Acos(dotProduct);
+            if (OctantARcrossSouthPole > 0)
+            {
+                angleRad *= -1.0;
+            }
+            angleRad += Math.PI;
             this.counterWeightAngle = ((angleRad * 180.0) / Math.PI);
         }
 
@@ -137,10 +198,10 @@ namespace Serduino
         {
             String[] part;
             part = this.linea.Split((" ").ToCharArray());
-            for (int i = 0; i < part.Length; i++)
-            {
-                Console.WriteLine("part["+i+"]=" + part[i]);
-            }
+            //for (int i = 0; i < part.Length; i++)
+            //{
+            //    Console.WriteLine("part["+i+"]=" + part[i]);
+            //}
             this.interruptores = Int16.Parse(part[0]);
             if (part.Length >= 6)
             {
@@ -152,15 +213,18 @@ namespace Serduino
                 aDEC.AnalogRead = analogReadDEC;
                 aRA.refreshAcceleration();
                 aDEC.refreshAcceleration();
+                //Console.WriteLine("Dec Unit= " + aDEC.AcelerationUnit.ToString());
                 this.refreshZenithAngle();
                 this.refreshCounterWeightAngle();
+                this.refreshDeclinationAngle();
             }
-            if (part.Length >= 8)
+            if (part.Length >= 9)
             {
                 this.counterWeightAngleArduino = Double.Parse(part[7]) *(180.0 / Math.PI);
                 this.zenithAngleArduino = Double.Parse(part[8]) *(180.0 / Math.PI);
+                this.zenithCounter = long.Parse(part[9]);
                 //Console.WriteLine("DeltaAngles = (" + (this.counterWeightAngleArduino - this.counterWeightAngle) + "," + (this.zenithAngleArduino - this.zenithAngle) + ")");
-                Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino ) + "," + (this.zenithAngleArduino ) + ")");
+                //Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino ) + "," + (this.zenithAngleArduino ) + ")");
             }
             #region analisis interruptores
             int valor;
