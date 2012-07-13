@@ -123,7 +123,7 @@ namespace Cupula
         {
             cet.Host = "139.229.12.88";
             cet.Port = 502;
-            cet.Connect();
+            cet.AseguraPlcConnected();
         }
 
         private void statusRead()
