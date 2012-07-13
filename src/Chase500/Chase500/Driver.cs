@@ -99,7 +99,7 @@ namespace ASCOM.Chase500
         #region constantes
 
         //public const long USEC_SEC = 1000000;
-        //public const long SLEEP_BETWEEN_COMMANDS_MILISECS = 500;
+        public const int SLEEP_BETWEEN_COMMANDS_MILISECS = 500;
         public const long DEADMAN_MILISECS    = 20000;
         public const long DOMESTATUS_MILISECS =  1000;
         /*
@@ -199,9 +199,9 @@ namespace ASCOM.Chase500
             northRoof = Properties.Settings.Default.NorthOpen;
             southRoof = Properties.Settings.Default.SouthOpen;
             shutterStatus = ShutterState.shutterClosed;
-            sysLog.LogMessageCrLf(driverDescription, "zelioConn.connected=" + zelioConn.connected);
+            //sysLog.LogMessageCrLf(driverDescription, "zelioConn.connected=" + zelioConn.connected);
 
-            Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
+            //Console.WriteLine("zelioConn.connected=" + zelioConn.connected);
             deadManTimer = new System.Timers.Timer(DEADMAN_MILISECS);
             deadManStatus = 0;
             deadManTimer.Elapsed += new ElapsedEventHandler(deadMan_Elapsed);
@@ -301,7 +301,7 @@ namespace ASCOM.Chase500
                 {
                     if (!this.zelioConn.connected)
                     {
-                        this.Connect();
+                        this.AseguraPlcConnected();
                     }                     
                 }
                 else
@@ -528,17 +528,28 @@ namespace ASCOM.Chase500
         #endregion
 
         #region Funciones
-        /// <summary>
-        /// Inicia una sesión ModBus con el PLC.
-        /// </summary>
-        public void Connect()
-        {
-            sysLog.LogMessageCrLf(driverDescription,"Iniciando sesión ModBus con el PLC.");
 
-            if (!zelioConn.connected)
-            {                
-                zelioConn.connect ( Properties.Settings.Default.Host,
-                                    (ushort) Properties.Settings.Default.Port);
+        /// <summary>
+        /// Asegura una sesión TCP/IP ModBus con el PLC. Que permita
+        /// comandos de escritura o Lectura.
+        /// </summary>
+        public void AseguraPlcConnected()
+        {
+            sysLog.LogMessageCrLf(driverDescription, "AseguraPlcConnected.");
+            if (this.zelioConn == null)
+            {
+                sysLog.LogMessageCrLf(driverDescription, "zelioConn==NULL, reinstanciando");
+                this.zelioConn = new Master();
+            }
+            if (this.zelioConn.connected)
+            {
+                sysLog.LogMessageCrLf(driverDescription, "Plc already Connected.");            
+            }
+            else
+            {
+                sysLog.LogMessageCrLf(driverDescription, "Iniciando sesion ModBus con el PLC.");
+                this.zelioConn.connect(Properties.Settings.Default.Host,
+                                    (ushort)Properties.Settings.Default.Port);
             }
         }
 
@@ -549,7 +560,7 @@ namespace ASCOM.Chase500
         {
             if (zelioConn.connected)
             {
-                sysLog.LogMessageCrLf(driverDescription,"Finalizando sesión ModBus con el PLC.");
+                sysLog.LogMessageCrLf(driverDescription,"Finalizando sesion ModBus con el PLC.");
                 zelioConn.disconnect();
             }
         }
@@ -563,6 +574,7 @@ namespace ASCOM.Chase500
         void deadMan_Elapsed(object sender, ElapsedEventArgs e)
         {
             byte[] deadMan;
+            this.AseguraPlcConnected();
             deadMan = new byte[2];
             deadMan[0] = 0;
             deadMan[1] = deadManStatus;
@@ -570,6 +582,8 @@ namespace ASCOM.Chase500
             deadManStatus++;
             deadManStatus = (byte)(deadManStatus % 2);
             sysLog.LogMessageCrLf(driverDescription, "deadMan_Elapsed.");
+            System.Threading.Thread.Sleep(SLEEP_BETWEEN_COMMANDS_MILISECS);
+            this.Read_ZREG_O1XT1();
         }
 
         void domeMovingTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -607,7 +621,9 @@ namespace ASCOM.Chase500
         {
             this.shutterStatus = ShutterState.shutterOpening;
             this.domeMovingTimer.Start();
-            Console.WriteLine("Abrir");
+            sysLog.LogMessageCrLf(driverDescription, "OpenDome()");
+            this.AseguraPlcConnected();
+            //Console.WriteLine("Abrir");
 
             //Desbloquea el PLC para que acepte la instruccion de apertura en la configuracion requerida
             #region Unlock
@@ -617,7 +633,7 @@ namespace ASCOM.Chase500
             unlock[1] = 0;
 
             zelioConn.WriteSingleRegister(0, ZREG_J2XT1, unlock);
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(SLEEP_BETWEEN_COMMANDS_MILISECS);
             unlock[1] = 1;
             zelioConn.WriteSingleRegister(0, ZREG_J2XT1, unlock);
             #endregion
@@ -638,8 +654,8 @@ namespace ASCOM.Chase500
             }
             Write_ZREG_J1XT1();
             #endregion
-            System.Threading.Thread.Sleep(500);
-            Read_ZREG_O1XT1();
+            System.Threading.Thread.Sleep(SLEEP_BETWEEN_COMMANDS_MILISECS);
+            this.Read_ZREG_O1XT1();
             /// En base a los valores de northRoof y southRoof
             /// Genera un valor para escribir en el PLC a la hora de
             /// abrir la cupula.
@@ -706,25 +722,16 @@ namespace ASCOM.Chase500
         /// </summary>
         private void CloseDome()
         {
+            sysLog.LogMessageCrLf(driverDescription, "CloseDome()");
             this.shutterStatus = ShutterState.shutterClosing;
             this.domeMovingTimer.Start();
             this.deadManTimer.Stop();
-            //for (int i = 0; i < 8; i++)
-            //{
-            //    if ((i == 3) || (i == 7))
-            //    {
-            //        Zreg_J1XT1[i] = true;
-            //    }
-            //    else
-            //    {
-            //        Zreg_J1XT1[i] = false;
-            //    }
-            //}
+
             byte[] cerrar;
             cerrar = new byte[2];
             cerrar[0] = 0;
             cerrar[1] = 0;
-
+            this.AseguraPlcConnected();
             zelioConn.WriteSingleRegister(0, ZREG_J1XT1, cerrar);
         }
 
@@ -741,15 +748,17 @@ namespace ASCOM.Chase500
             regs = new byte[cantBytes];
             try
             {
-                if (zelioConn.connected)
-                {
-                    zelioConn.ReadHoldingRegister(0, startRegister, cantBytes, ref regs);
-                }
+                this.AseguraPlcConnected();
+                zelioConn.ReadHoldingRegister(0, startRegister, cantBytes, ref regs);
             }
             catch (Exception e)
             {
-                sysLog.LogMessageCrLf(driverDescription, "Read_PLC:"+e.Message);
-                //Console.WriteLine(e.Message);
+                sysLog.LogMessageCrLf(driverDescription, "Read_PLC:Message=" + e.Message);
+                //sysLog.LogMessageCrLf(driverDescription, "Read_PLC:Source=" + e.Source);
+                sysLog.LogMessageCrLf(driverDescription, "Read_PLC:StackTrace=" + e.StackTrace);
+                sysLog.LogMessageCrLf(driverDescription, "Read_PLC:exception=" + e.ToString());
+                sysLog.LogMessageCrLf(driverDescription, "zelioConn=NULL, forzando reinstanciamiento de zelioConn.");
+                this.zelioConn = null;
                 return null;
             }
             ulong total;
@@ -797,10 +806,8 @@ namespace ASCOM.Chase500
                 }
             }
             Console.WriteLine("valor[0]=" + valor[0] + "    valor[1]=" + valor[1]);
-            if (zelioConn.connected)
-            {
-                zelioConn.WriteSingleRegister(0, ZREG_J1XT1, valor);
-            }
+            this.AseguraPlcConnected();
+            zelioConn.WriteSingleRegister(0, ZREG_J1XT1, valor);
         }
 
         /// <summary>
