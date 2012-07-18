@@ -130,7 +130,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	 * true->Movimientos del slider DEC, son procesados.
 	 * Util para hacer un update de la declinacion al mover el slider del angulo zenital.
 	 */
-	private boolean processDEC;
+	//private boolean processDEC;
 
 	/**
 	 * Las rotaciones en declinación, dado el shift del telescopio, conllevan ademas
@@ -164,7 +164,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	 */
 	public static final float LAT_OBSERVATORY_COMP = (PI_HALF - LAT_OBSERVATORY);
 	public static final SimpleVector vLat = new SimpleVector(Math.sin(LAT_OBSERVATORY_COMP), 0, Math.cos(LAT_OBSERVATORY_COMP));
-	private SimpleVector vA;
+	//private SimpleVector vA;
 
 	public static void main(String[] args) throws Exception {
 		new Gem3D().loop();
@@ -193,7 +193,7 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 		sliderDEC.setMajorTickSpacing(10);
 		sliderDEC.setPaintTicks(true);
 		sliderDEC.setPreferredSize(sliderDimension);
-		this.processDEC = true;
+	//	this.processDEC = true;
 		sliderDEC.addChangeListener(this);
 
 		
@@ -450,9 +450,9 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 				dec_grad = (int) (dec_rad * TO_GRAD);
 				if (processZenith)
 				{
-					this.processDEC = false;
+//					this.processDEC = false;
 					this.sliderDEC.setValue(dec_grad);
-					this.processDEC = true;
+//					this.processDEC = true;
 				}
 				this.sliderZenith.setBackground(Color.WHITE);
 			}
@@ -579,10 +579,10 @@ public class Gem3D implements MouseListener, MouseMotionListener,
 	{
 		SimpleVector decVector;
 		decVector = computeDeclination(this.cwA, (float) this.declination);
-		this.vA = new SimpleVector(-1.0 * Math.cos(LAT_OBSERVATORY_COMP) * Math.cos(this.cwA), 
-								   -1.0 * Math.sin(this.cwA),
-								   Math.sin(LAT_OBSERVATORY_COMP)*Math.cos(this.cwA));
-		double vAdotDec;
+//		this.vA = new SimpleVector(-1.0 * Math.cos(LAT_OBSERVATORY_COMP) * Math.cos(this.cwA), 
+//								   -1.0 * Math.sin(this.cwA),
+//								   Math.sin(LAT_OBSERVATORY_COMP)*Math.cos(this.cwA));
+		//double vAdotDec;
 		double angleDecLat;
 		
 //		vAdotDec = this.vA.calcDot(decVector);
