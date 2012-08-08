@@ -82,6 +82,8 @@ namespace ASCOM.OrbitATC02
         public readonly String SETBFL = "BFL ";
         public readonly String FINDOPTIMA = "FINDOPTIMA";
 
+        private static TraceLogger sysLog = new TraceLogger(null, "OrbitAtc02");
+
         #region Constants
         //
         // Driver ID and descriptive string that shows in the Chooser
@@ -123,6 +125,8 @@ namespace ASCOM.OrbitATC02
 
         public Focuser()
         {
+            sysLog.Enabled = true;
+            sysLog.LogMessageCrLf("Focuser()", "Instanciando Focuser.");
             this.conectado = false;
             this.ttyATC = new SerialPort(
                 Properties.Settings.Default.CommPort,
@@ -137,6 +141,7 @@ namespace ASCOM.OrbitATC02
 
         void statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            sysLog.LogMessageCrLf("statusTimer_Elapsed()", "statusTimer_Elapsed");
             if (!enMovimiento)
             {
                 this.RefreshAtcStatus();
@@ -148,6 +153,8 @@ namespace ASCOM.OrbitATC02
 
         public void SetupDialog()
         {
+            sysLog.LogMessageCrLf("SetupDialog()", "SetupDialog.");
+
             using (var f = new SetupDialogForm())
             {
                 f.ShowDialog();
@@ -156,6 +163,8 @@ namespace ASCOM.OrbitATC02
 
         public string Action(string actionName, string actionParameters)
         {
+            sysLog.LogMessageCrLf("Action()", "actionName=" + actionName + "\t actionParameters=" + actionParameters);
+
             String respuesta;
             respuesta = null;
             switch (actionName)
@@ -213,6 +222,7 @@ namespace ASCOM.OrbitATC02
 
         public void Move(int value)
         {
+            sysLog.LogMessageCrLf("Move()", "value=" + value); 
             this.enMovimiento = true;
             this.posicion = value;
             Double bfl;
@@ -224,10 +234,13 @@ namespace ASCOM.OrbitATC02
             comandoBFL.Append(SETBFL);
 
             comandoBFL.Append(bfl.ToString("000.00"));
-            Console.WriteLine("->" + comandoBFL);
+            //Console.WriteLine("->" + comandoBFL.ToString());
+            sysLog.LogMessageCrLf("Move()", "enviando comando serial:"+comandoBFL.ToString());
             ttyATC.Write(comandoBFL.ToString());
 
             respuesta = LeerSerial(10).Trim();
+            sysLog.LogMessageCrLf("Move()", "respuesta=" + respuesta); 
+
             String[] parte;
             int largoParte;
             
@@ -253,29 +266,39 @@ namespace ASCOM.OrbitATC02
             {
                 if (value == true)
                 {
+                    sysLog.LogMessageCrLf("Connected:", "value == true"); 
+
                     this.ttyATC = new SerialPort(
                         Properties.Settings.Default.CommPort,
                         (int)Properties.Settings.Default.BaudRate
                         );
                     this.ttyATC.Open();
-                    Console.WriteLine("Esperando Conexion");
+                    //Console.WriteLine("Esperando Conexion");
+                    sysLog.LogMessageCrLf("Connected:", "Esperando Conexion.");
                     while (this.ttyATC.IsOpen != true)
                     {
                         Console.Write(".");
                         System.Threading.Thread.Sleep(300);
                     }
-                    Console.WriteLine("conectado!!");
+                    //Console.WriteLine("conectado!!");
+                    sysLog.LogMessageCrLf("Connected:", "conectado!");
+
                     ttyATC.Write(OPENREM);
                     String respuesta;
                     respuesta = LeerSerial(10).Trim();
                     this.conectado = OPENREM.Contains(respuesta);
-                    if (Properties.Settings.Default.refreshStatus)
-                    {
+                    sysLog.LogMessageCrLf("Connected:", "respuesta=" + respuesta);
+                    sysLog.LogMessageCrLf("Connected:", "this.conectado=" + this.conectado);
+                    //if (Properties.Settings.Default.refreshStatus)
+                    //{
+                    this.statusTimer.Enabled = true;
                         this.statusTimer.Start();
-                    }
+                    //}
                 }
                 else
                 {
+                    sysLog.LogMessageCrLf("Connected:", "value == false"); 
+
                     this.statusTimer.Stop();
                     ttyATC.Write(CLOSEREM);
                     String respuesta;
@@ -285,6 +308,7 @@ namespace ASCOM.OrbitATC02
                     {
                         try
                         {
+                            sysLog.LogMessageCrLf("Connected:", "cerrando tty.");
                             this.ttyATC.Close();
                         }
                         catch (InvalidOperationException)
@@ -413,19 +437,23 @@ namespace ASCOM.OrbitATC02
 
         private String ReadSettings()
         {
+            sysLog.LogMessageCrLf("ReadSettings()", "Enviando:" + READSETT);
             Console.WriteLine("->" + READSETT);
             this.ttyATC.Write(READSETT);
             String respuesta;
             respuesta = LeerSerial(130).Trim();
+            sysLog.LogMessageCrLf("ReadSettings()", "respuesta=" + respuesta);
             return respuesta;
         }
 
         private void RefreshAtcStatus()
         {
+            sysLog.LogMessageCrLf("RefreshAtcStatus()", "Enviando:" + UPDATEPC);
             Console.WriteLine("->" + UPDATEPC);
             this.ttyATC.Write(UPDATEPC);
             String rawStatus;
             rawStatus = LeerSerial(100).Trim();
+            sysLog.LogMessageCrLf("ReadSettings()", "rawStatus=" + rawStatus);
             this.atcStat = new AtcStatus(rawStatus);            
         }
 
