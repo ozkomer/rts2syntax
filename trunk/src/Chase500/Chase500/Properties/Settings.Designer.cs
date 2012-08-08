@@ -49,7 +49,7 @@ namespace ASCOM.Chase500.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Setup V0.74")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Setup V0.76")]
         public string DriverName {
             get {
                 return ((string)(this["DriverName"]));
