@@ -28,6 +28,7 @@ namespace ASCOM.OrbitATC02
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupDialogForm));
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.picASCOM = new System.Windows.Forms.PictureBox();
@@ -202,6 +203,7 @@ namespace ASCOM.OrbitATC02
             this.Controls.Add(this.cmdOK);
             this.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ASCOM.OrbitATC02.Properties.Settings.Default, "DriverName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SetupDialogForm";

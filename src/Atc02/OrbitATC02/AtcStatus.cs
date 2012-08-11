@@ -24,13 +24,14 @@ namespace ASCOM.OrbitATC02
         /// <param name="rawStatus"></param>
         public AtcStatus(String rawStatus)
         {
+            ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("AtcStatus()", "inicio.");
             String[] lineArray;
             lineArray = rawStatus.Split(("\n").ToCharArray());
             for (int i = 0; i < lineArray.Length; i++)
             {
                 String line;
                 line = lineArray[i];
-                Console.WriteLine("Linea " + i + "=" + line);
+                ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("AtcStatus()", "Linea " + i + "=" + line);
                 if (line.StartsWith("STABT"))   { this.stabilizationTemperature = extraeDouble(line); }
                 if (line.StartsWith("SETFAN"))  { this.fanPower                 = extraeInt(line); }
                 if (line.StartsWith("PRITE"))   { this.primaryTemperature       = extraeDouble(line); }
@@ -42,6 +43,7 @@ namespace ASCOM.OrbitATC02
                 if (line.StartsWith("PRES"))    { this.pressure                 = extraeDouble(line); }
                 if (line.StartsWith("DEWPO"))   { this.dewPoint                 = extraeDouble(line); }
             }
+            ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("AtcStatus()", "fin.");
         }
 
         public override string ToString()
