@@ -82,7 +82,9 @@ namespace ASCOM.OrbitATC02
         public readonly String SETBFL = "BFL ";
         public readonly String FINDOPTIMA = "FINDOPTIMA";
 
-        private static TraceLogger sysLog = new TraceLogger(null, "OrbitAtc02");
+        public static TraceLogger sysLog = new TraceLogger(null, "OrbitAtc02");
+
+        private Form1 ventana;
 
         #region Constants
         //
@@ -127,6 +129,8 @@ namespace ASCOM.OrbitATC02
         {
             sysLog.Enabled = true;
             sysLog.LogMessageCrLf("Focuser()", "Instanciando Focuser.");
+            this.ventana = new Form1();
+            this.ventana.Show();
             this.conectado = false;
             this.ttyATC = new SerialPort(
                 Properties.Settings.Default.CommPort,
@@ -146,6 +150,7 @@ namespace ASCOM.OrbitATC02
             {
                 this.RefreshAtcStatus();
                 this.posicion = (int) (100.0*(this.atcStat.FocusPosition - 130));
+                sysLog.LogMessageCrLf("statusTimer_Elapsed()", "posicion="+this.posicion);
             }
         }
 
@@ -197,26 +202,31 @@ namespace ASCOM.OrbitATC02
 
         public void CommandBlind(string command, bool raw)
         {
+            sysLog.LogMessageCrLf("CommandBlind: command=" + command, "raw = " + raw);
             throw new ASCOM.MethodNotImplementedException("CommandBlind");
         }
 
         public bool CommandBool(string command, bool raw)
         {
+            sysLog.LogMessageCrLf("CommandBool: command=" + command, "raw = " + raw);
             throw new ASCOM.MethodNotImplementedException("CommandBool");
         }
 
         public string CommandString(string command, bool raw)
         {
+            sysLog.LogMessageCrLf("CommandString: command=" + command, "raw = " + raw);
             throw new ASCOM.MethodNotImplementedException("CommandString");
         }
 
         public void Dispose()
         {
+            sysLog.LogMessageCrLf("Dispose()","not implemented.");
             throw new System.NotImplementedException();
         }
 
         public void Halt()
         {
+            sysLog.LogMessageCrLf("Halt", "not implemented.");
             throw new System.NotImplementedException();
         }
 
@@ -261,7 +271,10 @@ namespace ASCOM.OrbitATC02
 
         public bool Connected
         {
-            get { return this.conectado; }
+            get {
+                sysLog.LogMessageCrLf("Connected, get", "this.conectado=" + this.conectado);
+                return this.conectado; 
+            }
             set
             {
                 if (value == true)
@@ -402,7 +415,10 @@ namespace ASCOM.OrbitATC02
 
         public int Position
         {
-            get { return this.posicion; }
+            get {
+                sysLog.LogMessageCrLf("Position:", "posicion "+this.posicion);
+                return this.posicion;
+            }
         }
 
         public double StepSize
@@ -438,7 +454,7 @@ namespace ASCOM.OrbitATC02
         private String ReadSettings()
         {
             sysLog.LogMessageCrLf("ReadSettings()", "Enviando:" + READSETT);
-            Console.WriteLine("->" + READSETT);
+            //Console.WriteLine("->" + READSETT);
             this.ttyATC.Write(READSETT);
             String respuesta;
             respuesta = LeerSerial(130).Trim();
@@ -449,12 +465,13 @@ namespace ASCOM.OrbitATC02
         private void RefreshAtcStatus()
         {
             sysLog.LogMessageCrLf("RefreshAtcStatus()", "Enviando:" + UPDATEPC);
-            Console.WriteLine("->" + UPDATEPC);
+            //Console.WriteLine("->" + UPDATEPC);
             this.ttyATC.Write(UPDATEPC);
             String rawStatus;
             rawStatus = LeerSerial(100).Trim();
-            sysLog.LogMessageCrLf("ReadSettings()", "rawStatus=" + rawStatus);
-            this.atcStat = new AtcStatus(rawStatus);            
+            sysLog.LogMessageCrLf("RefreshAtcStatus()", "rawStatus=" + rawStatus);
+            this.atcStat = new AtcStatus(rawStatus);
+            this.posicion = (int)(100.0 * (this.atcStat.FocusPosition - 130));
         }
 
         private String FindOptimal()

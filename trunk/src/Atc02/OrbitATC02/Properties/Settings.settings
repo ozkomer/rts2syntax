@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DriverName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Chase500 Focuser Setup V0.61</Value>
+      <Value Profile="(Default)">Chase500 Focuser Setup V0.65</Value>
     </Setting>
     <Setting Name="CommPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
