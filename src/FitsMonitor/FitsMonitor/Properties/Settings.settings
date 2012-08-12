@@ -15,7 +15,7 @@
       <Value Profile="(Default)">ssh-rsa 2048 cb:fb:8d:12:39:4f:84:ca:53:ce:eb:44:a0:ad:be:ed</Value>
     </Setting>
     <Setting Name="RemoteBasePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/images/rawdata/</Value>
+      <Value Profile="(Default)">/images/repository/inbox/</Value>
     </Setting>
     <Setting Name="FolderTotalDepth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9</Value>
@@ -31,6 +31,9 @@
     </Setting>
     <Setting Name="AtcLogFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Users\chase\Documents\Officina Stellare\log\Focuser - 120524-163756.log</Value>
+    </Setting>
+    <Setting Name="FocuserProgId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ASCOM.OrbitATC02.Focuser</Value>
     </Setting>
   </Settings>
 </SettingsFile>

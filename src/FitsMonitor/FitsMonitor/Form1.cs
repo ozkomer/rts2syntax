@@ -12,6 +12,7 @@ using log4net.Config;
 using log4net;
 using System.Globalization;
 using nom.tam.fits;
+using ASCOM.DriverAccess;
 
 namespace FitsMonitor
 {
@@ -19,7 +20,8 @@ namespace FitsMonitor
     {
 
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
-        
+
+        private Focuser enfocador;
         /// <summary>
         /// Acceso abreviado a los settings
         /// </summary>
@@ -82,30 +84,30 @@ namespace FitsMonitor
                 return;
             }
             CompletaFitsHeader(fullPath);
-            StringBuilder remotePath;
-            String directorioRemoto;
+            //StringBuilder remotePath;
+            //String directorioRemoto;
             String remoteFilename;
-            remotePath = new StringBuilder();
+            //remotePath = new StringBuilder();
 
-            remotePath.Append(settings.RemoteBasePath);
+            //remotePath.Append();
             //archivoRemoto.Append("/");
-            String fecha;
-            fecha = ruta[6];
-            remotePath.Append(fecha);
-            directorioRemoto = remotePath.ToString();
+            //String fecha;
+            //fecha = ruta[6];
+            //remotePath.Append(fecha);
+            //directorioRemoto = remotePath.ToString();
             //remotePath.Append("/");
-            remoteFilename = (ruta[ruta_size - 1].Replace(".fts", ".fits"));
-            Console.WriteLine("--->" + remotePath.ToString());
+            remoteFilename = (ruta[ruta_size - 1]);//.Replace(".fts", ".fits"));
+            //Console.WriteLine("--->" + remotePath.ToString());
 
             url = new StringBuilder();
             url.Append("http://www.das.uchile.cl/~chase500/images/jpg/");
-            url.Append(remoteFilename.Substring(0, settings.JpgFilenameLength));
+            url.Append(remoteFilename.Substring(0, settings.JpgFilenameLength).Replace('p','+'));
             url.Append(".jpg");
             //url=http://www.das.uchile.cl/~chase500/images/jpg/Images.jpg
             Console.WriteLine("url=" + url.ToString());
             this.pictureBox1.ImageLocation = url.ToString();
             this.textBoxUrl.Text = url.ToString();
-            FileTransfer.WinScpTransfer.Upload(fullPath, directorioRemoto, remoteFilename);
+            FileTransfer.WinScpTransfer.Upload(fullPath, settings.RemoteBasePath, remoteFilename);
         }
 
         /// <summary>
@@ -168,6 +170,8 @@ namespace FitsMonitor
                 hdu.Header.Rewrite();
             }
             fitsFile.Close();
+            // Permitimos al sistema que guarde los cambios en el archivo fits.
+            System.Threading.Thread.Sleep(10000);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -268,11 +272,15 @@ namespace FitsMonitor
             {
                 FileInfo[] fInfo;
 
-                fInfo = carpeta.GetFiles("*.fts");
+                fInfo = carpeta.GetFiles();
 
                 foreach (FileInfo archivo in fInfo)
                 {
-                    this.Copiar(archivo.FullName);
+                    if ((archivo.Extension == ".fits") ||
+                        (archivo.Extension == ".fts"))
+                    {
+                        this.Copiar(archivo.FullName);
+                    }
                     //logger.Debug(archivo.FullName);
                 }
                 return;
@@ -665,6 +673,118 @@ namespace FitsMonitor
             }
         }
 
+        private void exploraRevisaRaDec(DirectoryInfo carpeta)
+        {
+            //logger.Info("Explorando:" + carpeta.FullName);
+            DirectoryInfo[] subCarpetas;
+            FileInfo[] archivos;
+            subCarpetas = carpeta.GetDirectories();
+
+            archivos = carpeta.GetFiles();
+
+            foreach (FileInfo archivoFits in archivos)
+            {
+                revisaRaDecFits(archivoFits);
+            }
+            foreach (DirectoryInfo subFolder in subCarpetas)
+            {
+                exploraRevisaRaDec(subFolder); // Llamada recursiva
+            }
+        }
+
+        public static String[] EntreComillas(String texto)
+        {
+            char[] comilla;
+            comilla = "'".ToCharArray();
+            String[] part;
+            part = texto.Split(comilla);
+            return part;
+        }
+
+/// <summary>
+/// Revisa las coordenadas de un archivo "fits". 
+/// Dejando intacta la ruta (carpeta) original.
+/// 
+/// Avisa por pantalla:
+/// - Si las coordenadas del filename no coinciden con las del fits.
+/// 
+/// </summary>
+/// <param name="archivo"></param>
+private void revisaRaDecFits(FileInfo archivo)
+{
+    //logger.Info("correctFits:archivo=" + archivo.Name);
+    String ruta;
+    String shortFileName;
+    String extension;
+    String fullFilename;
+
+    ruta = archivo.DirectoryName;
+    shortFileName = archivo.Name;
+    extension = archivo.Extension;
+    fullFilename = archivo.FullName;
+
+        ///////////////
+        if ((extension == ".fts") || (extension == ".fits"))
+        {
+            Fits fitsFile;
+            String strObject;
+            String strObjectRA;
+            String strObjectDEC;
+            fitsFile = new Fits(fullFilename);
+            BasicHDU hdu;
+            hdu = fitsFile.ReadHDU();
+            HeaderCard hcOBJECT;// Target object name  <---- Asi esta comentado en MaximDL
+            HeaderCard hcOBJCTRA;//  [hms J2000] Target right ascension  <---- Asi esta comentado en MaximDL
+            HeaderCard hcOBJCTDEC;//  [dms +N J2000] Target declination  <---- Asi esta comentado en MaximDL
+            hcOBJECT = hdu.Header.FindCard("OBJECT");//OBJECT  	= 'F1910178-615834'
+            hcOBJCTRA = hdu.Header.FindCard("OBJCTRA");//OBJCTRA 	= '19 10 17.80' 
+            hcOBJCTDEC = hdu.Header.FindCard("OBJCTDEC");//OBJCTDEC	= '-61 58 34.0'
+            strObject = hcOBJECT.Value;
+            strObjectRA = null;
+            strObjectDEC = null;
+            if (hcOBJCTRA != null) { strObjectRA = hcOBJCTRA.Value; }
+            if (hcOBJCTDEC != null) { strObjectDEC = hcOBJCTDEC.Value; }
+            fitsFile.Close();
+            if ((strObjectRA != null) && (strObject.StartsWith("F")))
+            {
+                StringBuilder radec;
+                //strObjectRA = EntreComillas(strObjectRA)[1];
+                radec = new StringBuilder();
+                radec.Append("F");
+                radec.Append(strObjectRA.Replace(" ", "").Replace(".","").Substring(0, 7));
+                //if (!strObjectDEC.StartsWith("-"))
+                //{
+                //    radec.Append("p");
+                //}
+                radec.Append(strObjectDEC.Replace(" ", "").Replace(".", "").Replace("+", "p").Substring(0, 7));
+                StringBuilder comparacion;
+                comparacion = new StringBuilder();
+                comparacion.Append(strObject);
+                comparacion.Append("==");
+                comparacion.Append(radec);
+                comparacion.Append(" --> ");
+                Boolean match;
+                match = strObject.Equals(radec.ToString());
+                comparacion.Append(match);
+                Console.WriteLine(comparacion.ToString());
+                if (!match)
+                {
+                    StringBuilder mensaje;
+                    mensaje = new StringBuilder();
+                    mensaje.Append(comparacion.ToString());
+                    mensaje.Append("\trm\t");
+                    mensaje.Append(shortFileName);
+                    mensaje.Append("\t");
+                    mensaje.Append(fullFilename);
+                    Console.WriteLine(mensaje.ToString());
+                }
+            }
+        }
+
+        ///////////////    
+}
+
+
         /// <summary>
         /// Corrige el nombre un archivo "fits". 
         /// Dejando intacta la ruta (carpeta) original.
@@ -790,6 +910,62 @@ namespace FitsMonitor
         private void fsWatchOfficinaStelare_Created(object sender, FileSystemEventArgs e)
         {
             fsVigilaOfficinaStelare(e);
+        }
+
+        private void bCheckRaDec_Click(object sender, EventArgs e)
+        {
+            this.fsWatchFits.EnableRaisingEvents = false;
+            DirectoryInfo dInfo;
+            dInfo = new DirectoryInfo(tbOfflineFolder.Text);
+            this.tabPage3.BackColor = Color.LightBlue;
+            this.tabPage3.Refresh();
+            logger.Info("bCheckRaDec_Click:");
+            exploraRevisaRaDec(dInfo);
+            this.tabPage3.BackColor = Color.LightGray;
+        }
+
+        private void bSelect_Click(object sender, EventArgs e)
+        {
+            ASCOM.Utilities.Chooser selector;
+            selector = new ASCOM.Utilities.Chooser();
+            selector.DeviceType = "Focuser";
+            settings.FocuserProgId = selector.Choose(settings.FocuserProgId);
+            settings.Save();
+            Console.WriteLine("FocuserProgId=" + settings.FocuserProgId);
+        }
+
+        private void bSetup_Click(object sender, EventArgs e)
+        {
+            logger.Info("bSetup_Click");
+            if (this.enfocador == null)
+            {
+                logger.Info("this.telescopio == null");
+                nuevoEnfocador();
+            }
+            this.enfocador.SetupDialog();
+        }
+
+        private void nuevoEnfocador()
+        {
+            logger.Info("nuevoEnfocador:" + settings.FocuserProgId);
+            this.enfocador = new Focuser(settings.FocuserProgId);
+        }
+
+        private void bReadStatus_Click(object sender, EventArgs e)
+        {
+            if (this.enfocador == null)
+            {
+                logger.Info("this.telescopio == null");
+                nuevoEnfocador();
+            }
+            if (!this.enfocador.Connected)
+            {
+                this.enfocador.Connected = true;
+            }
+            String xmlStatus;
+            xmlStatus = this.enfocador.CommandString("GetXmlStatus",true);
+            Console.WriteLine("xmlStatus=");
+            Console.WriteLine(xmlStatus);
         }
 
     }
