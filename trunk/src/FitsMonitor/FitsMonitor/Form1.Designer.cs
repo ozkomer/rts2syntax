@@ -45,20 +45,25 @@
             this.dataGridViewATC02 = new System.Windows.Forms.DataGridView();
             this.ColumnParametro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.bLogFile = new System.Windows.Forms.Button();
-            this.tbLogFile = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.bCheckRaDec = new System.Windows.Forms.Button();
             this.bCorrectNames = new System.Windows.Forms.Button();
             this.labelSubFolderDeep = new System.Windows.Forms.Label();
             this.numericUpDownSubFolderDeep = new System.Windows.Forms.NumericUpDown();
             this.bOfflineFolder = new System.Windows.Forms.Button();
             this.tbOfflineFolder = new System.Windows.Forms.TextBox();
-            this.fsWatchFits = new System.IO.FileSystemWatcher();
-            this.fsWatchOfficinaStelare = new System.IO.FileSystemWatcher();
             this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
             this.backgroundWorkerATC02 = new System.ComponentModel.BackgroundWorker();
             this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.bSelect = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbLogFile = new System.Windows.Forms.TextBox();
+            this.fsWatchFits = new System.IO.FileSystemWatcher();
+            this.fsWatchOfficinaStelare = new System.IO.FileSystemWatcher();
+            this.bSetup = new System.Windows.Forms.Button();
+            this.bReadStatus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -67,6 +72,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewATC02)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).BeginInit();
+            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchOfficinaStelare)).BeginInit();
             this.SuspendLayout();
@@ -136,6 +142,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -159,8 +166,8 @@
             this.tabPage2.Controls.Add(this.labelLastDetectedValues);
             this.tabPage2.Controls.Add(this.labelLastDetectedLogFile);
             this.tabPage2.Controls.Add(this.dataGridViewATC02);
-            this.tabPage2.Controls.Add(this.textBox1);
             this.tabPage2.Controls.Add(this.bLogFile);
+            this.tabPage2.Controls.Add(this.textBox1);
             this.tabPage2.Controls.Add(this.tbLogFile);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -215,16 +222,6 @@
             this.Column2.ReadOnly = true;
             this.Column2.Width = 200;
             // 
-            // textBox1
-            // 
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "AtcLogFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBox1.Location = new System.Drawing.Point(3, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(345, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = global::FitsMonitor.Properties.Settings.Default.AtcLogFile;
-            // 
             // bLogFile
             // 
             this.bLogFile.Location = new System.Drawing.Point(6, 6);
@@ -235,17 +232,9 @@
             this.bLogFile.UseVisualStyleBackColor = true;
             this.bLogFile.Click += new System.EventHandler(this.bLogFile_Click);
             // 
-            // tbLogFile
-            // 
-            this.tbLogFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "OfficinaStellareLog", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbLogFile.Location = new System.Drawing.Point(87, 8);
-            this.tbLogFile.Name = "tbLogFile";
-            this.tbLogFile.Size = new System.Drawing.Size(264, 20);
-            this.tbLogFile.TabIndex = 0;
-            this.tbLogFile.Text = global::FitsMonitor.Properties.Settings.Default.OfficinaStellareLog;
-            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.bCheckRaDec);
             this.tabPage3.Controls.Add(this.bCorrectNames);
             this.tabPage3.Controls.Add(this.labelSubFolderDeep);
             this.tabPage3.Controls.Add(this.numericUpDownSubFolderDeep);
@@ -258,6 +247,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "OffLine";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // bCheckRaDec
+            // 
+            this.bCheckRaDec.Location = new System.Drawing.Point(204, 129);
+            this.bCheckRaDec.Name = "bCheckRaDec";
+            this.bCheckRaDec.Size = new System.Drawing.Size(106, 23);
+            this.bCheckRaDec.TabIndex = 7;
+            this.bCheckRaDec.Text = "Check Ra Dec";
+            this.bCheckRaDec.UseVisualStyleBackColor = true;
+            this.bCheckRaDec.Click += new System.EventHandler(this.bCheckRaDec_Click);
             // 
             // bCorrectNames
             // 
@@ -311,8 +310,67 @@
             this.tbOfflineFolder.Name = "tbOfflineFolder";
             this.tbOfflineFolder.Size = new System.Drawing.Size(342, 20);
             this.tbOfflineFolder.TabIndex = 0;
-            this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images\\20120116";
+            this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images\\20120719";
             this.tbOfflineFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // folderBrowserOffline
+            // 
+            this.folderBrowserOffline.ShowNewFolderButton = false;
+            // 
+            // backgroundWorkerATC02
+            // 
+            this.backgroundWorkerATC02.WorkerSupportsCancellation = true;
+            this.backgroundWorkerATC02.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerATC02_DoWork);
+            this.backgroundWorkerATC02.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerATC02_RunWorkerCompleted);
+            this.backgroundWorkerATC02.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerATC02_ProgressChanged);
+            // 
+            // timerAtc02
+            // 
+            this.timerAtc02.Enabled = true;
+            this.timerAtc02.Interval = 15000;
+            this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.bReadStatus);
+            this.tabPage4.Controls.Add(this.bSetup);
+            this.tabPage4.Controls.Add(this.bSelect);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(357, 310);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "ATC02";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // bSelect
+            // 
+            this.bSelect.Location = new System.Drawing.Point(6, 6);
+            this.bSelect.Name = "bSelect";
+            this.bSelect.Size = new System.Drawing.Size(75, 23);
+            this.bSelect.TabIndex = 0;
+            this.bSelect.Text = "Select";
+            this.bSelect.UseVisualStyleBackColor = true;
+            this.bSelect.Click += new System.EventHandler(this.bSelect_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "AtcLogFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBox1.Location = new System.Drawing.Point(3, 57);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(345, 20);
+            this.textBox1.TabIndex = 2;
+            this.textBox1.Text = global::FitsMonitor.Properties.Settings.Default.AtcLogFile;
+            // 
+            // tbLogFile
+            // 
+            this.tbLogFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "OfficinaStellareLog", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tbLogFile.Location = new System.Drawing.Point(87, 8);
+            this.tbLogFile.Name = "tbLogFile";
+            this.tbLogFile.Size = new System.Drawing.Size(264, 20);
+            this.tbLogFile.TabIndex = 0;
+            this.tbLogFile.Text = global::FitsMonitor.Properties.Settings.Default.OfficinaStellareLog;
             // 
             // fsWatchFits
             // 
@@ -333,22 +391,25 @@
             this.fsWatchOfficinaStelare.Created += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Created);
             this.fsWatchOfficinaStelare.Changed += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Changed);
             // 
-            // folderBrowserOffline
+            // bSetup
             // 
-            this.folderBrowserOffline.ShowNewFolderButton = false;
+            this.bSetup.Location = new System.Drawing.Point(195, 6);
+            this.bSetup.Name = "bSetup";
+            this.bSetup.Size = new System.Drawing.Size(75, 23);
+            this.bSetup.TabIndex = 1;
+            this.bSetup.Text = "Setup";
+            this.bSetup.UseVisualStyleBackColor = true;
+            this.bSetup.Click += new System.EventHandler(this.bSetup_Click);
             // 
-            // backgroundWorkerATC02
+            // bReadStatus
             // 
-            this.backgroundWorkerATC02.WorkerSupportsCancellation = true;
-            this.backgroundWorkerATC02.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerATC02_DoWork);
-            this.backgroundWorkerATC02.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerATC02_RunWorkerCompleted);
-            this.backgroundWorkerATC02.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerATC02_ProgressChanged);
-            // 
-            // timerAtc02
-            // 
-            this.timerAtc02.Enabled = true;
-            this.timerAtc02.Interval = 15000;
-            this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
+            this.bReadStatus.Location = new System.Drawing.Point(276, 6);
+            this.bReadStatus.Name = "bReadStatus";
+            this.bReadStatus.Size = new System.Drawing.Size(75, 23);
+            this.bReadStatus.TabIndex = 2;
+            this.bReadStatus.Text = "Read Status";
+            this.bReadStatus.UseVisualStyleBackColor = true;
+            this.bReadStatus.Click += new System.EventHandler(this.bReadStatus_Click);
             // 
             // Form1
             // 
@@ -373,6 +434,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).EndInit();
+            this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchOfficinaStelare)).EndInit();
             this.ResumeLayout(false);
@@ -410,6 +472,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Label labelLastDetectedValues;
         private System.Windows.Forms.Button bCorrectNames;
+        private System.Windows.Forms.Button bCheckRaDec;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button bSelect;
+        private System.Windows.Forms.Button bSetup;
+        private System.Windows.Forms.Button bReadStatus;
     }
 }
 
