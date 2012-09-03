@@ -1,4 +1,4 @@
-ï»¿/*
+/*
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
  *
@@ -28,22 +28,22 @@ int pinLimitRA=7;
 
 // Vector unitario del acelerometro del eje de declinacion medido en un Zenith (Alt=90) de Pointing Calculado por astrometria.
 const double Zenith[]     = { 
-0.0432176974265464, 0.9981445059953040, 0.0427206054666359 };
-
+0.043428553544686100, 0.997336304799117000, 0.058521246693571100 };
+		
 // Vector unitario del acelerometro del eje de ascension recta, medido en la mitad de la carrera del switch RA_HOME
 const double SouthPole[]  = { 
-0.326877543892625, 0.384813411837579, -0.863162057776674 };
+0.333013222037250, 0.385916999673910, -0.8603114832215930 };
 
-// Angulo entre el Zenith y la posiciÃ³n del tubo del telescopio. [en radianes].
+// Angulo entre el Zenith y la posición del tubo del telescopio. [en radianes].
 double zenithAngle;
 
-// Si el zenithAngle excede este valor [ en radianes ], se apagarÃ¡ la montura.
+// Si el zenithAngle excede este valor [ en radianes ], se apagará la montura.
 const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
 //7000>Valor obtenido haciendo un arranque de la montura desde park1 hasta el meridiano opuesto(forzando un transito).
 // El valor obtenido fue 3247, pero se permitira una holgura de 7000 conteos de posiciones mas alla  del limite del Zenith.
 //10>Ahora se ha optado por usar solo park3, esto evita siempre (en teoria), que la montura pase por debajo del horizonte.
-const unsigned long zenithLimitCounter = 10;//7000; 
+const unsigned long zenithLimitCounter = 10;//7000;
 
 // Angulo del eje contrapeso. [en radianes].
 double counterWeightAngle;
@@ -105,8 +105,8 @@ void refreshZenithAngle ()
 
 void refreshAccelerations()
 {
-  static const double VZEROG = 1.5;//[Volts]
-  static const double VoltsPerCount = 0.0029325513196480938;//(VREF / MaxAnalogRead);//[volts]
+  static const double VZEROG = (1.665);//[Volts]
+  static const double VoltsPerCount = (0.003251953125);//(VREF / MaxAnalogRead);//[volts]
   static const double Sensitivity = 0.33;//0.55;//[Volt/g]
   // Convertimos los voltajes de "AnalogRead" en Aceleraciones acordes con la especificacion del acelerometro
   for (int i=0;i<6;i++)
@@ -165,7 +165,7 @@ void loop()
   }
   if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
       ||                    // o
-        (zenithCounter>zenithLimitCounter) ) // El telescopio estÃ¡ hace tiempo definivamente mirando por debajo del horizonte
+        (zenithCounter>zenithLimitCounter) ) // El telescopio está hace tiempo definivamente mirando por debajo del horizonte
   {
     digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
     zenithCounter = 0;
