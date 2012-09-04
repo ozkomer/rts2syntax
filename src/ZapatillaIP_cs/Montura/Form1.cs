@@ -26,24 +26,24 @@ namespace Montura
         /// <summary>
         /// true si se ha alcanzado un limite en Ascencion recta.
         /// </summary>
-        private Boolean raLimit; 
+        private Boolean raLimit;
 
         /// <summary>
         /// Valor de raLimit en la medición anterior.
         /// </summary>
-        private Boolean raLimitLast;  
+        private Boolean raLimitLast;
 
         /// <summary>
         /// true si se ha alcanzado un limite en el angulo Zenital.
         /// </summary>
-        private Boolean tiltLimit; 
+        private Boolean tiltLimit;
 
         /// <summary>
         /// Valor de tiltLimit en la medición anterior.
         /// </summary>
-        private Boolean tiltLimitLast; 
-        
-        private ArduinoTcp arduinoTcp;
+        private Boolean tiltLimitLast;
+
+        //private ArduinoTcp arduinoTcp;
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
@@ -74,7 +74,7 @@ namespace Montura
             tiltLimit = false;
             tiltLimitLast = false;
             this.udpClient = new UdpClient();
-            this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
+            //this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             query = new char[2];
             query[0] = '?';
             query[1] = '\n'; // revisar si este carcter se usa.
@@ -94,7 +94,7 @@ namespace Montura
             this.radioButtonRA_East.Checked = false;
             this.radioButtonRA_Home.Checked = false;
             this.radioButtonRA_West.Checked = false;
-            
+
             //try
             //{
             //    this.telescopio = new Telescope(settings.TelescopeProgId);
@@ -121,27 +121,13 @@ namespace Montura
             mensaje = new StringBuilder();
             mensaje.Append("La Montura ha alcanzado el limite del ángulo Zenital.\n\n");
 
-            this.arduinoTcp.Connect();
-            if (this.arduinoTcp.Tcpclnt.Connected)
+            if (!this.stat.MonturaEncendida)
             {
-                this.arduinoTcp.readRelays();
-                System.Threading.Thread.Sleep(250);
-
-                this.arduinoTcp.readRelays();
-                if (this.arduinoTcp.RelayStatus[2] == false)
-                {
-                    mensaje.Append("La montura está apagada.\n\n");
-                }
-                else
-                {
-                    mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
-                }
-                System.Threading.Thread.Sleep(200);
-
-                if (this.arduinoTcp.Tcpclnt.Connected)
-                {
-                    this.arduinoTcp.Tcpclnt.Close();
-                }
+                mensaje.Append("La montura está apagada.\n\n");
+            }
+            else
+            {
+                mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
             }
 
             mensaje.AppendLine("Procedimiento:");
@@ -178,27 +164,13 @@ namespace Montura
             }
             mensaje.Append(" en RA.\n\n");
 
-            this.arduinoTcp.Connect();
-            if (this.arduinoTcp.Tcpclnt.Connected)
+            if (!this.stat.MonturaEncendida)
             {
-                this.arduinoTcp.readRelays();
-                System.Threading.Thread.Sleep(250);
-
-                this.arduinoTcp.readRelays();
-                if (this.arduinoTcp.RelayStatus[2] == false)
-                {
-                    mensaje.Append("La montura está apagada.\n\n");
-                }
-                else
-                {
-                    mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
-                }
-                System.Threading.Thread.Sleep(200);
-
-                if (this.arduinoTcp.Tcpclnt.Connected)
-                {
-                    this.arduinoTcp.Tcpclnt.Close();
-                }
+                mensaje.Append("La montura está apagada.\n\n");
+            }
+            else
+            {
+                mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
             }
 
             mensaje.Append("Procedimiento:\n");
@@ -229,7 +201,7 @@ namespace Montura
         /// <param name="discriminante">variable para seleccionar el color.</param>
         /// <param name="ColorTrue">Color a usar cuando discriminante=true.</param>
         /// <param name="ColorFalse">Color a usar cuando discriminante=false.</param>
-        private void RefreshColor(RadioButton ratioButton, Boolean discriminante, Color ColorTrue, Color ColorFalse)
+        private void RefreshRatioButtonColor(RadioButton ratioButton, Boolean discriminante, Color ColorTrue, Color ColorFalse)
         {
             if (discriminante)
             {
@@ -240,6 +212,19 @@ namespace Montura
                 ratioButton.BackColor = ColorFalse;
             }
             ratioButton.Checked = discriminante;
+        }
+
+        private void RefreshCheckBoxColor(CheckBox checkBox, Boolean discriminante, Color ColorTrue, Color ColorFalse)
+        {
+            if (discriminante)
+            {
+                checkBox.BackColor = ColorTrue;
+            }
+            else
+            {
+                checkBox.BackColor = ColorFalse;
+            }
+            checkBox.Checked = discriminante;
         }
 
         /// <summary>
@@ -257,11 +242,19 @@ namespace Montura
             //Console.WriteLine(arduinoStatus);
             stat = new Serduino.Status(arduinoStatus);
             stat.Analiza();
+            RefreshCheckBoxColor(this.cbMonturaEncendida, stat.MonturaEncendida, Color.LightGreen, Color.LightPink);
+            RefreshCheckBoxColor(this.cbMonturaProtegida, stat.MonturaProtegida, Color.LightGreen, Color.LightYellow);
 
-            RefreshColor(this.radioButtonRA_East, stat.RaLimitEast, Color.Pink, Color.LightYellow);
-            RefreshColor(this.radioButtonRA_West, stat.RaLimitWest, Color.Pink, Color.LightYellow);
-            RefreshColor(this.radioButtonRA_Home, stat.RaHome, Color.LightGreen, Color.LightYellow);
-            RefreshColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
+            RefreshRatioButtonColor(this.radioButtonRA_East, stat.RaLimitEast, Color.Pink, Color.LightYellow);
+            RefreshRatioButtonColor(this.radioButtonRA_West, stat.RaLimitWest, Color.Pink, Color.LightYellow);
+            RefreshRatioButtonColor(this.radioButtonRA_Home, stat.RaHome, Color.LightGreen, Color.LightYellow);
+            RefreshRatioButtonColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
+            if (!stat.MonturaProtegida)
+            {
+                if (this.stat.MonturaEncendida) {this.gbMontura.BackColor=Color.LightYellow;}
+                else { this.gbMontura.BackColor = Color.LightPink; }
+            }else
+            { this.gbMontura.BackColor = Color.LightGreen; }
             if ((slewing) && (stat.RaHome))
             {
                 logger.Info("Cruzando RaHome.");
@@ -279,21 +272,21 @@ namespace Montura
                 //Flanco de subida de la alerta
                 this.notificarMonturaRA();
             }
-            if ((!raLimit) && (raLimitLast))
-            {
-                this.pin7_Low();
-            }
+            //if ((!raLimit) && (raLimitLast))
+            //{
+            //    this.protejeMontura();
+            //}
 
-            this.tiltLimit = (this.stat.ZenithCounter !=0);
+            this.tiltLimit = (this.stat.ZenithCounter != 0);
             if ((tiltLimit) && (!tiltLimitLast))
             {
                 logger.Info("Tilt Limit: ZenithAngle=" + stat.ZenithAngleArduino);
                 this.notificarMonturaZenith();
             }
-            if ((!tiltLimit) && (tiltLimitLast))
-            {
-                this.pin7_Low();
-            }
+            //if ((!tiltLimit) && (tiltLimitLast))
+            //{
+            //    this.protejeMontura();
+            //}
             raLimitLast = raLimit;
             tiltLimitLast = tiltLimit;
             ///////////////////
@@ -545,7 +538,7 @@ namespace Montura
             else
             {
                 mensaje.Append("Telescope ProdID=");
-                mensaje.Append( settings.TelescopeProgId);
+                mensaje.Append(settings.TelescopeProgId);
                 mensaje.Append(" ;; Desconectado");
             }
             this.labelTelescope.Text = mensaje.ToString();
@@ -558,7 +551,7 @@ namespace Montura
 
         private void checkBoxInfrarojos_CheckedChanged(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;            
+            this.Cursor = Cursors.WaitCursor;
             this.InfraredControl(this.checkBoxInfrarojos.Checked);
             this.Cursor = Cursors.Default;
         }
@@ -575,7 +568,7 @@ namespace Montura
         /// Envia una señal al arduino de los limits para que
         /// baje el pin7 a un estado logico Cero==GND
         /// </summary>
-        private void pin7_Low()
+        private void protejeMontura()
         {
             this.timerReadSerial.Stop();
             logger.Info("buttonPin7Low_Click.");
@@ -595,7 +588,7 @@ namespace Montura
 
         private void buttonPin7Low_Click(object sender, EventArgs e)
         {
-            pin7_Low();
+            protejeMontura();
         }
 
         private void buttonShowLog_Click(object sender, EventArgs e)
@@ -649,17 +642,17 @@ namespace Montura
             selector = new ASCOM.Utilities.Chooser();
             selector.DeviceType = "Telescope";
             settings.TelescopeProgId = selector.Choose(settings.TelescopeProgId);
-            settings.Save();            
+            settings.Save();
         }
 
-        private void bSetup_Click(object sender, EventArgs e)        
+        private void bSetup_Click(object sender, EventArgs e)
         {
             logger.Info("bSetup_Click");
             if (this.telescopio == null)
             {
                 logger.Info("this.telescopio == null");
-                nuevoTelescopio();                
-            }           
+                nuevoTelescopio();
+            }
             //if (!this.telescopio.Connected)
             //{
             //    logger.Info("Conectando Telescopio");
@@ -670,7 +663,7 @@ namespace Montura
 
         private void nuevoTelescopio()
         {
-            logger.Info("nuevoTelescopio:"+settings.TelescopeProgId);
+            logger.Info("nuevoTelescopio:" + settings.TelescopeProgId);
             this.telescopio = new Telescope(settings.TelescopeProgId);
         }
 
@@ -691,7 +684,7 @@ namespace Montura
                 catch (DriverAccessCOMException exc)
                 {
                     logger.Error(exc.Message);
-                }                
+                }
                 bConnect.Text = "Disconnect";
                 this.timerTelescopio.Enabled = true;
             }

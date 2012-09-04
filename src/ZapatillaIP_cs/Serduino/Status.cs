@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using log4net;
 
 namespace Serduino
 {
-     
+
     public class Status
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(Status));
+
         private Acelerometro aRA = new Acelerometro();
         private Acelerometro aDEC = new Acelerometro();
 
@@ -30,6 +33,17 @@ namespace Serduino
         // sobrepasado el limite del angulo zenital
         private long zenithCounter;
 
+        /// <summary>
+        /// True si el arduino de los Limits, detecta via I2C que la montura está encendida
+        /// </summary>
+        private Boolean monturaEncendida;
+
+        /// <summary>
+        /// True si el arduino de los limits, está apagando la montura en caso
+        /// de una posición unsafe.
+        /// </summary>
+        private Boolean monturaProtegida;
+
         static Serduino.Properties.Settings settings = Properties.Settings.Default;
 
         public static readonly Triplet Zenith =
@@ -39,9 +53,9 @@ namespace Serduino
             new Triplet(settings.SouthPoleX, settings.SouthPoleY, settings.SouthPoleZ);
 
         public static Triplet[] RotationMatrix = { 
-     new Triplet (0.54418865073238800, -0.02893708217268780, -0.83844525622584100),
-     new Triplet (-0.41818134356041000, 0.85704495941331000, -0.30097941326799400),
-     new Triplet (0.72729097774569900, 0.51441898155926000, 0.45429499130803600)
+     new Triplet (0.54531395811267800, -0.03060392726828150, -0.83765195958912100),
+     new Triplet (-0.41659904968013800, 0.85727673350022100, -0.30250745347287200),
+     new Triplet (0.72735317251892400, 0.51393474997979400, 0.45473742488684700)
                                                  };
         //public static readonly Triplet SouthPoleB =
         //    new Triplet(0.89048047955066900, 0.45291181233736400, 0.04356112591060290 );
@@ -53,7 +67,7 @@ namespace Serduino
         private bool raLimitWest;
         private bool raHome;
         private bool decHome;
-        
+
         public Status(String linea)
         {
             this.linea = linea;
@@ -143,12 +157,24 @@ namespace Serduino
             get { return this.zenithCounter; }
         }
 
+        public Boolean MonturaEncendida
+        {
+            get { return this.monturaEncendida; }
+            set { this.monturaEncendida = value; }
+        }
+
+        public Boolean MonturaProtegida
+        {
+            get { return this.monturaProtegida; }
+            set { this.monturaProtegida = value; }
+        }
+
         private void refreshZenithAngle()
         {
             double angleRad;
             double dotProduct;
-            dotProduct = Triplet.dotProduct( this.aDEC.AcelerationUnit, Status.Zenith);
-            angleRad = Math.Acos ( dotProduct);
+            dotProduct = Triplet.dotProduct(this.aDEC.AcelerationUnit, Status.Zenith);
+            angleRad = Math.Acos(dotProduct);
             this.zenithAngle = ((angleRad * 180.0) / Math.PI);
         }
 
@@ -159,11 +185,11 @@ namespace Serduino
             Triplet DECcrossSouthPole;
             Byte OctantDECcrossSouthPole;
             Triplet SouthPoleB;
-            SouthPoleB = Triplet.matrixProduct(Status.RotationMatrix, this.aRA.AcelerationUnit);
-            dotProduct = Triplet.dotProduct( this.aDEC.AcelerationUnit, SouthPoleB);
+            SouthPoleB = Triplet.normalized(Triplet.matrixProduct(Status.RotationMatrix, this.aRA.AcelerationUnit));
+            dotProduct = Triplet.dotProduct(this.aDEC.AcelerationUnit, SouthPoleB);
             DECcrossSouthPole = Triplet.crossProduct(this.aDEC.AcelerationUnit, SouthPoleB);
             OctantDECcrossSouthPole = Triplet.Octant(DECcrossSouthPole);
-            //Console.WriteLine("ARcrossSouthPole=" + ARcrossSouthPole.ToString());
+            Console.WriteLine("SouthPoleB=" + SouthPoleB.ToString());
             Console.WriteLine("OctantDECcrossSouthPole=" + OctantDECcrossSouthPole.ToString());
             angleRad = Math.Acos(dotProduct);
             if (OctantDECcrossSouthPole < 6)
@@ -171,7 +197,7 @@ namespace Serduino
                 angleRad *= -1.0;
             }
             this.declinationAngle = ((angleRad * 180.0) / Math.PI);
-            //Console.WriteLine("DEC_RA[º]=" + decRad);
+            Console.WriteLine("DEC_RA[º]=" + this.declinationAngle);
         }
 
         private void refreshCounterWeightAngle()
@@ -180,7 +206,7 @@ namespace Serduino
             double dotProduct;
             Triplet ARcrossSouthPole;
             Byte OctantARcrossSouthPole;
-            dotProduct = Triplet.dotProduct( this.aRA.AcelerationUnit, Status.SouthPole);
+            dotProduct = Triplet.dotProduct(this.aRA.AcelerationUnit, Status.SouthPole);
             ARcrossSouthPole = Triplet.crossProduct(this.aRA.AcelerationUnit, Status.SouthPole);
             OctantARcrossSouthPole = Triplet.Octant(ARcrossSouthPole);
             //Console.WriteLine("ARcrossSouthPole=" + ARcrossSouthPole.ToString());
@@ -198,17 +224,35 @@ namespace Serduino
         {
             String[] part;
             part = this.linea.Split((" ").ToCharArray());
-            //for (int i = 0; i < part.Length; i++)
-            //{
-            //    Console.WriteLine("part["+i+"]=" + part[i]);
-            //}
-            this.interruptores = Int16.Parse(part[0]);
+            for (int i = 0; i < part.Length; i++)
+            {
+                Console.WriteLine("part[" + i + "]=" + part[i]);
+            }
+            try
+            {
+                this.interruptores = Int16.Parse(part[0]);
+            }
+            catch (FormatException exc)
+            {
+                logger.Error("linea=" + this.linea);
+                logger.Error(exc.Message);
+                return;
+            }
             if (part.Length >= 6)
             {
                 Triplet analogReadRA;
                 Triplet analogReadDEC;
-                analogReadRA  = new Triplet(Double.Parse(part[1]), Double.Parse(part[2]), Double.Parse(part[3]));
-                analogReadDEC = new Triplet(Double.Parse(part[4]), Double.Parse(part[5]), Double.Parse(part[6]));
+                try
+                {
+                    analogReadRA = new Triplet(Double.Parse(part[1]), Double.Parse(part[2]), Double.Parse(part[3]));
+                    analogReadDEC = new Triplet(Double.Parse(part[4]), Double.Parse(part[5]), Double.Parse(part[6]));
+                }
+                catch (FormatException exc)
+                {
+                    logger.Error("linea=" + this.linea);
+                    logger.Error(exc.Message);
+                    return;
+                }
                 aRA.AnalogRead = analogReadRA;
                 aDEC.AnalogRead = analogReadDEC;
                 aRA.refreshAcceleration();
@@ -218,13 +262,24 @@ namespace Serduino
                 this.refreshCounterWeightAngle();
                 this.refreshDeclinationAngle();
             }
-            if (part.Length >= 9)
+            if (part.Length >= 11)
             {
-                this.counterWeightAngleArduino = Double.Parse(part[7]) *(180.0 / Math.PI);
-                this.zenithAngleArduino = Double.Parse(part[8]) *(180.0 / Math.PI);
-                this.zenithCounter = long.Parse(part[9]);
+                try
+                {
+                    this.counterWeightAngleArduino = Double.Parse(part[7]) * (180.0 / Math.PI);
+                    this.zenithAngleArduino = Double.Parse(part[8]) * (180.0 / Math.PI);
+                    this.zenithCounter = long.Parse(part[9]);
+                    this.monturaEncendida = part[10].Equals("1");
+                    this.monturaProtegida = part[11].Trim().Equals("1");
+                }
+                catch (FormatException exc)
+                {
+                    logger.Error("linea=" + this.linea);
+                    logger.Error(exc.Message);
+                    return;
+                }
                 //Console.WriteLine("DeltaAngles = (" + (this.counterWeightAngleArduino - this.counterWeightAngle) + "," + (this.zenithAngleArduino - this.zenithAngle) + ")");
-                //Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino ) + "," + (this.zenithAngleArduino ) + ")");
+                Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino) + "," + (this.zenithAngleArduino) + ")");
             }
             #region analisis interruptores
             int valor;
@@ -237,11 +292,11 @@ namespace Serduino
             }
 
             this.decHome = interruptor[0];
-            this.raLimitEast = (interruptor[1] & interruptor[2]);
-            if (!raLimitEast)
+            this.raLimitWest = (interruptor[1] & interruptor[2]);
+            if (!raLimitWest)
             {
                 this.raHome = interruptor[1];
-                this.raLimitWest = interruptor[2];
+                this.raLimitEast = interruptor[2];
             }
 
             #endregion

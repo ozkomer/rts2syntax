@@ -17,5 +17,11 @@
     <Setting Name="UdpServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">19000</Value>
     </Setting>
+    <Setting Name="ArduinoSerialPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM10</Value>
+    </Setting>
+    <Setting Name="ArduinoBaudRate" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9600</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

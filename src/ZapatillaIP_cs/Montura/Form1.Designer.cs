@@ -56,15 +56,20 @@
             this.buttonPin7Low = new System.Windows.Forms.Button();
             this.labelRaDec = new System.Windows.Forms.Label();
             this.lblAlt = new System.Windows.Forms.Label();
+            this.cbMonturaEncendida = new System.Windows.Forms.CheckBox();
+            this.cbMonturaProtegida = new System.Windows.Forms.CheckBox();
+            this.gbMontura = new System.Windows.Forms.GroupBox();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBoxRA.SuspendLayout();
             this.groupBoxDEC.SuspendLayout();
             this.groupBoxTelescope.SuspendLayout();
+            this.gbMontura.SuspendLayout();
             this.SuspendLayout();
             // 
             // arduinoLimits
             // 
-            this.arduinoLimits.PortName = "COM7";
+            this.arduinoLimits.BaudRate = global::Montura.Properties.Settings.Default.ArduinoBaudRate;
+            this.arduinoLimits.PortName = global::Montura.Properties.Settings.Default.ArduinoSerialPort;
             // 
             // timerReadSerial
             // 
@@ -282,7 +287,7 @@
             // checkBoxInfrarojos
             // 
             this.checkBoxInfrarojos.AutoSize = true;
-            this.checkBoxInfrarojos.Location = new System.Drawing.Point(18, 237);
+            this.checkBoxInfrarojos.Location = new System.Drawing.Point(342, 214);
             this.checkBoxInfrarojos.Name = "checkBoxInfrarojos";
             this.checkBoxInfrarojos.Size = new System.Drawing.Size(67, 17);
             this.checkBoxInfrarojos.TabIndex = 12;
@@ -297,18 +302,18 @@
             // 
             // buttonPin7Low
             // 
-            this.buttonPin7Low.Location = new System.Drawing.Point(344, 233);
+            this.buttonPin7Low.Location = new System.Drawing.Point(191, 70);
             this.buttonPin7Low.Name = "buttonPin7Low";
-            this.buttonPin7Low.Size = new System.Drawing.Size(65, 23);
+            this.buttonPin7Low.Size = new System.Drawing.Size(56, 23);
             this.buttonPin7Low.TabIndex = 13;
-            this.buttonPin7Low.Text = "Pin7 Low";
+            this.buttonPin7Low.Text = "Protect";
             this.buttonPin7Low.UseVisualStyleBackColor = true;
             this.buttonPin7Low.Click += new System.EventHandler(this.buttonPin7Low_Click);
             // 
             // labelRaDec
             // 
             this.labelRaDec.AutoSize = true;
-            this.labelRaDec.Location = new System.Drawing.Point(19, 204);
+            this.labelRaDec.Location = new System.Drawing.Point(6, 51);
             this.labelRaDec.Name = "labelRaDec";
             this.labelRaDec.Size = new System.Drawing.Size(118, 13);
             this.labelRaDec.TabIndex = 14;
@@ -317,21 +322,55 @@
             // lblAlt
             // 
             this.lblAlt.AutoSize = true;
-            this.lblAlt.Location = new System.Drawing.Point(19, 221);
+            this.lblAlt.Location = new System.Drawing.Point(6, 75);
             this.lblAlt.Name = "lblAlt";
             this.lblAlt.Size = new System.Drawing.Size(24, 13);
             this.lblAlt.TabIndex = 15;
             this.lblAlt.Text = "z=?";
             // 
+            // cbMonturaEncendida
+            // 
+            this.cbMonturaEncendida.AutoCheck = false;
+            this.cbMonturaEncendida.AutoSize = true;
+            this.cbMonturaEncendida.Location = new System.Drawing.Point(6, 19);
+            this.cbMonturaEncendida.Name = "cbMonturaEncendida";
+            this.cbMonturaEncendida.Size = new System.Drawing.Size(77, 17);
+            this.cbMonturaEncendida.TabIndex = 16;
+            this.cbMonturaEncendida.Text = "Encendida";
+            this.cbMonturaEncendida.UseVisualStyleBackColor = true;
+            // 
+            // cbMonturaProtegida
+            // 
+            this.cbMonturaProtegida.AutoCheck = false;
+            this.cbMonturaProtegida.AutoSize = true;
+            this.cbMonturaProtegida.Location = new System.Drawing.Point(191, 19);
+            this.cbMonturaProtegida.Name = "cbMonturaProtegida";
+            this.cbMonturaProtegida.Size = new System.Drawing.Size(71, 17);
+            this.cbMonturaProtegida.TabIndex = 17;
+            this.cbMonturaProtegida.Text = "Protegida";
+            this.cbMonturaProtegida.UseVisualStyleBackColor = true;
+            // 
+            // gbMontura
+            // 
+            this.gbMontura.Controls.Add(this.cbMonturaEncendida);
+            this.gbMontura.Controls.Add(this.cbMonturaProtegida);
+            this.gbMontura.Controls.Add(this.lblAlt);
+            this.gbMontura.Controls.Add(this.buttonPin7Low);
+            this.gbMontura.Controls.Add(this.labelRaDec);
+            this.gbMontura.Location = new System.Drawing.Point(12, 195);
+            this.gbMontura.Name = "gbMontura";
+            this.gbMontura.Size = new System.Drawing.Size(324, 100);
+            this.gbMontura.TabIndex = 18;
+            this.gbMontura.TabStop = false;
+            this.gbMontura.Text = "Montura";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(421, 268);
-            this.Controls.Add(this.labelRaDec);
-            this.Controls.Add(this.lblAlt);
+            this.ClientSize = new System.Drawing.Size(443, 300);
+            this.Controls.Add(this.gbMontura);
             this.Controls.Add(this.groupBoxTelescope);
-            this.Controls.Add(this.buttonPin7Low);
             this.Controls.Add(this.checkBoxInfrarojos);
             this.Controls.Add(this.groupBoxRA);
             this.Controls.Add(this.groupBoxDEC);
@@ -348,6 +387,8 @@
             this.groupBoxDEC.ResumeLayout(false);
             this.groupBoxTelescope.ResumeLayout(false);
             this.groupBoxTelescope.PerformLayout();
+            this.gbMontura.ResumeLayout(false);
+            this.gbMontura.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,6 +422,9 @@
         private System.Windows.Forms.Label lblTelescopeID;
         private System.Windows.Forms.Label labelRaDec;
         private System.Windows.Forms.Label lblAlt;
+        private System.Windows.Forms.CheckBox cbMonturaEncendida;
+        private System.Windows.Forms.CheckBox cbMonturaProtegida;
+        private System.Windows.Forms.GroupBox gbMontura;
     }
 }
 
