@@ -1,7 +1,8 @@
-/*
+﻿/*
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
- *
+ * Modified by Eduardo Maureira, September 2012. <emaureir@das.uchile.cl>
+ 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -16,7 +17,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+#include <Wire.h> // specify use of Wire.h library. 
 #define SIZE_A  30
+#define BREATH_TIME 240
+
+//.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
+byte zxRelayAddres = 0x20;
+// Status de los relÃ©s 1 al 8
+byte port0=0; 
+// Status de los relÃ©s 9 al 16
+byte port1=0;
 
 // array for average values of sensors
 int avals[6][SIZE_A];
@@ -24,7 +34,9 @@ double asums[6];
 double accel[6]; // RA (x,y,z) ; DEC (x,y,z) accelerations
 
 int avals_index = 0;
-int pinLimitRA=7;
+//int pinLimitRA=7;
+boolean protectMount;
+boolean monturaEncendida;
 
 // Vector unitario del acelerometro del eje de declinacion medido en un Zenith (Alt=90) de Pointing Calculado por astrometria.
 const double Zenith[]     = { 
@@ -34,10 +46,10 @@ const double Zenith[]     = {
 const double SouthPole[]  = { 
 0.333013222037250, 0.385916999673910, -0.8603114832215930 };
 
-// Angulo entre el Zenith y la posici�n del tubo del telescopio. [en radianes].
+// Angulo entre el Zenith y la posiciÃ³n del tubo del telescopio. [en radianes].
 double zenithAngle;
 
-// Si el zenithAngle excede este valor [ en radianes ], se apagar� la montura.
+// Si el zenithAngle excede este valor [ en radianes ], se apagarÃ¡ la montura.
 const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
 //7000>Valor obtenido haciendo un arranque de la montura desde park1 hasta el meridiano opuesto(forzando un transito).
@@ -56,15 +68,31 @@ void setup()
 {
   // must switch to external reference
   analogReference(EXTERNAL);
+  
+  
+  protectMount = true;
+  
+  //Preparamos las comunicaciones I2C
+  Wire.begin();
+  Wire.beginTransmission(zxRelayAddres);  // setup out direction registers
+  Wire.write((byte)0x06);  // pointer
+  delay(BREATH_TIME);
+  Wire.write((byte)0x00);  // DDR Port0 all output
+  delay(BREATH_TIME);
+  Wire.write((byte)0x00);  // DDR Port1 all output
+  Wire.endTransmission(); 
 
   Serial.begin(9600);
+
+  refreshMonturaEncendida();
+  
 
   zenithCounter = 0;
   zenithAngle =0;
   int i;
 
-  pinMode(pinLimitRA,OUTPUT);
-  digitalWrite (pinLimitRA,LOW);
+//  pinMode(pinLimitRA,OUTPUT);
+//  digitalWrite (pinLimitRA,LOW);
 
   for (i = 8; i < 11; i++)
   {
@@ -149,7 +177,11 @@ void sendSensor()
   Serial.print(zenithAngle, DEC);
   Serial.print(" ");
   Serial.print(zenithCounter, DEC);
-  Serial.println();
+  Serial.print(" ");
+  Serial.print(monturaEncendida, DEC);  
+  Serial.print(" ");
+  Serial.print(protectMount, DEC);    
+  Serial.println();  
 }
 
 void loop()
@@ -163,13 +195,29 @@ void loop()
   {
     zenithCounter = 0; // Reiniciamos el contador
   }
+  if (!protectMount)
+  {
+    refreshMonturaEncendida();   
+  }
+
   if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
       ||                    // o
-        (zenithCounter>zenithLimitCounter) ) // El telescopio est� hace tiempo definivamente mirando por debajo del horizonte
+        (zenithCounter>zenithLimitCounter) ) // El telescopio estÃ¡ hace tiempo definivamente mirando por debajo del horizonte
   {
-    digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
-    zenithCounter = 0;
+    //digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
+    if ((protectMount) && (monturaEncendida))
+    {
+      apagarMontura();
+      zenithCounter = 0;
+      protectMount=false;
+    }
+  }else 
+  {
+     if (monturaEncendida) {
+       protectMount = true;
+     }
   }
+    
   if (Serial.available())
   {
     char ch = Serial.read();
@@ -179,7 +227,8 @@ void loop()
       sendSensor();
       break;
     default:
-      digitalWrite (pinLimitRA,LOW);
+      protectMount=true;
+      //digitalWrite (pinLimitRA,LOW);
       Serial.println("E unknow command");
     }   
   }
@@ -196,3 +245,58 @@ void loop()
   
   refreshZenithAngle ();
 }
+
+void readRelays()
+{
+    // read port0, port1
+    Wire.beginTransmission(zxRelayAddres);
+   delay(BREATH_TIME);
+   Wire.write((byte)0x00); // must act as a position pointer?
+  delay(BREATH_TIME);
+    Wire.endTransmission();
+  delay(BREATH_TIME);
+    Wire.requestFrom((byte)zxRelayAddres, (byte)2);    // request 1 byte
+  delay(BREATH_TIME);
+    port0 = Wire.read(); // receive a byte
+  delay(BREATH_TIME);
+    port1 = Wire.read(); // receive a byte
+  delay(BREATH_TIME);
+    Wire.endTransmission();
+  delay(BREATH_TIME);
+  
+//  Serial.print(" ... Status Actual port0=");
+//  Serial.print(port0,DEC);
+//  Serial.print(" port1=");
+//  Serial.print(port1,DEC);
+//  Serial.println("");
+}
+
+void refreshMonturaEncendida()
+{
+  readRelays();
+  monturaEncendida = ((bitRead(port0,2))==0);
+}
+
+void apagarMontura()
+{
+//  refreshMonturaEncendida();
+//  if (!monturaEncendida) //Si la montura ya esta apagada
+//  {
+//    return; // no apagar la montura
+//  }
+  //do {
+    bitSet(port0,2);// La montura esta en el rele 3.
+    Serial.println(" ... Apagando Montura.");
+    updateRelays();
+    refreshMonturaEncendida();
+  //} while (monturaEncendida);
+}
+
+void updateRelays()
+{
+  Wire.beginTransmission(zxRelayAddres);  
+  Wire.write((byte)0x00); // Comando para acceder al puerto de datos GP0.
+  Wire.write((byte)port0); //Escribe status del port 0
+  Wire.write((byte)port1); //Escribe status del port 1, esto impacta en el GP1
+  Wire.endTransmission();
+} 
