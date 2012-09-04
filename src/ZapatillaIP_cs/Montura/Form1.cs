@@ -20,8 +20,9 @@ namespace Montura
 {
     public partial class Form1 : Form
     {
-        public char[] query;
-        public char[] pin7Low;
+        public static readonly char[] QUERY = ("?").ToCharArray();
+        public static readonly char[] PROTECT_MOUNT = ("A").ToCharArray();
+        public static readonly char[] UNPROTECT_MOUNT = ("_").ToCharArray();
 
         /// <summary>
         /// true si se ha alcanzado un limite en Ascencion recta.
@@ -43,7 +44,8 @@ namespace Montura
         /// </summary>
         private Boolean tiltLimitLast;
 
-        //private ArduinoTcp arduinoTcp;
+        private ArduinoTcp arduinoTcp;
+
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
@@ -74,13 +76,7 @@ namespace Montura
             tiltLimit = false;
             tiltLimitLast = false;
             this.udpClient = new UdpClient();
-            //this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
-            query = new char[2];
-            query[0] = '?';
-            query[1] = '\n'; // revisar si este carcter se usa.
-            pin7Low = new char[2];
-            pin7Low[0] = '_';
-            pin7Low[1] = '\n'; // revisar si este carcter se usa.
+            this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
             InitializeComponent();
 
             stat = null;
@@ -105,6 +101,24 @@ namespace Montura
             //    logger.Error("Error al escoger telescopio ASCOM.");
             //}
             logger.Info("Constructor End.");
+        }
+
+        public void EnciendeMontura()
+        {
+            this.timerReadSerial.Stop();
+            this.arduinoTcp.Connect();
+            if (this.arduinoTcp.Tcpclnt.Connected)
+            {
+                this.arduinoTcp.readRelays();
+                this.arduinoTcp.RelayStatus[2] = true;
+                this.arduinoTcp.refreshPorts();
+
+                if (this.arduinoTcp.Tcpclnt.Connected)
+                {
+                    this.arduinoTcp.Tcpclnt.Close();
+                }
+            }
+            this.timerReadSerial.Start();
         }
 
         /// <summary>
@@ -170,12 +184,26 @@ namespace Montura
             }
             else
             {
-                mensaje.Append("ERROR!!!, la montura sigue encendida!!!.\n\n");
+                mensaje.Append("Atención!!!, la montura sigue encendida!!!.\n\n");
+            }
+
+            if (!this.stat.MonturaProtegida)
+            {
+                mensaje.Append("Atención!!!, El microcontrolador no está protegiendo la Montura.!!!.\n\n");
             }
 
             mensaje.Append("Procedimiento:\n");
-            mensaje.Append("1) Con aplicación PDU_chase, encienda la montura.\n");
-            mensaje.Append("2) Con alguna guitarra virtual (o real), desplaze la montura hacia el ");
+            int numeroInstruccion;
+            numeroInstruccion = 1;
+            if (!stat.MonturaEncendida)
+            {
+                mensaje.Append(numeroInstruccion);
+                mensaje.AppendLine(") Click en Montura -> Encender.");
+                numeroInstruccion++;
+            }
+
+            mensaje.Append(numeroInstruccion);
+            mensaje.Append(") Con alguna guitarra virtual (o real), desplaze la montura hacia el ");
             if (stat.RaLimitEast)
             {
                 mensaje.Append("WEST");
@@ -184,7 +212,8 @@ namespace Montura
             {
                 mensaje.Append("EAST");
             }
-            mensaje.Append(", hasta Park 3");
+            mensaje.AppendLine(" hasta alcanzar una posición segura.");
+
             DialogResult dr;
             logger.Info(mensaje.ToString());
             dr = MessageBox.Show(this, mensaje.ToString(), "RA Limit alert.");
@@ -234,14 +263,35 @@ namespace Montura
         /// <param name="e"></param>
         private void timerReadSerial_Tick(object sender, EventArgs e)
         {
-            String arduinoStatus;
-            arduinoStatus = "Tick";
-            arduinoLimits.Write(query, 0, 1);
-            arduinoStatus = arduinoLimits.ReadLine();
+            arduinoLimits.Write(QUERY, 0, 1);
+            this.refreshInterface();
+            sendUdpStatus();
+        }
 
-            //Console.WriteLine(arduinoStatus);
-            stat = new Serduino.Status(arduinoStatus);
-            stat.Analiza();
+        private void refreshInterface()
+        {
+            if (stat == null)
+            {
+                return;
+            }
+
+            if (stat.MonturaEncendida)
+            {
+                cbMonturaEncendida.Text = "Encendida";
+            }
+            else
+            {
+                cbMonturaEncendida.Text = "Encender";
+            }
+
+            if (this.stat.MonturaProtegida)
+            {
+                cbMonturaProtegida.Text = "Protegida";
+            }
+            else
+            {
+                cbMonturaProtegida.Text = "Proteger";
+            }
             RefreshCheckBoxColor(this.cbMonturaEncendida, stat.MonturaEncendida, Color.LightGreen, Color.LightPink);
             RefreshCheckBoxColor(this.cbMonturaProtegida, stat.MonturaProtegida, Color.LightGreen, Color.LightYellow);
 
@@ -251,9 +301,10 @@ namespace Montura
             RefreshRatioButtonColor(this.radioButtonDecHome, stat.DecHome, Color.LightGreen, Color.LightYellow);
             if (!stat.MonturaProtegida)
             {
-                if (this.stat.MonturaEncendida) {this.gbMontura.BackColor=Color.LightYellow;}
+                if (this.stat.MonturaEncendida) { this.gbMontura.BackColor = Color.LightYellow; }
                 else { this.gbMontura.BackColor = Color.LightPink; }
-            }else
+            }
+            else
             { this.gbMontura.BackColor = Color.LightGreen; }
             if ((slewing) && (stat.RaHome))
             {
@@ -272,10 +323,10 @@ namespace Montura
                 //Flanco de subida de la alerta
                 this.notificarMonturaRA();
             }
-            //if ((!raLimit) && (raLimitLast))
-            //{
-            //    this.protejeMontura();
-            //}
+            if ((!raLimit) && (raLimitLast))
+            {
+                this.setMonturaProtection(true);
+            }
 
             this.tiltLimit = (this.stat.ZenithCounter != 0);
             if ((tiltLimit) && (!tiltLimitLast))
@@ -283,10 +334,10 @@ namespace Montura
                 logger.Info("Tilt Limit: ZenithAngle=" + stat.ZenithAngleArduino);
                 this.notificarMonturaZenith();
             }
-            //if ((!tiltLimit) && (tiltLimitLast))
-            //{
-            //    this.protejeMontura();
-            //}
+            if ((!tiltLimit) && (tiltLimitLast))
+            {
+                this.setMonturaProtection(true);
+            }
             raLimitLast = raLimit;
             tiltLimitLast = tiltLimit;
             ///////////////////
@@ -304,12 +355,20 @@ namespace Montura
             mensajeAngles.Append("\t z="); mensajeAngles.Append(stat.ZenithAngle.ToString("0.00"));
             this.lblAlt.Text = (mensajeAngles.ToString());
             //Console.WriteLine(mensaje.ToString());
+            ///////////////////
+        }
+
+        private void sendUdpStatus ()
+        {
+            if (stat == null)
+            {
+                return;
+            }
             Byte[] sendBytes;
             sendBytes = Encoding.ASCII.GetBytes("#" + stat.CounterWeightAngle + " " + stat.DeclinationAngle + " " + stat.ZenithAngle + "#");
-            Console.WriteLine(mensajeAcelerations.ToString());
+            //Console.WriteLine(mensajeAcelerations.ToString());
             this.udpClient.Connect(settings.UdpServerHost, settings.UdpServerPort);
             udpClient.Send(sendBytes, sendBytes.Length);
-            ///////////////////
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -565,30 +624,48 @@ namespace Montura
         }
 
         /// <summary>
-        /// Envia una señal al arduino de los limits para que
-        /// baje el pin7 a un estado logico Cero==GND
+        /// Envia un comando al arduino de los limits para que
+        /// proteja/desproteja la montura.
         /// </summary>
-        private void protejeMontura()
+        private void setMonturaProtection (Boolean nuevoEstado)
         {
             this.timerReadSerial.Stop();
-            logger.Info("buttonPin7Low_Click.");
-            String respuesta;
-            respuesta = "Tick";
-            arduinoLimits.Write(pin7Low, 0, 1);
-            respuesta = arduinoLimits.ReadLine();
-            logger.Info("respuesta=" + respuesta);
+            logger.Info(" nuevoEstado="+nuevoEstado);
+            StringBuilder mensaje;
+            mensaje = new StringBuilder();
+            mensaje.Append("Al presionar aceptar, El microncontrolador:\n");
+
+            char[] comando;
+            comando = PROTECT_MOUNT;
+
+            if (nuevoEstado) { mensaje.Append(" Protejerá "); }
+            else 
+            {
+                comando = UNPROTECT_MOUNT;
+                mensaje.Append (" Desprotegerá ");
+            }
+            mensaje.Append(" la montura.");
+
             //Console.WriteLine(respuesta);
             DialogResult dr;
-            dr = MessageBox.Show("Al presionar aceptar, La montura estará nuevamente protegida", "Pin7 Low");
+            dr = MessageBox.Show(mensaje.ToString(), "Proteción Montura",MessageBoxButtons.OKCancel);
             if (dr.Equals(DialogResult.OK))
             {
-                this.timerReadSerial.Start();
+                //if (arduinoLimits.BytesToRead > 0)
+                //{
+                //    String respuesta;
+                //    respuesta = "Tick";
+                //    respuesta = arduinoLimits.ReadExisting();
+                //    logger.Info("respuesta=" + respuesta);
+                //}
+                arduinoLimits.Write(comando, 0, 1);
             }
+            this.timerReadSerial.Start();
         }
 
         private void buttonPin7Low_Click(object sender, EventArgs e)
         {
-            protejeMontura();
+            this.setMonturaProtection(true);
         }
 
         private void buttonShowLog_Click(object sender, EventArgs e)
@@ -704,6 +781,46 @@ namespace Montura
                 this.timerTelescopio.Enabled = false;
             }
             this.Cursor = Cursors.Default;
+        }
+
+        private void cbMonturaProtegida_Click(object sender, EventArgs e)
+        {
+            this.setMonturaProtection(!this.stat.MonturaProtegida);
+        }
+
+        private void arduinoLimits_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            this.ProcesaDatosSeriales();
+        }
+
+        private void ProcesaDatosSeriales()
+        {
+            String arduinoStatus;
+            arduinoStatus = "Tick";
+            try
+            {
+                arduinoStatus = arduinoLimits.ReadLine();
+            }
+            catch (TimeoutException exc)
+            {
+                logger.Debug(exc.ToString());
+                return;
+            }
+            catch (System.InvalidOperationException )
+            {
+                return;
+            }
+            //Console.WriteLine(arduinoStatus);
+            stat = new Serduino.Status(arduinoStatus);
+            stat.Analiza();
+        }
+
+        private void cbMonturaEncendida_Click(object sender, EventArgs e)
+        {
+            if (!cbMonturaEncendida.Checked)
+            {
+                this.EnciendeMontura();
+            }
         }
     }
 }

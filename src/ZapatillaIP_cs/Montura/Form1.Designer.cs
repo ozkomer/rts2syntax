@@ -70,6 +70,8 @@
             // 
             this.arduinoLimits.BaudRate = global::Montura.Properties.Settings.Default.ArduinoBaudRate;
             this.arduinoLimits.PortName = global::Montura.Properties.Settings.Default.ArduinoSerialPort;
+            this.arduinoLimits.ReceivedBytesThreshold = 15;
+            this.arduinoLimits.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.arduinoLimits_DataReceived);
             // 
             // timerReadSerial
             // 
@@ -127,7 +129,7 @@
             // 
             this.radioButtonRA_West.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioButtonRA_West.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButtonRA_West.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonRA_West.Location = new System.Drawing.Point(180, 19);
             this.radioButtonRA_West.Name = "radioButtonRA_West";
             this.radioButtonRA_West.Size = new System.Drawing.Size(82, 41);
             this.radioButtonRA_West.TabIndex = 2;
@@ -140,7 +142,7 @@
             // 
             this.radioButtonRA_East.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.radioButtonRA_East.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButtonRA_East.Location = new System.Drawing.Point(182, 19);
+            this.radioButtonRA_East.Location = new System.Drawing.Point(9, 19);
             this.radioButtonRA_East.Name = "radioButtonRA_East";
             this.radioButtonRA_East.Size = new System.Drawing.Size(82, 41);
             this.radioButtonRA_East.TabIndex = 1;
@@ -338,6 +340,7 @@
             this.cbMonturaEncendida.TabIndex = 16;
             this.cbMonturaEncendida.Text = "Encendida";
             this.cbMonturaEncendida.UseVisualStyleBackColor = true;
+            this.cbMonturaEncendida.Click += new System.EventHandler(this.cbMonturaEncendida_Click);
             // 
             // cbMonturaProtegida
             // 
@@ -349,6 +352,7 @@
             this.cbMonturaProtegida.TabIndex = 17;
             this.cbMonturaProtegida.Text = "Protegida";
             this.cbMonturaProtegida.UseVisualStyleBackColor = true;
+            this.cbMonturaProtegida.Click += new System.EventHandler(this.cbMonturaProtegida_Click);
             // 
             // gbMontura
             // 

@@ -220,14 +220,24 @@ namespace Serduino
             this.counterWeightAngle = ((angleRad * 180.0) / Math.PI);
         }
 
+        /// <summary>
+        /// Analiza una linea enviada por el microcontrolador de los Limits.
+        /// Esta linea contiene información sobre:
+        /// - Limit Switches
+        /// - Acelerómetros
+        /// - Cwa, Angulo del contrapeso
+        /// - Z, ángulo Zenital
+        /// - Indicador de protección de la montura
+        /// - Indicador de encendido de la montura
+        /// </summary>
         public void Analiza()
         {
             String[] part;
             part = this.linea.Split((" ").ToCharArray());
-            for (int i = 0; i < part.Length; i++)
-            {
-                Console.WriteLine("part[" + i + "]=" + part[i]);
-            }
+            //for (int i = 0; i < part.Length; i++)
+            //{
+            //    Console.WriteLine("part[" + i + "]=" + part[i]);
+            //}
             try
             {
                 this.interruptores = Int16.Parse(part[0]);
@@ -292,25 +302,24 @@ namespace Serduino
             }
 
             this.decHome = interruptor[0];
-            this.raLimitWest = (interruptor[1] & interruptor[2]);
-            if (!raLimitWest)
+            this.raLimitEast = ((interruptor[1]) & interruptor[2]);
+
+            if (!raLimitEast)
             {
                 this.raHome = interruptor[1];
-                this.raLimitEast = interruptor[2];
+                this.raLimitWest = interruptor[2];
             }
 
             #endregion
 
-            //StringBuilder mensaje;
-            //mensaje = new StringBuilder ();
-            //mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
-            //mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
-            //mensaje.Append("\t raLimit1="); mensaje.Append(this.raLimitEast);
-            //mensaje.Append("\t raLimit2="); mensaje.Append(this.raLimitWest);
-            //mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
-            //mensaje.Append("RA="); mensaje.Append(aRA.Acceleration.ToString());
-            //mensaje.Append("\t DEC="); mensaje.Append(aDEC.Acceleration.ToString());
-            //Console.WriteLine(mensaje.ToString());
+            StringBuilder mensaje;
+            mensaje = new StringBuilder();
+            mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
+            mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
+            mensaje.Append("\t raLimitEast="); mensaje.Append(raLimitEast);
+            mensaje.Append("\t raLimitWest="); mensaje.Append(this.raLimitWest);
+            mensaje.Append("\t raHome="); mensaje.Append(this.raHome);
+            Console.WriteLine(mensaje.ToString());
 
         }
     }
