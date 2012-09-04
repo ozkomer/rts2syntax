@@ -25,7 +25,7 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.65")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.80")]
         public string DriverName {
             get {
                 return ((string)(this["DriverName"]));
@@ -85,7 +85,7 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public decimal refreshStatusTimer {
             get {
                 return ((decimal)(this["refreshStatusTimer"]));
@@ -116,6 +116,42 @@ namespace ASCOM.OrbitATC02.Properties {
             }
             set {
                 this["refreshFirmwareInfo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\Atc02Status.xml")]
+        public string Atc02StatusXmlFilePath {
+            get {
+                return ((string)(this["Atc02StatusXmlFilePath"]));
+            }
+            set {
+                this["Atc02StatusXmlFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3718")]
+        public decimal lastSecondaryPosition {
+            get {
+                return ((decimal)(this["lastSecondaryPosition"]));
+            }
+            set {
+                this["lastSecondaryPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool lastSecondaryStartUp {
+            get {
+                return ((bool)(this["lastSecondaryStartUp"]));
+            }
+            set {
+                this["lastSecondaryStartUp"] = value;
             }
         }
     }

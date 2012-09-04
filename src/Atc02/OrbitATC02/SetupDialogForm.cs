@@ -20,6 +20,8 @@ namespace ASCOM.OrbitATC02
             Properties.Settings.Default.refreshFirmwareInfo = this.cbRefreshFirmwareInfo.Checked;
             Properties.Settings.Default.refreshStatus = this.cbRefreshStatus.Checked;
             Properties.Settings.Default.refreshStatusTimer = this.nudRefreshStatusPeriod.Value;
+            Properties.Settings.Default.lastSecondaryPosition = this.nudLastSecondary.Value;
+            Properties.Settings.Default.lastSecondaryStartUp = this.cbSecondaryPositionStartUp.Checked;
             Properties.Settings.Default.Save();
             Dispose();
         }
