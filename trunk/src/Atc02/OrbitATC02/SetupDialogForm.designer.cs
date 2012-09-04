@@ -41,9 +41,12 @@ namespace ASCOM.OrbitATC02
             this.cbRefreshStatus = new System.Windows.Forms.CheckBox();
             this.nudBaudRate = new System.Windows.Forms.NumericUpDown();
             this.tbCommPort = new System.Windows.Forms.TextBox();
+            this.cbSecondaryPositionStartUp = new System.Windows.Forms.CheckBox();
+            this.nudLastSecondary = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRefreshStatusPeriod)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLastSecondary)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdOK
@@ -184,11 +187,45 @@ namespace ASCOM.OrbitATC02
             this.tbCommPort.TabIndex = 5;
             this.tbCommPort.Text = global::ASCOM.OrbitATC02.Properties.Settings.Default.CommPort;
             // 
+            // cbSecondaryPositionStartUp
+            // 
+            this.cbSecondaryPositionStartUp.AutoSize = true;
+            this.cbSecondaryPositionStartUp.Checked = global::ASCOM.OrbitATC02.Properties.Settings.Default.lastSecondaryStartUp;
+            this.cbSecondaryPositionStartUp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSecondaryPositionStartUp.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ASCOM.OrbitATC02.Properties.Settings.Default, "lastSecondaryStartUp", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cbSecondaryPositionStartUp.Location = new System.Drawing.Point(15, 127);
+            this.cbSecondaryPositionStartUp.Name = "cbSecondaryPositionStartUp";
+            this.cbSecondaryPositionStartUp.Size = new System.Drawing.Size(211, 17);
+            this.cbSecondaryPositionStartUp.TabIndex = 13;
+            this.cbSecondaryPositionStartUp.Text = "Use Last Secondary Position at Startup";
+            this.cbSecondaryPositionStartUp.UseVisualStyleBackColor = true;
+            // 
+            // nudLastSecondary
+            // 
+            this.nudLastSecondary.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ASCOM.OrbitATC02.Properties.Settings.Default, "lastSecondaryPosition", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.nudLastSecondary.Location = new System.Drawing.Point(232, 127);
+            this.nudLastSecondary.Maximum = new decimal(new int[] {
+            8000,
+            0,
+            0,
+            0});
+            this.nudLastSecondary.Minimum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nudLastSecondary.Name = "nudLastSecondary";
+            this.nudLastSecondary.Size = new System.Drawing.Size(81, 20);
+            this.nudLastSecondary.TabIndex = 14;
+            this.nudLastSecondary.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.lastSecondaryPosition;
+            // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 155);
+            this.ClientSize = new System.Drawing.Size(410, 201);
+            this.Controls.Add(this.nudLastSecondary);
+            this.Controls.Add(this.cbSecondaryPositionStartUp);
             this.Controls.Add(this.cbRefreshFirmwareInfo);
             this.Controls.Add(this.nudRefreshStatusPeriod);
             this.Controls.Add(this.cbRefreshStatus);
@@ -214,6 +251,7 @@ namespace ASCOM.OrbitATC02
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRefreshStatusPeriod)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLastSecondary)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -233,5 +271,7 @@ namespace ASCOM.OrbitATC02
         private System.Windows.Forms.CheckBox cbRefreshStatus;
         private System.Windows.Forms.NumericUpDown nudRefreshStatusPeriod;
         private System.Windows.Forms.CheckBox cbRefreshFirmwareInfo;
+        private System.Windows.Forms.CheckBox cbSecondaryPositionStartUp;
+        private System.Windows.Forms.NumericUpDown nudLastSecondary;
     }
 }

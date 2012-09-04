@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Atc02Comm.cs" />
     <Compile Include="AtcStatus.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="Form1.cs">
