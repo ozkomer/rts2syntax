@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
  * Modified by Eduardo Maureira, September 2012. <emaureir@das.uchile.cl>
@@ -23,9 +23,9 @@
 
 //.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
 byte zxRelayAddres = 0x20;
-// Status de los relÃ©s 1 al 8
+// Status de los relés 1 al 8
 byte port0=0; 
-// Status de los relÃ©s 9 al 16
+// Status de los relés 9 al 16
 byte port1=0;
 
 // array for average values of sensors
@@ -46,10 +46,10 @@ const double Zenith[]     = {
 const double SouthPole[]  = { 
 0.333013222037250, 0.385916999673910, -0.8603114832215930 };
 
-// Angulo entre el Zenith y la posiciÃ³n del tubo del telescopio. [en radianes].
+// Angulo entre el Zenith y la posición del tubo del telescopio. [en radianes].
 double zenithAngle;
 
-// Si el zenithAngle excede este valor [ en radianes ], se apagarÃ¡ la montura.
+// Si el zenithAngle excede este valor [ en radianes ], se apagará la montura.
 const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
 //7000>Valor obtenido haciendo un arranque de la montura desde park1 hasta el meridiano opuesto(forzando un transito).
@@ -59,6 +59,10 @@ const unsigned long zenithLimitCounter = 10;//7000;
 
 // Angulo del eje contrapeso. [en radianes].
 double counterWeightAngle;
+
+double counterWeightAngleMin = 1.77150919;// == 101.5  [grados sexagesimales] 
+double counterWeightAngleMax = 4.75602221;// == 272.5  [grados sexagesimales] 
+
 
 //Cada vez que el zenithAngle excede el zenithAngleLimit, esta variable se incrementa en 1.
 // si esta variable supera el valor zenithLimitCounter, se ordena apagar la montura, y se setea esta variable en cero
@@ -195,14 +199,19 @@ void loop()
   {
     zenithCounter = 0; // Reiniciamos el contador
   }
-  if (!protectMount)
-  {
-    refreshMonturaEncendida();   
-  }
+//  if (!protectMount)
+//  {
+//    refreshMonturaEncendida();   
+//  }
 
   if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
       ||                    // o
-        (zenithCounter>zenithLimitCounter) ) // El telescopio estÃ¡ hace tiempo definivamente mirando por debajo del horizonte
+        (zenithCounter>zenithLimitCounter)  // El telescopio está hace tiempo definivamente mirando por debajo del horizonte
+//      ||
+//        (counterWeightAngle<counterWeightAngleMin) // El Telescopio cruzo el limitSwitch del East
+//      ||
+//        (counterWeightAngle>counterWeightAngleMax) // El Telescopio cruzo el limitSwitch del West
+      )  
   {
     //digitalWrite (pinLimitRA,HIGH); // Se informa al frigobar a traves del pinLimitRA
     if ((protectMount) && (monturaEncendida))
@@ -213,18 +222,25 @@ void loop()
     }
   }else 
   {
-     if (monturaEncendida) {
-       protectMount = true;
-     }
+//     if (monturaEncendida) {
+//       protectMount = true;
+//     }
   }
     
   if (Serial.available())
   {
+    refreshMonturaEncendida(); 
     char ch = Serial.read();
     switch (ch)
     {
     case '?':
       sendSensor();
+      break;
+    case 'A':
+      protectMount=true;
+      break;
+    case '_':
+      protectMount=false;
       break;
     default:
       protectMount=true;
@@ -250,19 +266,19 @@ void readRelays()
 {
     // read port0, port1
     Wire.beginTransmission(zxRelayAddres);
-   delay(BREATH_TIME);
+   //delay(BREATH_TIME);
    Wire.write((byte)0x00); // must act as a position pointer?
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
     Wire.endTransmission();
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
     Wire.requestFrom((byte)zxRelayAddres, (byte)2);    // request 1 byte
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
     port0 = Wire.read(); // receive a byte
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
     port1 = Wire.read(); // receive a byte
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
     Wire.endTransmission();
-  delay(BREATH_TIME);
+  //delay(BREATH_TIME);
   
 //  Serial.print(" ... Status Actual port0=");
 //  Serial.print(port0,DEC);
