@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Driver for Arduino used as multipurpose sensor.
  * Copyright (C) 2010 Petr Kubanek, Insitute of Physics <kubanek@fzu.cz>
  * Modified by Eduardo Maureira, September 2012. <emaureir@das.uchile.cl>
@@ -19,13 +19,12 @@
  */
 #include <Wire.h> // specify use of Wire.h library. 
 #define SIZE_A  30
-#define BREATH_TIME 240
 
 //.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
 byte zxRelayAddres = 0x20;
-// Status de los relés 1 al 8
+// Status de los relÃ©s 1 al 8
 byte port0=0; 
-// Status de los relés 9 al 16
+// Status de los relÃ©s 9 al 16
 byte port1=0;
 
 // array for average values of sensors
@@ -34,7 +33,6 @@ double asums[6];
 double accel[6]; // RA (x,y,z) ; DEC (x,y,z) accelerations
 
 int avals_index = 0;
-//int pinLimitRA=7;
 boolean protectMount;
 boolean monturaEncendida;
 
@@ -46,10 +44,10 @@ const double Zenith[]     = {
 const double SouthPole[]  = { 
 0.333013222037250, 0.385916999673910, -0.8603114832215930 };
 
-// Angulo entre el Zenith y la posición del tubo del telescopio. [en radianes].
+// Angulo entre el Zenith y la posiciÃ³n del tubo del telescopio. [en radianes].
 double zenithAngle;
 
-// Si el zenithAngle excede este valor [ en radianes ], se apagará la montura.
+// Si el zenithAngle excede este valor [ en radianes ], se apagarÃ¡ la montura.
 const double zenithAngleLimit = 1.8325957146; //== 105 [grados sexagesimales]
 
 //7000>Valor obtenido haciendo un arranque de la montura desde park1 hasta el meridiano opuesto(forzando un transito).
@@ -80,9 +78,7 @@ void setup()
   Wire.begin();
   Wire.beginTransmission(zxRelayAddres);  // setup out direction registers
   Wire.write((byte)0x06);  // pointer
-  delay(BREATH_TIME);
   Wire.write((byte)0x00);  // DDR Port0 all output
-  delay(BREATH_TIME);
   Wire.write((byte)0x00);  // DDR Port1 all output
   Wire.endTransmission(); 
 
@@ -159,13 +155,21 @@ void refreshAccelerations()
 
 void sendSensor()
 {
-  int sensorValue = 0;
-  int i;
-  for (i = 8; i < 11; i++)
-  {
-    sensorValue = sensorValue << 1;
-    sensorValue |= digitalRead(i);
-  }
+  byte sensorValue;
+  sensorValue = 0;
+  bitWrite(sensorValue,0,digitalRead(8));
+  bitWrite(sensorValue,1,digitalRead(9));
+  bitWrite(sensorValue,2,digitalRead(10));
+  bitWrite(sensorValue,3,monturaEncendida);
+  bitWrite(sensorValue,4,protectMount);
+
+  int i; // loop iterator
+//  
+//  for (i = 8; i < 11; i++)
+//  {
+//    sensorValue = sensorValue << 1;
+//    sensorValue |= digitalRead(i);
+//  }
 
   Serial.print(sensorValue, DEC);
   Serial.print(" ");
@@ -181,10 +185,6 @@ void sendSensor()
   Serial.print(zenithAngle, DEC);
   Serial.print(" ");
   Serial.print(zenithCounter, DEC);
-  Serial.print(" ");
-  Serial.print(monturaEncendida, DEC);  
-  Serial.print(" ");
-  Serial.print(protectMount, DEC);    
   Serial.println();  
 }
 
@@ -199,14 +199,10 @@ void loop()
   {
     zenithCounter = 0; // Reiniciamos el contador
   }
-//  if (!protectMount)
-//  {
-//    refreshMonturaEncendida();   
-//  }
 
   if  ( (digitalRead(8)==1) //  Si se alcanza un LimitSwitch en RA
       ||                    // o
-        (zenithCounter>zenithLimitCounter)  // El telescopio está hace tiempo definivamente mirando por debajo del horizonte
+        (zenithCounter>zenithLimitCounter)  // El telescopio estÃ¡ hace tiempo definivamente mirando por debajo del horizonte
 //      ||
 //        (counterWeightAngle<counterWeightAngleMin) // El Telescopio cruzo el limitSwitch del East
 //      ||
@@ -220,11 +216,6 @@ void loop()
       zenithCounter = 0;
       protectMount=false;
     }
-  }else 
-  {
-//     if (monturaEncendida) {
-//       protectMount = true;
-//     }
   }
     
   if (Serial.available())
@@ -266,19 +257,12 @@ void readRelays()
 {
     // read port0, port1
     Wire.beginTransmission(zxRelayAddres);
-   //delay(BREATH_TIME);
    Wire.write((byte)0x00); // must act as a position pointer?
-  //delay(BREATH_TIME);
     Wire.endTransmission();
-  //delay(BREATH_TIME);
     Wire.requestFrom((byte)zxRelayAddres, (byte)2);    // request 1 byte
-  //delay(BREATH_TIME);
     port0 = Wire.read(); // receive a byte
-  //delay(BREATH_TIME);
     port1 = Wire.read(); // receive a byte
-  //delay(BREATH_TIME);
     Wire.endTransmission();
-  //delay(BREATH_TIME);
   
 //  Serial.print(" ... Status Actual port0=");
 //  Serial.print(port0,DEC);
