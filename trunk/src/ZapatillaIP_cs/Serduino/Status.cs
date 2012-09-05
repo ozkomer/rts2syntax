@@ -11,6 +11,13 @@ namespace Serduino
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Status));
 
+        public static readonly int RA_SWITCH_WEST = 0;
+        public static readonly int RA_SWITCH_HOME = 1;
+        public static readonly int DEC_SWITCH = 2;
+        public static readonly int FLAG_MONTURA_ENCENDIDA = 3;
+        public static readonly int FLAG_MONTURA_PROTEGIDA = 4;
+
+
         private Acelerometro aRA = new Acelerometro();
         private Acelerometro aDEC = new Acelerometro();
 
@@ -33,17 +40,6 @@ namespace Serduino
         // sobrepasado el limite del angulo zenital
         private long zenithCounter;
 
-        /// <summary>
-        /// True si el arduino de los Limits, detecta via I2C que la montura está encendida
-        /// </summary>
-        private Boolean monturaEncendida;
-
-        /// <summary>
-        /// True si el arduino de los limits, está apagando la montura en caso
-        /// de una posición unsafe.
-        /// </summary>
-        private Boolean monturaProtegida;
-
         static Serduino.Properties.Settings settings = Properties.Settings.Default;
 
         public static readonly Triplet Zenith =
@@ -61,37 +57,89 @@ namespace Serduino
         //    new Triplet(0.89048047955066900, 0.45291181233736400, 0.04356112591060290 );
 
         private String linea;
-        private int interruptores;
-        private bool[] interruptor;
-        private bool raLimitEast;
-        private bool raLimitWest;
-        private bool raHome;
-        private bool decHome;
+
+        /// <summary>
+        /// Cada bit de esta variable aporta info sobre estado de:
+        /// - Limit Switches (RA, DEC)
+        /// - Encendido Montura
+        /// - Proteccion Montura
+        /// </summary>
+        private int flags;
+
+        /// <summary>
+        /// Los bits de la variable flag son desmenuzados en esta variable.
+        /// Finalmente, las componentes del arreglo flag, son asignadas
+        /// a las variables Boolean.
+        /// </summary>
+        private Boolean[] flag;
+
+        /// <summary>
+        /// True si el telescopio alcanza el limite East.
+        /// </summary>
+        private Boolean raLimitEast;
+
+        /// <summary>
+        /// True si el telescopio alcanza el limite West.
+        /// </summary>
+        private Boolean raLimitWest;
+
+        /// <summary>
+        /// True si el telescopio esta en el Home en RA. (contrapeso hacia abajo).
+        /// </summary>
+        private Boolean raHome;
+
+        /// <summary>
+        /// True si el telescopio está apuntando hacia el polo sur.
+        /// </summary>
+        private Boolean decHome;
+
+        /// <summary>
+        /// True si el arduino de los Limits, detecta via I2C que la montura está encendida
+        /// </summary>
+        private Boolean monturaEncendida;
+
+        /// <summary>
+        /// True si el arduino de los limits, está apagando la montura en caso
+        /// de una posición unsafe.
+        /// </summary>
+        private Boolean monturaProtegida;
+
 
         public Status(String linea)
         {
             this.linea = linea;
-            interruptor = new bool[3];
         }
 
+        /// <summary>
+        /// True si el telescopio está apuntando hacia el polo sur.
+        /// </summary>
         public bool DecHome
         {
             get { return this.decHome; }
             set { this.decHome = value; }
         }
 
+        /// <summary>
+        /// True si el telescopio alcanza el limite East.
+        /// </summary>
         public bool RaLimitEast
         {
             get { return this.raLimitEast; }
             set { this.raLimitEast = value; }
         }
 
+        /// <summary>
+        /// True si el telescopio alcanza el limite West.
+        /// </summary>
         public bool RaLimitWest
         {
             get { return this.raLimitWest; }
             set { this.raLimitWest = value; }
         }
 
+        /// <summary>
+        /// True si el telescopio esta en el Home en RA. (contrapeso hacia abajo).
+        /// </summary>
         public bool RaHome
         {
             get { return this.raHome; }
@@ -240,7 +288,7 @@ namespace Serduino
             //}
             try
             {
-                this.interruptores = Int16.Parse(part[0]);
+                this.flags = Int16.Parse(part[0]);
             }
             catch (FormatException exc)
             {
@@ -272,15 +320,13 @@ namespace Serduino
                 this.refreshCounterWeightAngle();
                 this.refreshDeclinationAngle();
             }
-            if (part.Length >= 11)
+            if (part.Length >= 9)
             {
                 try
                 {
                     this.counterWeightAngleArduino = Double.Parse(part[7]) * (180.0 / Math.PI);
                     this.zenithAngleArduino = Double.Parse(part[8]) * (180.0 / Math.PI);
                     this.zenithCounter = long.Parse(part[9]);
-                    this.monturaEncendida = part[10].Equals("1");
-                    this.monturaProtegida = part[11].Trim().Equals("1");
                 }
                 catch (FormatException exc)
                 {
@@ -291,30 +337,39 @@ namespace Serduino
                 //Console.WriteLine("DeltaAngles = (" + (this.counterWeightAngleArduino - this.counterWeightAngle) + "," + (this.zenithAngleArduino - this.zenithAngle) + ")");
                 Console.WriteLine("Arduino Angles = (" + (this.counterWeightAngleArduino) + "," + (this.zenithAngleArduino) + ")");
             }
-            #region analisis interruptores
+            #region analisis Flags (Limits, Status Arduino)
             int valor;
-            valor = this.interruptores;
-
-            for (int i = 0; i < 3; i++)
+            valor = this.flags;
+            StringBuilder strBinary;
+            strBinary = new StringBuilder();
+            
+            flag = new Boolean[10];
+            for (int i = 1; i < 10; i++)
             {
-                this.interruptor[i] = ((valor % 2) == 1);
-                valor = (valor / 2);
+                flag[i-1] = ((valor & (1 << i - 1)) != 0);
+                if (flag[i-1]) 
+                    strBinary.Append(1);
+                else
+                    strBinary.Append(0);
             }
 
-            this.decHome = interruptor[0];
-            this.raLimitEast = ((interruptor[1]) & interruptor[2]);
+            this.decHome = flag[DEC_SWITCH];
+            this.raLimitEast = ((flag[1]) & flag[RA_SWITCH_WEST]);
 
             if (!raLimitEast)
             {
-                this.raHome = interruptor[1];
-                this.raLimitWest = interruptor[2];
+                this.raHome = flag[RA_SWITCH_HOME];
+                this.raLimitWest = flag[RA_SWITCH_WEST];
             }
+            this.monturaEncendida = flag[FLAG_MONTURA_ENCENDIDA];
+            this.monturaProtegida = flag[FLAG_MONTURA_PROTEGIDA];
 
             #endregion
 
             StringBuilder mensaje;
             mensaje = new StringBuilder();
-            mensaje.Append("interruptores="); mensaje.Append(this.interruptores);
+            mensaje.Append("flags="); mensaje.Append(this.flags);
+            mensaje.Append("\t strBinary="); mensaje.Append(strBinary);
             mensaje.Append("\t decHome="); mensaje.Append(this.decHome);
             mensaje.Append("\t raLimitEast="); mensaje.Append(raLimitEast);
             mensaje.Append("\t raLimitWest="); mensaje.Append(this.raLimitWest);
