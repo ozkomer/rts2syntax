@@ -67,9 +67,33 @@ namespace Montura
 
         private static readonly String cam = "http://HOST:80/decoder_control.cgi?command=CMD&user=admin&pwd=";
 
+        MountCheck test1;
+        MountCheck test2;
+        MountCheck test3;
+        MountCheck test4;
+        MountCheck test5;
+        MountCheck test6;
+        MountCheck test7;
+
+
         public Form1()
         {
             XmlConfigurator.Configure();
+            test1 = new MountCheck(1, "Conectar y luego Park 3.");
+            test1.TimeOutSeconds = 50;
+            test2 = new MountCheck(2, "DEC ClockWise");
+            test2.TimeOutSeconds = 35;
+            test3 = new MountCheck(3, "DEC CounterClockWise");
+            test3.TimeOutSeconds = 70;
+            test4 = new MountCheck(4, "Alt 86, Az 270");
+            test4.TimeOutSeconds = 35;
+            test5 = new MountCheck(5, "Check RA East Limit.");
+            test5.TimeOutSeconds = 250;
+            test6 = new MountCheck(6, "Alt 86, Az 90,Ra Home");
+            test6.TimeOutSeconds = 80;
+            test7 = new MountCheck(7, "Check RA West Limit.");
+            test7.TimeOutSeconds = 250;
+
             logger.Info("Constructor Start.");
             raLimit = false;
             raLimitLast = false;
@@ -266,6 +290,11 @@ namespace Montura
             arduinoLimits.Write(QUERY, 0, 1);
             this.refreshInterface();
             sendUdpStatus();
+            if ((this.runningTest != null) )
+            {
+                this.revisaTest();
+            }
+
         }
 
         private void refreshInterface()
@@ -373,7 +402,13 @@ namespace Montura
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            this.cbMountCheck.Items.Add(test1);
+            this.cbMountCheck.Items.Add(test2);
+            this.cbMountCheck.Items.Add(test3);
+            this.cbMountCheck.Items.Add(test4);
+            this.cbMountCheck.Items.Add(test5);
+            this.cbMountCheck.Items.Add(test6);
+            this.cbMountCheck.Items.Add(test7);
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
@@ -822,5 +857,178 @@ namespace Montura
                 this.EnciendeMontura();
             }
         }
+
+        private MountCheck runningTest;
+
+
+        private void revisaTest()
+        {
+            Console.WriteLine("revisaTest");
+            if (this.runningTest == null) return;
+            if (!this.runningTest.IsRunning)
+            {
+                lblMountCheck.Text = this.runningTest.status();
+                Console.WriteLine(this.runningTest.status());
+                this.runningTest = null;
+                return;
+            }
+
+            double alt, az;
+            alt= telescopio.Altitude;
+            az = telescopio.Azimuth;
+            Console.WriteLine("alt="+alt+"\t az="+az);
+            Console.WriteLine(this.runningTest.status());
+            lblMountCheck.Text = this.runningTest.status();
+            switch (runningTest.Id)
+            {
+                case 1:
+
+                    if ((alt > 29) && (alt < 31) && (az > 178) && (alt < 181))
+                    {
+                        runningTest.finish(1);                        
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 2:
+
+                    if (az > 190)
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisSecondary, 0);
+                        runningTest.finish(1);
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisSecondary, 0);
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 3:
+                    if (this.stat.DecHome)  runningTest.Counter++;
+                    
+                    if (az < 170)
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisSecondary, 0);                        
+                        if (runningTest.Counter > 0)
+                        {
+                            runningTest.finish(1);
+                        }
+                        else
+                        {
+                            runningTest.finish(-1);
+                        }
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisSecondary, 0);
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 4:
+                    if ((!telescopio.Slewing) && (az>260) && (alt>80))
+                    {
+                        runningTest.finish(1);                        
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.AbortSlew();
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 5:
+                    if (stat.RaLimitEast)
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisPrimary, 0);
+                        runningTest.finish(1);
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisPrimary, 0);
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 6:
+                    if (stat.RaHome) runningTest.Counter++;
+                    if ((!telescopio.Slewing) && 
+                        (az < 100) && 
+                        (alt > 80) &&
+                        (runningTest.Counter>0)
+                        )
+                    {
+                        runningTest.finish(1);
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.AbortSlew();
+                        runningTest.finish(-1);
+                    }
+                    break;
+                case 7:
+                    if (stat.RaLimitWest)
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisPrimary, 0);
+                        runningTest.finish(1);
+                    }
+                    if (runningTest.isTimeOut())
+                    {
+                        telescopio.MoveAxis(TelescopeAxes.axisPrimary, 0);
+                        runningTest.finish(-1);
+                    }
+                    break;
+
+            }
+        }
+
+        private void bRunTest_Click(object sender, EventArgs e)
+        {
+            runningTest = (MountCheck) this.cbMountCheck.SelectedItem;
+            this.ejecutaTest(runningTest);
+        }
+
+        private void ejecutaTest(MountCheck test)
+        {
+            // Si el usuario aun no escoge un test
+            if (this.runningTest == null) return;
+            // Si el test escogido esta en ejecucion
+            if (this.runningTest.IsRunning) return;
+
+            this.runningTest.start();
+
+            switch (runningTest.Id)
+            {
+                case 1:
+                    //telescopio.Connected = true;
+                    timerReadSerial.Stop();
+                    telescopio.Park();
+                    timerReadSerial.Start();
+                    break;
+                case 2:
+                    telescopio.Unpark();
+                    telescopio.MoveAxis(TelescopeAxes.axisSecondary, -5);
+                    break;
+                case 3:
+                    telescopio.MoveAxis(TelescopeAxes.axisSecondary, 5);
+                    break;
+                case 4:
+                    telescopio.Unpark();
+                    telescopio.SlewToAltAzAsync(270, 89);
+                    break;
+                case 5:
+                    this.setMonturaProtection(false);
+                    telescopio.MoveAxis(TelescopeAxes.axisPrimary, 5);
+                    break;
+                case 6:
+                    telescopio.Unpark();
+                    telescopio.SlewToAltAzAsync(90, 89);
+                    break;
+                case 7:
+                    this.setMonturaProtection(false);
+                    telescopio.MoveAxis(TelescopeAxes.axisPrimary, -5);
+                    break;
+            }
+        }
+
     }
 }

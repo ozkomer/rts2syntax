@@ -320,7 +320,7 @@ namespace Serduino
                 this.refreshCounterWeightAngle();
                 this.refreshDeclinationAngle();
             }
-            if (part.Length >= 9)
+            if (part.Length >= 10)
             {
                 try
                 {
