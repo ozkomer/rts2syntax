@@ -43,6 +43,9 @@
             this.groupBoxDEC = new System.Windows.Forms.GroupBox();
             this.radioButtonDecHome = new System.Windows.Forms.RadioButton();
             this.groupBoxTelescope = new System.Windows.Forms.GroupBox();
+            this.lblMountCheck = new System.Windows.Forms.Label();
+            this.cbMountCheck = new System.Windows.Forms.ComboBox();
+            this.bRunTest = new System.Windows.Forms.Button();
             this.lblTelescopeID = new System.Windows.Forms.Label();
             this.bConnect = new System.Windows.Forms.Button();
             this.bSetup = new System.Windows.Forms.Button();
@@ -118,7 +121,7 @@
             this.groupBoxRA.Controls.Add(this.radioButtonRA_West);
             this.groupBoxRA.Controls.Add(this.radioButtonRA_East);
             this.groupBoxRA.Controls.Add(this.radioButtonRA_Home);
-            this.groupBoxRA.Location = new System.Drawing.Point(12, 123);
+            this.groupBoxRA.Location = new System.Drawing.Point(12, 254);
             this.groupBoxRA.Name = "groupBoxRA";
             this.groupBoxRA.Size = new System.Drawing.Size(277, 66);
             this.groupBoxRA.TabIndex = 9;
@@ -167,7 +170,7 @@
             // groupBoxDEC
             // 
             this.groupBoxDEC.Controls.Add(this.radioButtonDecHome);
-            this.groupBoxDEC.Location = new System.Drawing.Point(295, 123);
+            this.groupBoxDEC.Location = new System.Drawing.Point(295, 254);
             this.groupBoxDEC.Name = "groupBoxDEC";
             this.groupBoxDEC.Size = new System.Drawing.Size(101, 66);
             this.groupBoxDEC.TabIndex = 10;
@@ -189,6 +192,9 @@
             // 
             // groupBoxTelescope
             // 
+            this.groupBoxTelescope.Controls.Add(this.lblMountCheck);
+            this.groupBoxTelescope.Controls.Add(this.cbMountCheck);
+            this.groupBoxTelescope.Controls.Add(this.bRunTest);
             this.groupBoxTelescope.Controls.Add(this.lblTelescopeID);
             this.groupBoxTelescope.Controls.Add(this.bConnect);
             this.groupBoxTelescope.Controls.Add(this.bSetup);
@@ -199,10 +205,37 @@
             this.groupBoxTelescope.Controls.Add(this.labelTelescope);
             this.groupBoxTelescope.Location = new System.Drawing.Point(12, 12);
             this.groupBoxTelescope.Name = "groupBoxTelescope";
-            this.groupBoxTelescope.Size = new System.Drawing.Size(397, 105);
+            this.groupBoxTelescope.Size = new System.Drawing.Size(397, 236);
             this.groupBoxTelescope.TabIndex = 11;
             this.groupBoxTelescope.TabStop = false;
             this.groupBoxTelescope.Text = "Ascom Telescope";
+            // 
+            // lblMountCheck
+            // 
+            this.lblMountCheck.AutoSize = true;
+            this.lblMountCheck.Location = new System.Drawing.Point(19, 157);
+            this.lblMountCheck.Name = "lblMountCheck";
+            this.lblMountCheck.Size = new System.Drawing.Size(104, 13);
+            this.lblMountCheck.TabIndex = 10;
+            this.lblMountCheck.Text = "Mount Check Status";
+            // 
+            // cbMountCheck
+            // 
+            this.cbMountCheck.FormattingEnabled = true;
+            this.cbMountCheck.Location = new System.Drawing.Point(3, 115);
+            this.cbMountCheck.Name = "cbMountCheck";
+            this.cbMountCheck.Size = new System.Drawing.Size(171, 21);
+            this.cbMountCheck.TabIndex = 9;
+            // 
+            // bRunTest
+            // 
+            this.bRunTest.Location = new System.Drawing.Point(180, 113);
+            this.bRunTest.Name = "bRunTest";
+            this.bRunTest.Size = new System.Drawing.Size(38, 23);
+            this.bRunTest.TabIndex = 8;
+            this.bRunTest.Text = "Run";
+            this.bRunTest.UseVisualStyleBackColor = true;
+            this.bRunTest.Click += new System.EventHandler(this.bRunTest_Click);
             // 
             // lblTelescopeID
             // 
@@ -267,8 +300,6 @@
             // checkBoxInfrared
             // 
             this.checkBoxInfrared.AutoSize = true;
-            this.checkBoxInfrared.Checked = true;
-            this.checkBoxInfrared.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxInfrared.Location = new System.Drawing.Point(103, 80);
             this.checkBoxInfrared.Name = "checkBoxInfrared";
             this.checkBoxInfrared.Size = new System.Drawing.Size(98, 17);
@@ -289,7 +320,7 @@
             // checkBoxInfrarojos
             // 
             this.checkBoxInfrarojos.AutoSize = true;
-            this.checkBoxInfrarojos.Location = new System.Drawing.Point(342, 214);
+            this.checkBoxInfrarojos.Location = new System.Drawing.Point(342, 345);
             this.checkBoxInfrarojos.Name = "checkBoxInfrarojos";
             this.checkBoxInfrarojos.Size = new System.Drawing.Size(67, 17);
             this.checkBoxInfrarojos.TabIndex = 12;
@@ -361,7 +392,7 @@
             this.gbMontura.Controls.Add(this.lblAlt);
             this.gbMontura.Controls.Add(this.buttonPin7Low);
             this.gbMontura.Controls.Add(this.labelRaDec);
-            this.gbMontura.Location = new System.Drawing.Point(12, 195);
+            this.gbMontura.Location = new System.Drawing.Point(12, 326);
             this.gbMontura.Name = "gbMontura";
             this.gbMontura.Size = new System.Drawing.Size(324, 100);
             this.gbMontura.TabIndex = 18;
@@ -372,11 +403,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 300);
-            this.Controls.Add(this.gbMontura);
+            this.ClientSize = new System.Drawing.Size(445, 431);
             this.Controls.Add(this.groupBoxTelescope);
-            this.Controls.Add(this.checkBoxInfrarojos);
+            this.Controls.Add(this.gbMontura);
             this.Controls.Add(this.groupBoxRA);
+            this.Controls.Add(this.checkBoxInfrarojos);
             this.Controls.Add(this.groupBoxDEC);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -429,6 +460,9 @@
         private System.Windows.Forms.CheckBox cbMonturaEncendida;
         private System.Windows.Forms.CheckBox cbMonturaProtegida;
         private System.Windows.Forms.GroupBox gbMontura;
+        private System.Windows.Forms.ComboBox cbMountCheck;
+        private System.Windows.Forms.Button bRunTest;
+        private System.Windows.Forms.Label lblMountCheck;
     }
 }
 
