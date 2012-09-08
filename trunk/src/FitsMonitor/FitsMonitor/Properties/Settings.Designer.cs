@@ -121,37 +121,25 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\chase\\Documents\\Officina Stellare\\log")]
-        public string OfficinaStellareLog {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\Atc02Status.xml")]
+        public string Atc02StatusXmlFilePath {
             get {
-                return ((string)(this["OfficinaStellareLog"]));
+                return ((string)(this["Atc02StatusXmlFilePath"]));
             }
             set {
-                this["OfficinaStellareLog"] = value;
+                this["Atc02StatusXmlFilePath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\chase\\Documents\\Officina Stellare\\log\\Focuser - 120524-163756.log")]
-        public string AtcLogFile {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\")]
+        public string Atc02StatusXmlPath {
             get {
-                return ((string)(this["AtcLogFile"]));
+                return ((string)(this["Atc02StatusXmlPath"]));
             }
             set {
-                this["AtcLogFile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ASCOM.OrbitATC02.Focuser")]
-        public string FocuserProgId {
-            get {
-                return ((string)(this["FocuserProgId"]));
-            }
-            set {
-                this["FocuserProgId"] = value;
+                this["Atc02StatusXmlPath"] = value;
             }
         }
     }
