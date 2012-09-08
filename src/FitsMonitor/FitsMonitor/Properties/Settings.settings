@@ -26,14 +26,11 @@
     <Setting Name="JpgFilenameLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="OfficinaStellareLog" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\chase\Documents\Officina Stellare\log</Value>
+    <Setting Name="Atc02StatusXmlFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\Common Files\ASCOM\Focuser\Atc02Status.xml</Value>
     </Setting>
-    <Setting Name="AtcLogFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\chase\Documents\Officina Stellare\log\Focuser - 120524-163756.log</Value>
-    </Setting>
-    <Setting Name="FocuserProgId" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ASCOM.OrbitATC02.Focuser</Value>
+    <Setting Name="Atc02StatusXmlPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\Common Files\ASCOM\Focuser\</Value>
     </Setting>
   </Settings>
 </SettingsFile>

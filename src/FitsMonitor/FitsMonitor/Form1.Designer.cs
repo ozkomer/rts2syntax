@@ -40,12 +40,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.bReadStatus = new System.Windows.Forms.Button();
             this.labelLastDetectedValues = new System.Windows.Forms.Label();
-            this.labelLastDetectedLogFile = new System.Windows.Forms.Label();
             this.dataGridViewATC02 = new System.Windows.Forms.DataGridView();
             this.ColumnParametro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bLogFile = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.bCheckRaDec = new System.Windows.Forms.Button();
             this.bCorrectNames = new System.Windows.Forms.Button();
@@ -53,17 +52,11 @@
             this.numericUpDownSubFolderDeep = new System.Windows.Forms.NumericUpDown();
             this.bOfflineFolder = new System.Windows.Forms.Button();
             this.tbOfflineFolder = new System.Windows.Forms.TextBox();
-            this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
-            this.backgroundWorkerATC02 = new System.ComponentModel.BackgroundWorker();
-            this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.bSelect = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tbLogFile = new System.Windows.Forms.TextBox();
+            this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
+            this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
+            this.fileSystemWatcherAtc02XML = new System.IO.FileSystemWatcher();
             this.fsWatchFits = new System.IO.FileSystemWatcher();
-            this.fsWatchOfficinaStelare = new System.IO.FileSystemWatcher();
-            this.bSetup = new System.Windows.Forms.Button();
-            this.bReadStatus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -72,9 +65,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewATC02)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).BeginInit();
-            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcherAtc02XML)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fsWatchOfficinaStelare)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -163,12 +155,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.bReadStatus);
             this.tabPage2.Controls.Add(this.labelLastDetectedValues);
-            this.tabPage2.Controls.Add(this.labelLastDetectedLogFile);
             this.tabPage2.Controls.Add(this.dataGridViewATC02);
-            this.tabPage2.Controls.Add(this.bLogFile);
-            this.tabPage2.Controls.Add(this.textBox1);
-            this.tabPage2.Controls.Add(this.tbLogFile);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -176,6 +165,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Header";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // bReadStatus
+            // 
+            this.bReadStatus.Location = new System.Drawing.Point(6, 35);
+            this.bReadStatus.Name = "bReadStatus";
+            this.bReadStatus.Size = new System.Drawing.Size(75, 23);
+            this.bReadStatus.TabIndex = 5;
+            this.bReadStatus.Text = "Read Status";
+            this.bReadStatus.UseVisualStyleBackColor = true;
+            this.bReadStatus.Click += new System.EventHandler(this.bReadStatus_Click);
             // 
             // labelLastDetectedValues
             // 
@@ -186,16 +185,6 @@
             this.labelLastDetectedValues.Size = new System.Drawing.Size(129, 13);
             this.labelLastDetectedValues.TabIndex = 5;
             this.labelLastDetectedValues.Text = "Last Detected Values";
-            // 
-            // labelLastDetectedLogFile
-            // 
-            this.labelLastDetectedLogFile.AutoSize = true;
-            this.labelLastDetectedLogFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLastDetectedLogFile.Location = new System.Drawing.Point(102, 36);
-            this.labelLastDetectedLogFile.Name = "labelLastDetectedLogFile";
-            this.labelLastDetectedLogFile.Size = new System.Drawing.Size(136, 13);
-            this.labelLastDetectedLogFile.TabIndex = 4;
-            this.labelLastDetectedLogFile.Text = "Last Detected Log File";
             // 
             // dataGridViewATC02
             // 
@@ -221,16 +210,6 @@
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             this.Column2.Width = 200;
-            // 
-            // bLogFile
-            // 
-            this.bLogFile.Location = new System.Drawing.Point(6, 6);
-            this.bLogFile.Name = "bLogFile";
-            this.bLogFile.Size = new System.Drawing.Size(75, 23);
-            this.bLogFile.TabIndex = 1;
-            this.bLogFile.Text = "Log Folder";
-            this.bLogFile.UseVisualStyleBackColor = true;
-            this.bLogFile.Click += new System.EventHandler(this.bLogFile_Click);
             // 
             // tabPage3
             // 
@@ -313,28 +292,8 @@
             this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images\\20120719";
             this.tbOfflineFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // folderBrowserOffline
-            // 
-            this.folderBrowserOffline.ShowNewFolderButton = false;
-            // 
-            // backgroundWorkerATC02
-            // 
-            this.backgroundWorkerATC02.WorkerSupportsCancellation = true;
-            this.backgroundWorkerATC02.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerATC02_DoWork);
-            this.backgroundWorkerATC02.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerATC02_RunWorkerCompleted);
-            this.backgroundWorkerATC02.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerATC02_ProgressChanged);
-            // 
-            // timerAtc02
-            // 
-            this.timerAtc02.Enabled = true;
-            this.timerAtc02.Interval = 15000;
-            this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
-            // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.bReadStatus);
-            this.tabPage4.Controls.Add(this.bSetup);
-            this.tabPage4.Controls.Add(this.bSelect);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -343,34 +302,23 @@
             this.tabPage4.Text = "ATC02";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // bSelect
+            // folderBrowserOffline
             // 
-            this.bSelect.Location = new System.Drawing.Point(6, 6);
-            this.bSelect.Name = "bSelect";
-            this.bSelect.Size = new System.Drawing.Size(75, 23);
-            this.bSelect.TabIndex = 0;
-            this.bSelect.Text = "Select";
-            this.bSelect.UseVisualStyleBackColor = true;
-            this.bSelect.Click += new System.EventHandler(this.bSelect_Click);
+            this.folderBrowserOffline.ShowNewFolderButton = false;
             // 
-            // textBox1
+            // timerAtc02
             // 
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "AtcLogFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBox1.Location = new System.Drawing.Point(3, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(345, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = global::FitsMonitor.Properties.Settings.Default.AtcLogFile;
+            this.timerAtc02.Enabled = true;
+            this.timerAtc02.Interval = 15000;
+            this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
             // 
-            // tbLogFile
+            // fileSystemWatcherAtc02XML
             // 
-            this.tbLogFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::FitsMonitor.Properties.Settings.Default, "OfficinaStellareLog", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbLogFile.Location = new System.Drawing.Point(87, 8);
-            this.tbLogFile.Name = "tbLogFile";
-            this.tbLogFile.Size = new System.Drawing.Size(264, 20);
-            this.tbLogFile.TabIndex = 0;
-            this.tbLogFile.Text = global::FitsMonitor.Properties.Settings.Default.OfficinaStellareLog;
+            this.fileSystemWatcherAtc02XML.EnableRaisingEvents = true;
+            this.fileSystemWatcherAtc02XML.Filter = "*.xml";
+            this.fileSystemWatcherAtc02XML.Path = global::FitsMonitor.Properties.Settings.Default.Atc02StatusXmlPath;
+            this.fileSystemWatcherAtc02XML.SynchronizingObject = this;
+            this.fileSystemWatcherAtc02XML.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcherAtc02XML_Changed);
             // 
             // fsWatchFits
             // 
@@ -380,36 +328,6 @@
             this.fsWatchFits.Path = global::FitsMonitor.Properties.Settings.Default.WatchFolder;
             this.fsWatchFits.SynchronizingObject = this;
             this.fsWatchFits.Created += new System.IO.FileSystemEventHandler(this.fsWatchFits_Created);
-            // 
-            // fsWatchOfficinaStelare
-            // 
-            this.fsWatchOfficinaStelare.EnableRaisingEvents = true;
-            this.fsWatchOfficinaStelare.Filter = "*.log";
-            this.fsWatchOfficinaStelare.NotifyFilter = System.IO.NotifyFilters.Size;
-            this.fsWatchOfficinaStelare.Path = global::FitsMonitor.Properties.Settings.Default.OfficinaStellareLog;
-            this.fsWatchOfficinaStelare.SynchronizingObject = this;
-            this.fsWatchOfficinaStelare.Created += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Created);
-            this.fsWatchOfficinaStelare.Changed += new System.IO.FileSystemEventHandler(this.fsWatchOfficinaStelare_Changed);
-            // 
-            // bSetup
-            // 
-            this.bSetup.Location = new System.Drawing.Point(195, 6);
-            this.bSetup.Name = "bSetup";
-            this.bSetup.Size = new System.Drawing.Size(75, 23);
-            this.bSetup.TabIndex = 1;
-            this.bSetup.Text = "Setup";
-            this.bSetup.UseVisualStyleBackColor = true;
-            this.bSetup.Click += new System.EventHandler(this.bSetup_Click);
-            // 
-            // bReadStatus
-            // 
-            this.bReadStatus.Location = new System.Drawing.Point(276, 6);
-            this.bReadStatus.Name = "bReadStatus";
-            this.bReadStatus.Size = new System.Drawing.Size(75, 23);
-            this.bReadStatus.TabIndex = 2;
-            this.bReadStatus.Text = "Read Status";
-            this.bReadStatus.UseVisualStyleBackColor = true;
-            this.bReadStatus.Click += new System.EventHandler(this.bReadStatus_Click);
             // 
             // Form1
             // 
@@ -434,9 +352,8 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).EndInit();
-            this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcherAtc02XML)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fsWatchOfficinaStelare)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -454,29 +371,22 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button bLogFile;
-        private System.Windows.Forms.TextBox tbLogFile;
-        private System.IO.FileSystemWatcher fsWatchOfficinaStelare;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button bOfflineFolder;
         private System.Windows.Forms.TextBox tbOfflineFolder;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserOffline;
-        private System.ComponentModel.BackgroundWorker backgroundWorkerATC02;
         private System.Windows.Forms.Label labelSubFolderDeep;
         private System.Windows.Forms.NumericUpDown numericUpDownSubFolderDeep;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView dataGridViewATC02;
         private System.Windows.Forms.Timer timerAtc02;
-        private System.Windows.Forms.Label labelLastDetectedLogFile;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnParametro;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Label labelLastDetectedValues;
         private System.Windows.Forms.Button bCorrectNames;
         private System.Windows.Forms.Button bCheckRaDec;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Button bSelect;
-        private System.Windows.Forms.Button bSetup;
         private System.Windows.Forms.Button bReadStatus;
+        private System.IO.FileSystemWatcher fileSystemWatcherAtc02XML;
     }
 }
 

@@ -21,20 +21,20 @@ namespace FitsMonitor
 
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
 
-        private Focuser enfocador;
         /// <summary>
         /// Acceso abreviado a los settings
         /// </summary>
         private static FitsMonitor.Properties.Settings settings = FitsMonitor.Properties.Settings.Default;
 
-        private DateTime lastResponseTimeStamp;
+        //private DateTime lastResponseTimeStamp;
 
-        private double bfl;
-        private int focstep;
-        private double priTemp;
-        private double secTemp;
-        private double ambTemp;
-        private int setFan;
+        //private double bfl;
+        //private int focstep;
+        //private double priTemp;
+        //private double secTemp;
+        //private double ambTemp;
+        //private int setFan;
+        Atc02Xml atc02Status;
 
         public Form1()
         {
@@ -44,13 +44,7 @@ namespace FitsMonitor
             WinScpTransfer.HostName = settings.Host;
             WinScpTransfer.UserName = settings.Username;
             WinScpTransfer.SshHostKey = settings.SshHostKey;            
-            this.fsWatchOfficinaStelare.NotifyFilter = (NotifyFilters.Size | NotifyFilters.CreationTime);
-            if (!this.backgroundWorkerATC02.IsBusy)
-            {
-                logger.Info("Iniciando monitoreo en archivo:" + settings.AtcLogFile);
-                this.backgroundWorkerATC02.RunWorkerAsync(settings.AtcLogFile);
-            }
-            this.lastResponseTimeStamp = DateTime.MinValue;
+            //this.lastResponseTimeStamp = DateTime.MinValue;
         }
 
         private void fsWatchFits_Created(object sender, System.IO.FileSystemEventArgs e)
@@ -117,6 +111,7 @@ namespace FitsMonitor
         /// <param name="fullPath"></param>
         public void CompletaFitsHeader(String fitsFullPath)
         {
+            this.refreshATC02XmlStatus();
             if (!LecturaFresca())
             {
                 logger.Info("ATC02 sin datos recientes, no se actualizara Archivo fits '"+fitsFullPath+"'");
@@ -162,11 +157,11 @@ namespace FitsMonitor
                 hcAmbTemp = hdu.Header.FindCard("AMBTEMP");
                 hcSetFan = hdu.Header.FindCard("SETFAN");
 
-                hcFocStep.Value = ("" + this.focstep);
-                hcPriTemp.Value = ("" + this.priTemp);
-                hcSecTemp.Value = ("" + this.secTemp);
-                hcAmbTemp.Value = ("" + this.ambTemp);
-                hcSetFan.Value  = ("" + this.setFan);
+                hcFocStep.Value = ("" + Atc02Xml.BflToFocSetp( this.atc02Status.FocusPosition));
+                hcPriTemp.Value = ("" + this.atc02Status.PrimaryTemperature);
+                hcSecTemp.Value = ("" + this.atc02Status.SecondaryTemperature);
+                hcAmbTemp.Value = ("" + this.atc02Status.AmbientTemperature);
+                hcSetFan.Value  = ("" + this.atc02Status.FanPower);
                 hdu.Header.Rewrite();
             }
             fitsFile.Close();
@@ -296,47 +291,7 @@ namespace FitsMonitor
             }
         }
 
-        /// <summary>
-        /// Este metodo se encarga de actualizar el setting del AtcLogFile.
-        /// AtcLogFile solo se modifica aquí. Por eso, es que despues de modificar 
-        /// se invoca un settings.Save();
-        ///  
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void fsWatchOfficinaStelare_Changed(object sender, FileSystemEventArgs e)
-        {
-            fsVigilaOfficinaStelare(e);
-        }
 
-        private void fsVigilaOfficinaStelare(FileSystemEventArgs e)
-        {
-            if (e.FullPath != settings.AtcLogFile)
-            {
-                if (this.backgroundWorkerATC02.IsBusy)
-                {
-                    logger.Info("Cancelando monitoreo en archivo:" + settings.AtcLogFile);
-                    this.backgroundWorkerATC02.CancelAsync();
-                }
-                settings.AtcLogFile = e.FullPath;
-                logger.Info("Nuevo archivo de logging es:" + settings.AtcLogFile);
-
-                settings.Save();
-                System.Threading.Thread.Sleep(500);
-
-                Console.WriteLine("#");
-                if (!this.backgroundWorkerATC02.IsBusy)
-                {
-                    logger.Info("Reiniciando monitoreo en archivo:" + settings.AtcLogFile);
-                    this.backgroundWorkerATC02.RunWorkerAsync(settings.AtcLogFile);
-                }
-            }
-        }
-
-        private void bLogFile_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -361,217 +316,167 @@ namespace FitsMonitor
             }
         }
 
-        /// <summary>
-        /// Metodo en Hebra.
-        /// Codigo Modificado a partir de un ejemplo de "tail" hallado en:
-        /// http://www.codeproject.com/Articles/5854/Tail-utility-for-windows
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void backgroundWorkerATC02_DoWork(object sender, DoWorkEventArgs e)
-        {
-            String fileName;
-            StringBuilder respuesta;
-            respuesta = new StringBuilder();
-            fileName = e.Argument as String;
+        ///// <summary>
+        ///// Metodo en Hebra.
+        ///// Codigo Modificado a partir de un ejemplo de "tail" hallado en:
+        ///// http://www.codeproject.com/Articles/5854/Tail-utility-for-windows
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void backgroundWorkerATC02_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    String fileName;
+        //    StringBuilder respuesta;
+        //    respuesta = new StringBuilder();
+        //    fileName = e.Argument as String;
             
-            ///while (true)
-           //{
-            Boolean salir;
-            salir = false;
-                try
-                {
-                    using (StreamReader reader = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-                    {
-                        //start at the end of the file
-                        long lastMaxOffset = reader.BaseStream.Length;
+        //    ///while (true)
+        //   //{
+        //    Boolean salir;
+        //    salir = false;
+        //        try
+        //        {
+        //            using (StreamReader reader = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+        //            {
+        //                //start at the end of the file
+        //                long lastMaxOffset = reader.BaseStream.Length;
 
-                        while (!salir)
-                        {
-                            System.Threading.Thread.Sleep(100);
-                            if (backgroundWorkerATC02.CancellationPending)
-                            {
-                                salir = true;
-                                reader.Close();
-                                break;
-                            }
-                            //if the file size has not changed, idle
-                            if (reader.BaseStream.Length == lastMaxOffset)
-                            {
-                                //e.Result = respuesta.ToString();
-                                continue;
-                            }
+        //                while (!salir)
+        //                {
+        //                    System.Threading.Thread.Sleep(100);
+        //                    if (backgroundWorkerATC02.CancellationPending)
+        //                    {
+        //                        salir = true;
+        //                        reader.Close();
+        //                        break;
+        //                    }
+        //                    //if the file size has not changed, idle
+        //                    if (reader.BaseStream.Length == lastMaxOffset)
+        //                    {
+        //                        //e.Result = respuesta.ToString();
+        //                        continue;
+        //                    }
 
-                            //seek to the last max offset
-                            reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
+        //                    //seek to the last max offset
+        //                    reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
 
-                            //read out of the file until the EOF
-                            string line = "";
-                            while ((line = reader.ReadLine()) != null)
-                            {
+        //                    //read out of the file until the EOF
+        //                    string line = "";
+        //                    while ((line = reader.ReadLine()) != null)
+        //                    {
                                 
-                                if (!(respuesta.ToString().Contains(line)))
-                                {
-                                    //Console.WriteLine(line);
-                                    respuesta.AppendLine(line);
-                                }
-                                // Capturado un cambio en el archivo, lo reportamos
-                                if (respuesta.ToString().Contains("DEWPO"))
-                                {
-                                    e.Result = respuesta.ToString();
-                                    salir = true;
-                                    reader.Close();
-                                    break;
-                                }
-                            }
-                            //update the last max offset
-                            //lastMaxOffset = reader.BaseStream.Position;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            //}
-        }
+        //                        if (!(respuesta.ToString().Contains(line)))
+        //                        {
+        //                            //Console.WriteLine(line);
+        //                            respuesta.AppendLine(line);
+        //                        }
+        //                        // Capturado un cambio en el archivo, lo reportamos
+        //                        if (respuesta.ToString().Contains("DEWPO"))
+        //                        {
+        //                            e.Result = respuesta.ToString();
+        //                            salir = true;
+        //                            reader.Close();
+        //                            break;
+        //                        }
+        //                    }
+        //                    //update the last max offset
+        //                    //lastMaxOffset = reader.BaseStream.Position;
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.ToString());
+        //        }
+        //    //}
+        //}
 
-        private void backgroundWorkerATC02_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        //private void backgroundWorkerATC02_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        //{
+
+        //}
+
+        //private void backgroundWorkerATC02_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        //{
+        //    Console.WriteLine("<backgroundWorkerATC02_RunWorkerCompleted>");
+        //    String atc02Log;
+        //    atc02Log = (String)e.Result;
+        //    Console.WriteLine(atc02Log);
+        //    analizaATC02(atc02Log);
+        //    Console.WriteLine("</backgroundWorkerATC02_RunWorkerCompleted>");
+        //    while (this.backgroundWorkerATC02.IsBusy)
+        //    {
+        //        System.Threading.Thread.Sleep(500);
+        //        Console.Write(".");
+        //    }
+        //    Console.WriteLine("$");
+        //    if (!this.backgroundWorkerATC02.IsBusy)
+        //    {
+        //        logger.Info("Re-Iniciando monitoreo en archivo:" + settings.AtcLogFile);
+        //        this.backgroundWorkerATC02.RunWorkerAsync(settings.AtcLogFile);
+        //    }
+        //}
+
+        private void analizaATC02()
         {
-
-        }
-
-        private void backgroundWorkerATC02_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            Console.WriteLine("<backgroundWorkerATC02_RunWorkerCompleted>");
-            String atc02Log;
-            atc02Log = (String)e.Result;
-            Console.WriteLine(atc02Log);
-            analizaATC02(atc02Log);
-            Console.WriteLine("</backgroundWorkerATC02_RunWorkerCompleted>");
-            while (this.backgroundWorkerATC02.IsBusy)
-            {
-                System.Threading.Thread.Sleep(500);
-                Console.Write(".");
-            }
-            Console.WriteLine("$");
-            if (!this.backgroundWorkerATC02.IsBusy)
-            {
-                logger.Info("Re-Iniciando monitoreo en archivo:" + settings.AtcLogFile);
-                this.backgroundWorkerATC02.RunWorkerAsync(settings.AtcLogFile);
-            }
-        }
-
-        private void analizaATC02(String atc02Log)
-        {
-            if (atc02Log == null)
-            {
-                return;
-            }
-            String[] linea;
-            linea = atc02Log.Split(("\n").ToCharArray());
-            int CantLineas;
-            int partLength;
-            CantLineas = linea.Length;
-            String[] part;
             String[] fila;
-            String textoFechaAtc;
-            String lastPart; // Texto despues del último espacio de la línea.
-            int addOrder; //Permite examinar el log en el orden esperado de las lineas con datos.
-            addOrder = 0;
             this.dataGridViewATC02.Rows.Clear();
-            for (int i = 0; i < CantLineas; i++)
-            {
-                fila = new String[2];
-                part = linea[i].Split((" ").ToCharArray());
-                partLength = part.Length;
-                lastPart = part[partLength - 1];
-                if ((addOrder==0) && (linea[i].Contains("Response received:")))
-                {
-                    fila[0] = "Ultima respuesta";
-                    textoFechaAtc = linea[i].Substring(0,17);
-                    Console.WriteLine("textoFechaAtc="+textoFechaAtc);
-                    lastResponseTimeStamp = DateTime.MinValue;
-                    try
-                    {
-                        lastResponseTimeStamp = DateTime.ParseExact(textoFechaAtc, "yy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                    }
-                    catch (FormatException exc)
-                    {
-                        logger.Error("exc=" + exc.Message);
-                    }
 
+                fila = new String[2];
+                    fila[0] = "Ultima respuesta";
                     StringBuilder textoFecha;
                     textoFecha = new StringBuilder();
-                    textoFecha.Append(lastResponseTimeStamp.ToLongDateString());
+
+            
+                    textoFecha.Append(this.atc02Status.Timestamp.ToLongDateString());
                     textoFecha.Append(" ");
-                    textoFecha.Append(lastResponseTimeStamp.ToShortTimeString());
+                    textoFecha.Append(this.atc02Status.Timestamp.ToShortTimeString());
 
                     Console.WriteLine("timestamp=" + textoFecha.ToString());
                     fila[1] = textoFecha.ToString();
-                    addOrder++;
-                }
-                if ((addOrder == 1) && (linea[i].Contains("SETFAN")))
-                {
+                    agregaFila(fila);
+
                     fila[0] = "SETFAN";
-                    this.setFan = Int32.Parse(lastPart);
-                    fila[1] = this.setFan.ToString();
-                    addOrder++;
-                }
-                if ((addOrder == 2) && (linea[i].Contains("PRITE")))
-                {
-                    fila[0] = "PRITE";                    
-                    this.priTemp = Double.Parse(lastPart);
-                    fila[1] = this.priTemp.ToString();
-                    addOrder++;
-                }
-                if ((addOrder==3) && (linea[i].Contains("SECTE")))
-                {
+                    fila[1] = this.atc02Status.FanPower.ToString();
+                    agregaFila(fila);
+
+                    fila[0] = "PRITE";
+                    fila[1] = this.atc02Status.PrimaryTemperature.ToString();
+                    agregaFila(fila);
+
                     fila[0] = "SECTE";
-                    this.secTemp = Double.Parse(lastPart);
-                    fila[1] = this.secTemp.ToString();
-                    addOrder++;
-                }
-                if ((addOrder == 4) && (linea[i].Contains("BFL")))
-                {
+                    fila[1] = this.atc02Status.SecondaryTemperature.ToString();
+                    agregaFila(fila);
+
                     fila[0] = "BFL";
-                    this.bfl = Double.Parse(lastPart);
-                    fila[1] = this.bfl.ToString();
-                    this.dataGridViewATC02.Rows.Add(fila);
+                    fila[1] = this.atc02Status.FocusPosition.ToString();
+                    agregaFila(fila);
+
                     fila[0] = "FOCSTEP";
-                    this.focstep =BflToFocSetp(this.bfl);
-                    fila[1] = this.focstep.ToString();
-                    addOrder++;
-                }
-                if ((addOrder == 5) && (linea[i].Contains("AMBTE")))
-                {
+                    fila[1] = Atc02Xml.BflToFocSetp( this.atc02Status.FocusPosition).ToString();
+                    agregaFila(fila);
+
                     fila[0] = "AMBTE";
-                    this.ambTemp = Double.Parse(lastPart);
-                    fila[1] = this.ambTemp.ToString();
-                    addOrder++;
-                }                
-                //fila[0] = part[0];
-                //fila[1] = part[part.Length - 1];
-                if ((fila[0]!=null) && (fila[0].Length>0))
+                    fila[1] = this.atc02Status.AmbientTemperature.ToString();
+                    agregaFila(fila);
+        }
+
+        private void agregaFila(String[] fila)
+        {
+            if ((fila[0] != null) && (fila[0].Length > 0))
+            {
+                try
                 {
                     this.dataGridViewATC02.Rows.Add(fila);
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    logger.Error(ioe.Message);
+                    logger.Error(fila.ToString());
                 }
             }
         }
 
-        /// <summary>
-        /// Ecuación propia del sistema de enfoque del Chase500
-        /// que convierte el BFL en los Steps (Para Stepper Motors)
-        /// que cuenta el firmware para desplazar el espejo secundario
-        /// </summary>
-        /// <param name="FocStep"></param>
-        /// <returns></returns>
-        public static int BflToFocSetp(Double FocStep)
-        {
-            int respuesta;
-            respuesta = (int) (100.0 * (FocStep - 130.0));
-            return respuesta;
-        }
 
         /// <summary>
         /// Revisa si la última fecha leida por el ATC02 es cercana
@@ -586,7 +491,7 @@ namespace FitsMonitor
             Boolean respuesta;
             respuesta = false;
             TimeSpan vejezLectura; // Diferencia de tiempo entre el presente y la ultima lectura del ATC02
-            vejezLectura = DateTime.Now.Subtract(lastResponseTimeStamp);
+            vejezLectura = DateTime.Now.Subtract(this.atc02Status.Timestamp);
             if (vejezLectura.TotalSeconds < 120)
             {
                 respuesta = true;
@@ -604,21 +509,16 @@ namespace FitsMonitor
         }
 
         /// <summary>
-        /// ATC02 a traves del driver Officina Stellare genera un log.
-        /// 
-        /// El archivo de log es actualizado cada 30 segundos.
-        /// 
-        /// Una lectura se considera fresca si la última lectura del log
-        /// difiere a lo máximo en 2 minutos con respecto a la hora del sistema operativo.
-        /// 
-        /// Un timer de esta aplicación, cada 15 segundos evalua la
-        /// frescura de la última lectura del log realizada por esta aplicación.
-        /// 
+        /// Envia el comando "GetXmlStatus" al driver ATC02 de Orbit.
+        /// y actualiza la estructura de datos atc02Status
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timerAtc02_Tick(object sender, EventArgs e)
+        private void refreshATC02XmlStatus()
         {
+            String xmlStatus;
+            xmlStatus = LeeArchivo(settings.Atc02StatusXmlFilePath);
+            Console.WriteLine("xmlStatus=");
+            Console.WriteLine(xmlStatus);
+            this.atc02Status = new Atc02Xml(xmlStatus);
             if (LecturaFresca())
             {
                 this.BackColor = Color.LightGreen;
@@ -630,6 +530,42 @@ namespace FitsMonitor
                 this.BackColor = Color.Pink;
                 this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
             }
+            this.analizaATC02();
+        }
+
+        public static String LeeArchivo(String ruta)
+        {
+            String respuesta;
+            // Read the file as one string.
+            System.IO.StreamReader myFile =
+               new System.IO.StreamReader(ruta);
+            respuesta = myFile.ReadToEnd();
+
+            myFile.Close();
+            return respuesta;
+        }
+
+        /// <summary>
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerAtc02_Tick(object sender, EventArgs e)
+        {
+            //this.refreshATC02XmlStatus();
+            //if (LecturaFresca())
+            //{
+            //    this.BackColor = Color.LightGreen;
+            //    this.Text = "Fits Monitor, ATC02 ok";
+            //}
+            //else
+            //{
+            //    logger.Warn("ATC02 log outdated");
+            //    this.BackColor = Color.Pink;
+            //    this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
+            //}
+            //this.analizaATC02();
         }
 
         private void bCorrectNames_Click(object sender, EventArgs e)
@@ -907,10 +843,10 @@ private void revisaRaDecFits(FileInfo archivo)
             //Console.WriteLine("#");
         }
 
-        private void fsWatchOfficinaStelare_Created(object sender, FileSystemEventArgs e)
-        {
-            fsVigilaOfficinaStelare(e);
-        }
+        //private void fsWatchOfficinaStelare_Created(object sender, FileSystemEventArgs e)
+        //{
+        //    fsVigilaOfficinaStelare(e);
+        //}
 
         private void bCheckRaDec_Click(object sender, EventArgs e)
         {
@@ -924,49 +860,17 @@ private void revisaRaDecFits(FileInfo archivo)
             this.tabPage3.BackColor = Color.LightGray;
         }
 
-        private void bSelect_Click(object sender, EventArgs e)
-        {
-            ASCOM.Utilities.Chooser selector;
-            selector = new ASCOM.Utilities.Chooser();
-            selector.DeviceType = "Focuser";
-            settings.FocuserProgId = selector.Choose(settings.FocuserProgId);
-            settings.Save();
-            Console.WriteLine("FocuserProgId=" + settings.FocuserProgId);
-        }
-
-        private void bSetup_Click(object sender, EventArgs e)
-        {
-            logger.Info("bSetup_Click");
-            if (this.enfocador == null)
-            {
-                logger.Info("this.telescopio == null");
-                nuevoEnfocador();
-            }
-            this.enfocador.SetupDialog();
-        }
-
-        private void nuevoEnfocador()
-        {
-            logger.Info("nuevoEnfocador:" + settings.FocuserProgId);
-            this.enfocador = new Focuser(settings.FocuserProgId);
-        }
-
         private void bReadStatus_Click(object sender, EventArgs e)
         {
-            if (this.enfocador == null)
-            {
-                logger.Info("this.telescopio == null");
-                nuevoEnfocador();
-            }
-            if (!this.enfocador.Connected)
-            {
-                this.enfocador.Connected = true;
-            }
-            String xmlStatus;
-            xmlStatus = this.enfocador.CommandString("GetXmlStatus",true);
-            Console.WriteLine("xmlStatus=");
-            Console.WriteLine(xmlStatus);
+            this.refreshATC02XmlStatus();
         }
+
+        private void fileSystemWatcherAtc02XML_Changed(object sender, FileSystemEventArgs e)
+        {
+            this.refreshATC02XmlStatus();
+        }
+
+
 
     }
 }
