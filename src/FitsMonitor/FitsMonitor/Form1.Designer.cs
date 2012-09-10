@@ -55,7 +55,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
             this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
-            this.fileSystemWatcherAtc02XML = new System.IO.FileSystemWatcher();
             this.fsWatchFits = new System.IO.FileSystemWatcher();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -65,7 +64,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewATC02)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcherAtc02XML)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).BeginInit();
             this.SuspendLayout();
             // 
@@ -168,7 +166,7 @@
             // 
             // bReadStatus
             // 
-            this.bReadStatus.Location = new System.Drawing.Point(6, 35);
+            this.bReadStatus.Location = new System.Drawing.Point(6, 6);
             this.bReadStatus.Name = "bReadStatus";
             this.bReadStatus.Size = new System.Drawing.Size(75, 23);
             this.bReadStatus.TabIndex = 5;
@@ -180,7 +178,7 @@
             // 
             this.labelLastDetectedValues.AutoSize = true;
             this.labelLastDetectedValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLastDetectedValues.Location = new System.Drawing.Point(109, 85);
+            this.labelLastDetectedValues.Location = new System.Drawing.Point(107, 31);
             this.labelLastDetectedValues.Name = "labelLastDetectedValues";
             this.labelLastDetectedValues.Size = new System.Drawing.Size(129, 13);
             this.labelLastDetectedValues.TabIndex = 5;
@@ -192,10 +190,10 @@
             this.dataGridViewATC02.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnParametro,
             this.Column2});
-            this.dataGridViewATC02.Location = new System.Drawing.Point(6, 106);
+            this.dataGridViewATC02.Location = new System.Drawing.Point(6, 63);
             this.dataGridViewATC02.Name = "dataGridViewATC02";
             this.dataGridViewATC02.ReadOnly = true;
-            this.dataGridViewATC02.Size = new System.Drawing.Size(345, 198);
+            this.dataGridViewATC02.Size = new System.Drawing.Size(345, 241);
             this.dataGridViewATC02.TabIndex = 3;
             // 
             // ColumnParametro
@@ -312,20 +310,12 @@
             this.timerAtc02.Interval = 15000;
             this.timerAtc02.Tick += new System.EventHandler(this.timerAtc02_Tick);
             // 
-            // fileSystemWatcherAtc02XML
-            // 
-            this.fileSystemWatcherAtc02XML.EnableRaisingEvents = true;
-            this.fileSystemWatcherAtc02XML.Filter = "*.xml";
-            this.fileSystemWatcherAtc02XML.Path = global::FitsMonitor.Properties.Settings.Default.Atc02StatusXmlPath;
-            this.fileSystemWatcherAtc02XML.SynchronizingObject = this;
-            this.fileSystemWatcherAtc02XML.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcherAtc02XML_Changed);
-            // 
             // fsWatchFits
             // 
             this.fsWatchFits.EnableRaisingEvents = true;
             this.fsWatchFits.Filter = "*.fts";
             this.fsWatchFits.IncludeSubdirectories = true;
-            this.fsWatchFits.Path = global::FitsMonitor.Properties.Settings.Default.WatchFolder;
+            this.fsWatchFits.Path = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images";
             this.fsWatchFits.SynchronizingObject = this;
             this.fsWatchFits.Created += new System.IO.FileSystemEventHandler(this.fsWatchFits_Created);
             // 
@@ -352,7 +342,6 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSubFolderDeep)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcherAtc02XML)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fsWatchFits)).EndInit();
             this.ResumeLayout(false);
 
@@ -386,7 +375,6 @@
         private System.Windows.Forms.Button bCheckRaDec;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button bReadStatus;
-        private System.IO.FileSystemWatcher fileSystemWatcherAtc02XML;
     }
 }
 

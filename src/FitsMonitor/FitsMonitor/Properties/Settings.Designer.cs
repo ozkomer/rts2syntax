@@ -121,25 +121,25 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\Atc02Status.xml")]
-        public string Atc02StatusXmlFilePath {
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string FocusServer {
             get {
-                return ((string)(this["Atc02StatusXmlFilePath"]));
+                return ((string)(this["FocusServer"]));
             }
             set {
-                this["Atc02StatusXmlFilePath"] = value;
+                this["FocusServer"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\")]
-        public string Atc02StatusXmlPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+        public int FocusPort {
             get {
-                return ((string)(this["Atc02StatusXmlPath"]));
+                return ((int)(this["FocusPort"]));
             }
             set {
-                this["Atc02StatusXmlPath"] = value;
+                this["FocusPort"] = value;
             }
         }
     }

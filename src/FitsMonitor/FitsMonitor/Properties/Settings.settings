@@ -26,11 +26,11 @@
     <Setting Name="JpgFilenameLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="Atc02StatusXmlFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files\Common Files\ASCOM\Focuser\Atc02Status.xml</Value>
+    <Setting Name="FocusServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="Atc02StatusXmlPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files\Common Files\ASCOM\Focuser\</Value>
+    <Setting Name="FocusPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

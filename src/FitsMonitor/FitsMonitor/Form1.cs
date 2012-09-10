@@ -12,7 +12,8 @@ using log4net.Config;
 using log4net;
 using System.Globalization;
 using nom.tam.fits;
-using ASCOM.DriverAccess;
+using System.Net.Sockets;
+using System.Net;
 
 namespace FitsMonitor
 {
@@ -316,107 +317,6 @@ namespace FitsMonitor
             }
         }
 
-        ///// <summary>
-        ///// Metodo en Hebra.
-        ///// Codigo Modificado a partir de un ejemplo de "tail" hallado en:
-        ///// http://www.codeproject.com/Articles/5854/Tail-utility-for-windows
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void backgroundWorkerATC02_DoWork(object sender, DoWorkEventArgs e)
-        //{
-        //    String fileName;
-        //    StringBuilder respuesta;
-        //    respuesta = new StringBuilder();
-        //    fileName = e.Argument as String;
-            
-        //    ///while (true)
-        //   //{
-        //    Boolean salir;
-        //    salir = false;
-        //        try
-        //        {
-        //            using (StreamReader reader = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-        //            {
-        //                //start at the end of the file
-        //                long lastMaxOffset = reader.BaseStream.Length;
-
-        //                while (!salir)
-        //                {
-        //                    System.Threading.Thread.Sleep(100);
-        //                    if (backgroundWorkerATC02.CancellationPending)
-        //                    {
-        //                        salir = true;
-        //                        reader.Close();
-        //                        break;
-        //                    }
-        //                    //if the file size has not changed, idle
-        //                    if (reader.BaseStream.Length == lastMaxOffset)
-        //                    {
-        //                        //e.Result = respuesta.ToString();
-        //                        continue;
-        //                    }
-
-        //                    //seek to the last max offset
-        //                    reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
-
-        //                    //read out of the file until the EOF
-        //                    string line = "";
-        //                    while ((line = reader.ReadLine()) != null)
-        //                    {
-                                
-        //                        if (!(respuesta.ToString().Contains(line)))
-        //                        {
-        //                            //Console.WriteLine(line);
-        //                            respuesta.AppendLine(line);
-        //                        }
-        //                        // Capturado un cambio en el archivo, lo reportamos
-        //                        if (respuesta.ToString().Contains("DEWPO"))
-        //                        {
-        //                            e.Result = respuesta.ToString();
-        //                            salir = true;
-        //                            reader.Close();
-        //                            break;
-        //                        }
-        //                    }
-        //                    //update the last max offset
-        //                    //lastMaxOffset = reader.BaseStream.Position;
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine(ex.ToString());
-        //        }
-        //    //}
-        //}
-
-        //private void backgroundWorkerATC02_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-
-        //}
-
-        //private void backgroundWorkerATC02_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        //{
-        //    Console.WriteLine("<backgroundWorkerATC02_RunWorkerCompleted>");
-        //    String atc02Log;
-        //    atc02Log = (String)e.Result;
-        //    Console.WriteLine(atc02Log);
-        //    analizaATC02(atc02Log);
-        //    Console.WriteLine("</backgroundWorkerATC02_RunWorkerCompleted>");
-        //    while (this.backgroundWorkerATC02.IsBusy)
-        //    {
-        //        System.Threading.Thread.Sleep(500);
-        //        Console.Write(".");
-        //    }
-        //    Console.WriteLine("$");
-        //    if (!this.backgroundWorkerATC02.IsBusy)
-        //    {
-        //        logger.Info("Re-Iniciando monitoreo en archivo:" + settings.AtcLogFile);
-        //        this.backgroundWorkerATC02.RunWorkerAsync(settings.AtcLogFile);
-        //    }
-        //}
-
         private void analizaATC02()
         {
             String[] fila;
@@ -508,6 +408,48 @@ namespace FitsMonitor
             this.MostrarVentana();
         }
 
+
+        private String EnviaMensaje(String mensaje)
+        {
+            String respuesta;
+            respuesta = null;
+            TcpClient client = new TcpClient();
+
+            IPEndPoint serverEndPoint;
+            IPAddress focusServer;
+            focusServer = IPAddress.Parse(settings.FocusServer);
+            
+            serverEndPoint = new IPEndPoint(focusServer, settings.FocusPort);
+
+            try
+            {
+                client.Connect(serverEndPoint);
+            }
+            catch (SocketException)
+            {
+                //MessageBox.Show("No se encuentra el Focus Server, revise si está en ejecución", "Error de Comunicación");
+                return "Error de Comunicacion";
+            }
+
+            NetworkStream clientStream = client.GetStream();
+
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            byte[] buffer = encoder.GetBytes(mensaje);
+
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] bufferIn;
+            bufferIn = new byte[800];
+            int bytesRead;
+            bytesRead = clientStream.Read(bufferIn, 0, 800);
+            respuesta = encoder.GetString(bufferIn, 0, 800);
+            Console.WriteLine("-----------");
+            Console.WriteLine(respuesta);
+            Console.WriteLine("-----------");
+            client.Close();
+            return respuesta;
+        }
+
         /// <summary>
         /// Envia el comando "GetXmlStatus" al driver ATC02 de Orbit.
         /// y actualiza la estructura de datos atc02Status
@@ -515,10 +457,11 @@ namespace FitsMonitor
         private void refreshATC02XmlStatus()
         {
             String xmlStatus;
-            xmlStatus = LeeArchivo(settings.Atc02StatusXmlFilePath);
+            xmlStatus = EnviaMensaje("GetXmlStatus");
             Console.WriteLine("xmlStatus=");
             Console.WriteLine(xmlStatus);
-            this.atc02Status = new Atc02Xml(xmlStatus);
+                this.atc02Status = new Atc02Xml(xmlStatus);
+            
             if (LecturaFresca())
             {
                 this.BackColor = Color.LightGreen;
@@ -553,19 +496,7 @@ namespace FitsMonitor
         /// <param name="e"></param>
         private void timerAtc02_Tick(object sender, EventArgs e)
         {
-            //this.refreshATC02XmlStatus();
-            //if (LecturaFresca())
-            //{
-            //    this.BackColor = Color.LightGreen;
-            //    this.Text = "Fits Monitor, ATC02 ok";
-            //}
-            //else
-            //{
-            //    logger.Warn("ATC02 log outdated");
-            //    this.BackColor = Color.Pink;
-            //    this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
-            //}
-            //this.analizaATC02();
+            this.refreshATC02XmlStatus();
         }
 
         private void bCorrectNames_Click(object sender, EventArgs e)
@@ -864,13 +795,5 @@ private void revisaRaDecFits(FileInfo archivo)
         {
             this.refreshATC02XmlStatus();
         }
-
-        private void fileSystemWatcherAtc02XML_Changed(object sender, FileSystemEventArgs e)
-        {
-            this.refreshATC02XmlStatus();
-        }
-
-
-
     }
 }
