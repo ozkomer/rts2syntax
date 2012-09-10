@@ -14,6 +14,11 @@ namespace PowerFocus
         private static Atc02Comm _instance = new Atc02Comm();
 
         /// <summary>
+        /// Datos invariantes en el firmware del ATC02
+        /// </summary>
+        private String firmwareSettings;
+
+        /// <summary>
         /// Si está en true, permite que los mensajes UPDATEPC sean enviados al ATC02.
         /// Cuando el ATC02 esta moviendo el secundario, es preferible evitar este tipo de 
         /// mensajes, eso explica la existencia de esta variable
@@ -64,6 +69,9 @@ namespace PowerFocus
         public static readonly String SETBFL = "BFL ";
         public static readonly String FINDOPTIMA = "FINDOPTIMA";
 
+        /// <summary>
+        /// Arranca la puerta serial.
+        /// </summary>
         private Atc02Comm()
         {
             this.conectado = false;
@@ -72,12 +80,17 @@ namespace PowerFocus
                 Properties.Settings.Default.CommPort,
                 (int)Properties.Settings.Default.BaudRate
                 );
-
+            this.firmwareSettings = null;
             this.atcStat = new AtcStatus();
             this.statusTimer = new System.Timers.Timer();
             this.statusTimer.Interval = (double)(1000 * ( Properties.Settings.Default.refreshStatusTimer));
             this.statusTimer.Elapsed += new System.Timers.ElapsedEventHandler(statusTimer_Elapsed);
             this.enMovimiento = false;
+        }
+
+        public String FirmwareSettings
+        {
+            get { return this.firmwareSettings; }
         }
 
         public AtcStatus AtcStat
@@ -169,6 +182,7 @@ namespace PowerFocus
                 {
                     this.Move((int) Properties.Settings.Default.lastSecondaryPosition);
                 }
+                this.ReadSettings();
                 this.RefreshAtcStatus();
 
             }
@@ -260,18 +274,14 @@ namespace PowerFocus
             Properties.Settings.Default.Save();
         }
 
-
-        #region Metodos privados
-
-        public String ReadSettings()
+        private String ReadSettings()
         {
             logger.Info("Enviando:" + READSETT);
             //Console.WriteLine("->" + READSETT);
             this.ttyWrite(READSETT);// this.ttyATC.Write(READSETT);
-            String respuesta;
-            respuesta = LeerSerial(130).Trim();
-            logger.Info( "respuesta=" + respuesta);
-            return respuesta;
+            this.firmwareSettings = LeerSerial(130).Trim();
+            logger.Info("firmwareSettings=" + this.firmwareSettings);
+            return this.firmwareSettings;
         }
 
         /// <summary>
@@ -319,6 +329,8 @@ namespace PowerFocus
             respuesta = LeerSerial(10).Trim();
             return respuesta;
         }
+
+        #region Metodos privados
 
         private void ttyWrite (String comando)
         {
