@@ -120,18 +120,15 @@ namespace PowerFocus
             String[] part;
             double respuesta;
             respuesta = Double.NaN;
-            //ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("extraeDouble()", "linea=" + linea);
-
             part = linea.Split((" ").ToCharArray());
             try
             {
                 respuesta = Double.Parse(part[part.Length - 1]);
             }
-            catch (FormatException)
+            catch (FormatException e)
             {
-                //ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("extraeDouble(),FormatException", e.Message);
+                logger.Error(e.Message);
             }
-            //ASCOM.OrbitATC02.Focuser.sysLog.LogMessageCrLf("extraeDouble()", "respuesta="+respuesta);
             return respuesta;
         }
 
@@ -195,8 +192,6 @@ namespace PowerFocus
             get { return this.dewPoint; }
             set { this.dewPoint = value; }
         }
-
-
 
     }
 }

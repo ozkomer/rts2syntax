@@ -12,6 +12,7 @@ using System.Net;
 using log4net;
 using log4net.Config;
 using log4net.Appender;
+using AtcXml;
 
 namespace PowerFocus
 {
@@ -23,6 +24,8 @@ namespace PowerFocus
         private Thread listenThread;
         private Boolean continueListen; 
         private Atc02Comm focuser;
+        private Atc02Xml atc02Status;
+
 
         public Form1()
         {
@@ -31,10 +34,6 @@ namespace PowerFocus
             logger.Info("Power Focus. Welcome!!!");
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         /// <summary>
         /// http://www.switchonthecode.com/tutorials/csharp-tutorial-simple-threaded-tcp-server
@@ -91,13 +90,11 @@ namespace PowerFocus
                     //a socket error has occured
                     break;
                 }
-
                 if (bytesRead == 0)
                 {
                     //the client has disconnected from the server
                     break;
                 }
-
                 //message has successfully been received
                 ASCIIEncoding encoder = new ASCIIEncoding();
                 String mensajeRecibido;
@@ -112,7 +109,6 @@ namespace PowerFocus
                 clientStream.Flush();
                 #endregion
             }
-
             tcpClient.Close();
         }
 
@@ -122,16 +118,16 @@ namespace PowerFocus
             mensajeRespuesta = "no implementado.";
             if (mensajeRecibido.Equals("conectar"))
             {
-
                 this.focuser.conectar();
                 mensajeRespuesta = ("" + this.focuser.Conectado);
             }
+
             if (mensajeRecibido.Equals("desconectar"))
             {
-
                 this.focuser.desConectar();
                 mensajeRespuesta = ("" + this.focuser.Conectado);
             }
+
             if (mensajeRecibido.StartsWith("move"))
             {
                 String[] part;
@@ -141,14 +137,17 @@ namespace PowerFocus
                 this.focuser.Move(posicion);
                 mensajeRespuesta = (""+this.focuser.Posicion);
             }
+
             if (mensajeRecibido.Equals("GetXmlStatus"))
             {
                 mensajeRespuesta = this.focuser.AtcStat.ToString();
             }
+
             if (mensajeRecibido.Equals("GetPosition"))
             {
                 mensajeRespuesta = ""+this.focuser.Posicion;
             }
+
             if (mensajeRecibido.Equals("GetAmbientTemperature"))
             {
                 mensajeRespuesta = ""+this.focuser.AtcStat.AmbientTemperature;
@@ -158,6 +157,7 @@ namespace PowerFocus
             {
                 mensajeRespuesta = "" + this.focuser.EnMovimiento;
             }
+
             if (mensajeRecibido.Equals("IsConnected"))
             {
                 mensajeRespuesta = "" + this.focuser.Conectado;
@@ -165,7 +165,16 @@ namespace PowerFocus
 
             if (mensajeRecibido.Equals("ReadSettings"))
             {
-                mensajeRespuesta = "" + this.focuser.ReadSettings();
+                String fwSettings;
+                fwSettings = this.focuser.FirmwareSettings;
+                if (fwSettings == null)
+                {
+                    fwSettings = "waiting to read settings";
+                }else{
+                    fwSettings = fwSettings.Replace("\r\n",";").Replace("\0","");
+                }
+
+                mensajeRespuesta = fwSettings;
             }
             if (mensajeRecibido.Equals("FindOptimal"))
             {
@@ -206,6 +215,7 @@ namespace PowerFocus
                 return;
             }
 
+            this.timerStatus.Stop();
             this.continueListen = false;
             this.tcpListener.Stop();
             while (this.listenThread.IsAlive)
@@ -225,6 +235,8 @@ namespace PowerFocus
             this.listenThread = new Thread(new ThreadStart(ListenForClients));
             this.listenThread.Start();
             this.focuser.conectar();
+            this.timerStatus.Interval = 500 * ((int)settings.refreshStatusTimer);
+            this.timerStatus.Start();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -258,7 +270,116 @@ namespace PowerFocus
             this.WindowState = FormWindowState.Normal;
             this.BringToFront();
         }
-            
+
+        /// <summary>
+        /// Envia el comando "GetXmlStatus" al driver ATC02 de Orbit.
+        /// y actualiza la estructura de datos atc02Status
+        /// </summary>
+        private void refreshATC02XmlStatus()
+        {
+            String xmlStatus;
+            xmlStatus = this.focuser.AtcStat.ToString();
+            Console.WriteLine("xmlStatus=");
+            Console.WriteLine(xmlStatus);
+            this.atc02Status = new Atc02Xml(xmlStatus);
+
+            if (this.atc02Status.IsFresh())
+            {
+                this.BackColor = Color.LightGreen;
+                this.Text = "Fits Monitor, ATC02 ok";
+            }
+            else
+            {
+                logger.Warn("ATC02 log outdated");
+                this.BackColor = Color.Pink;
+                this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
+            }
+            this.analizaATC02();
+        }
+
+        private void analizaATC02()
+        {
+            String[] fila;
+            this.dataGridViewATC02.Rows.Clear();
+
+            fila = new String[2];
+            fila[0] = "Ultima respuesta";
+            StringBuilder textoFecha;
+            textoFecha = new StringBuilder();
+
+
+            textoFecha.Append(this.atc02Status.Timestamp.ToLongDateString());
+            textoFecha.Append(" ");
+            textoFecha.Append(this.atc02Status.Timestamp.ToShortTimeString());
+
+            Console.WriteLine("timestamp=" + textoFecha.ToString());
+            fila[1] = textoFecha.ToString();
+            agregaFila(fila);
+
+            fila[0] = "SETFAN";
+            fila[1] = this.atc02Status.FanPower.ToString();
+            agregaFila(fila);
+
+            fila[0] = "PRITE";
+            fila[1] = this.atc02Status.PrimaryTemperature.ToString();
+            agregaFila(fila);
+
+            fila[0] = "SECTE";
+            fila[1] = this.atc02Status.SecondaryTemperature.ToString();
+            agregaFila(fila);
+
+            fila[0] = "BFL";
+            fila[1] = this.atc02Status.FocusPosition.ToString();
+            agregaFila(fila);
+
+            fila[0] = "FOCSTEP";
+            fila[1] = Atc02Xml.BflToFocSetp(this.atc02Status.FocusPosition).ToString();
+            agregaFila(fila);
+
+            fila[0] = "AMBTE";
+            fila[1] = this.atc02Status.AmbientTemperature.ToString();
+            agregaFila(fila);
+        }
+
+        private void agregaFila(String[] fila)
+        {
+            if ((fila[0] != null) && (fila[0].Length > 0))
+            {
+                try
+                {
+                    this.dataGridViewATC02.Rows.Add(fila);
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    logger.Error(ioe.Message);
+                    logger.Error(fila.ToString());
+                }
+            }
+        }
+
+        private void bReadStatus_Click(object sender, EventArgs e)
+        {
+            this.refreshATC02XmlStatus();
+        }
+
+        private void bSetFan_Click(object sender, EventArgs e)
+        {
+            int fanSpeed;
+            fanSpeed = (int) this.trackBarFan.Value;
+            this.focuser.SetFan(fanSpeed);
+        }
+
+        private void trackBarFan_Scroll(object sender, EventArgs e)
+        {
+            int fanSpeed;
+            fanSpeed = (int)this.trackBarFan.Value;
+            this.bSetFan.Text = ("Set Fan "+fanSpeed);
+        }
+
+        private void timerStatus_Tick(object sender, EventArgs e)
+        {
+            this.refreshATC02XmlStatus();
+        }
         
     }
 }

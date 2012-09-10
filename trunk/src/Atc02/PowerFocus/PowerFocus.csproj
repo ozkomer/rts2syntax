@@ -97,6 +97,12 @@
   <ItemGroup>
     <None Include="Resources\Stop-Normal-Red-icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AtcXml\AtcXml.csproj">
+      <Project>{CBC9D687-47AC-487A-BA37-B7C8631622AD}</Project>
+      <Name>AtcXml</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
