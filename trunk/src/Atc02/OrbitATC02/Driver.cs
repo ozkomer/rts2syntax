@@ -4,20 +4,18 @@
 //
 // ASCOM Focuser driver for OrbitATC02
 //
-// Description:	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
-//				nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
-//				erat, sed diam voluptua. At vero eos et accusam et justo duo 
-//				dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
-//				sanctus est Lorem ipsum dolor sit amet.
+// Description:	Esta versión del driver se conecta a la aplicacion "Focus Server".
+//              Focus server se encarga finalmente de las comunicaciones seriales con el ATC02.
+//              Las comunicaciones entre este driver y FocusServer son breves sesiones TCP/IP.
 //
 // Implements:	ASCOM Focuser interface version: 1.0
-// Author:		(XXX) Your N. Here <your@email.here>
+// Author:		Eduardo Maureira <emaureir@gmail.com>
 //
 // Edit Log:
 //
 // Date			Who	Vers	Description
 // -----------	---	-----	-------------------------------------------------------
-// dd-mmm-yyyy	XXX	1.0.0	Initial edit, from ASCOM Focuser Driver template
+// 09-09-2012	Eduardo Maureira	1.0.0	Initial edit, from ASCOM Focuser Driver template
 // --------------------------------------------------------------------------------
 //
 using System;
@@ -28,6 +26,8 @@ using ASCOM.Utilities;
 using System.Globalization;
 using System.IO.Ports;
 using System.Text;
+using System.Net.Sockets;
+using System.Net;
 
 namespace ASCOM.OrbitATC02
 {
@@ -48,7 +48,12 @@ namespace ASCOM.OrbitATC02
 
         public static readonly String cmdGetXmlStatus = "GetXmlStatus";
 
-        Atc02Comm singleton;
+        private static ASCOM.OrbitATC02.Properties.Settings settings = ASCOM.OrbitATC02.Properties.Settings.Default;
+
+        /// <summary>
+        /// Manejo interno del estado conectado para engañar a focusMax.
+        /// </summary>
+        private Boolean conectado;
 
         #region Constants
         //
@@ -93,7 +98,7 @@ namespace ASCOM.OrbitATC02
         {
             sysLog.Enabled = true;
             sysLog.LogMessageCrLf("Focuser()", "Instanciando Focuser.");
-            this.singleton = Atc02Comm.Instance;
+            this.conectado = false;
         }
 
 
@@ -118,24 +123,15 @@ namespace ASCOM.OrbitATC02
             switch (actionName)
             {
                 case "READSETT":
-                    respuesta = this.singleton.ReadSettings();
+                    respuesta = this.EnviaMensaje("ReadSettings");
                     break;
-                case "UPDATEPC":                    
-                    this.singleton.RefreshAtcStatus();
-                    if (this.singleton.AtcStat == null)
-                    {
-                        respuesta = "NULL STATUS";
-                    }
-                    else
-                    {
-                        respuesta = this.singleton.AtcStat.ToString();
-                    }
+                case "status":
+                    respuesta =  this.EnviaMensaje("status");
                     break;
-                case "SETFAN":
-                    respuesta = this.singleton.SetFan(Int32.Parse(actionParameters));
-                    break;
+                //case "SETFAN":
+                //    break;
                 case "FINDOPTIMA":
-                    respuesta = this.singleton.FindOptimal();
+                    respuesta = this.EnviaMensaje("FindOptimal");
                     break;
                 default:
                     break;
@@ -162,7 +158,7 @@ namespace ASCOM.OrbitATC02
             sysLog.LogMessageCrLf("CommandString: command=" + command, "raw = " + raw);
             if (command == cmdGetXmlStatus)
             {
-                respuesta = this.singleton.AtcStat.ToString();
+                respuesta = this.EnviaMensaje("FindOptimal");
             }
             return respuesta;
         }
@@ -176,39 +172,54 @@ namespace ASCOM.OrbitATC02
         public void Halt()
         {
             sysLog.LogMessageCrLf("Halt", "not implemented.");
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public void Move(int value)
         {
             sysLog.LogMessageCrLf("Move()", "value=" + value);
-            this.singleton.Move(value);
+            String comando;
+            comando = ("move " + value);
+            this.EnviaMensaje(comando);            
         }
 
         public bool Connected
         {
             get {
-                sysLog.LogMessageCrLf("Connected, get", "this.conectado=" + this.singleton.Conectado);
-                return this.singleton.Conectado; 
+                //String respuesta;
+                //respuesta = this.EnviaMensaje("IsConnected");
+                //conectado = Boolean.Parse( respuesta );
+                sysLog.LogMessageCrLf("Connected, get", "this.conectado=" + this.conectado);
+                return this.conectado;
             }
             set
             {
+                this.conectado = value;
                 if (value == true)
                 {
                     Focuser.sysLog.LogMessageCrLf("Connected:", "--->conectar.");
-                    this.singleton.conectar();
+                    if (settings.StartUpSecondary)
+                    {
+                        this.EnviaMensaje("FindOptimal");
+                        System.Threading.Thread.Sleep(8000);
+                        this.EnviaMensaje("SetFan 0");
+                        System.Threading.Thread.Sleep(1000);
+                        String comando;
+                        comando = ("move " + settings.StartUpSecondaryPosition);
+                        this.EnviaMensaje(comando);
+                    }
                 }
                 else
                 {
                     Focuser.sysLog.LogMessageCrLf("Connected:", "--->desConectar");
-                    this.singleton.desConectar();
+                    this.EnviaMensaje("SetFan 100");
                 }
             }
         }
 
         public string Description
         {
-            get { return Properties.Settings.Default.DeviceDescription; }
+            get { return this.EnviaMensaje("ReadSettings"); }
         }
 
         public string DriverInfo
@@ -245,10 +256,17 @@ namespace ASCOM.OrbitATC02
             get {
                 ArrayList respuesta;
                 respuesta = new ArrayList();
-                respuesta.Add(Atc02Comm.READSETT);
-                respuesta.Add(Atc02Comm.UPDATEPC);
-                respuesta.Add(Atc02Comm.SETFAN);
-                respuesta.Add(Atc02Comm.FINDOPTIMA);
+                respuesta.Add("conectar");
+                respuesta.Add("desconectar");
+                respuesta.Add("move");
+                respuesta.Add("GetXmlStatus");
+                respuesta.Add("GetPosition");
+                respuesta.Add("GetAmbientTemperature");
+                respuesta.Add("IsMoving");
+                respuesta.Add("IsConnected");
+                respuesta.Add("ReadSettings");
+                respuesta.Add("FindOptimal");
+                respuesta.Add("SetFan");
                 return respuesta; 
             }
         }
@@ -260,7 +278,11 @@ namespace ASCOM.OrbitATC02
 
         public bool IsMoving
         {
-            get { return this.singleton.EnMovimiento; }
+            get {
+                String respuesta;
+                respuesta = this.EnviaMensaje("IsMoving");
+                return Boolean.Parse(respuesta); 
+            }
         }
 
         // use the V2 connected property
@@ -289,8 +311,13 @@ namespace ASCOM.OrbitATC02
         public int Position
         {
             get {
-                sysLog.LogMessageCrLf("Position:", "posicion ="+this.singleton.Posicion);
-                return this.singleton.Posicion;
+                String respuesta;
+                int posicion;
+                respuesta = this.EnviaMensaje("GetPosition");
+                respuesta = respuesta.Replace("\0", "");
+                posicion = Int32.Parse(respuesta);
+                sysLog.LogMessageCrLf("Position:", "posicion =" + posicion);
+                return posicion;
             }
         }
 
@@ -313,14 +340,56 @@ namespace ASCOM.OrbitATC02
         public double Temperature
         {
             get {
-                //if ((this.singleton.AtcStat == null) || (!Properties.Settings.Default.refreshStatus))
-                //{
-                //    this.singleton.RefreshAtcStatus();
-                //}
-                return this.singleton.AtcStat.AmbientTemperature;
+                String respuesta;
+                respuesta = this.EnviaMensaje("GetAmbientTemperature");
+                respuesta = respuesta.Replace("\0", "");
+                int temperature;
+                temperature = Int32.Parse(respuesta);
+                return temperature;
             }
         }
 
         #endregion
+
+        private String EnviaMensaje(String mensaje)
+        {
+            String respuesta;
+            respuesta = null;
+            TcpClient client = new TcpClient();
+            IPEndPoint serverEndPoint;
+            IPAddress focusServer;
+            focusServer = IPAddress.Parse(settings.FocusServer);
+
+            serverEndPoint = new IPEndPoint(focusServer,(int) settings.FocusPort);
+
+            try
+            {
+                client.Connect(serverEndPoint);
+            }
+            catch (SocketException)
+            {
+                this.conectado = false;
+                return "Error de Comunicacion";
+            }
+
+            NetworkStream clientStream = client.GetStream();
+
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            byte[] buffer = encoder.GetBytes(mensaje);
+
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+            byte[] bufferIn;
+            bufferIn = new byte[800];
+            int bytesRead;
+            bytesRead = clientStream.Read(bufferIn, 0, 800);
+            respuesta = encoder.GetString(bufferIn, 0, 800);
+            Console.WriteLine("-----------");
+            Console.WriteLine(respuesta);
+            Console.WriteLine("-----------");
+            client.Close();
+            return respuesta;
+        }
+
     }
 }

@@ -32,27 +32,23 @@ namespace ASCOM.OrbitATC02
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.picASCOM = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tbStepSize = new System.Windows.Forms.TextBox();
-            this.cbRefreshFirmwareInfo = new System.Windows.Forms.CheckBox();
-            this.nudRefreshStatusPeriod = new System.Windows.Forms.NumericUpDown();
-            this.cbRefreshStatus = new System.Windows.Forms.CheckBox();
-            this.nudBaudRate = new System.Windows.Forms.NumericUpDown();
-            this.tbCommPort = new System.Windows.Forms.TextBox();
             this.cbSecondaryPositionStartUp = new System.Windows.Forms.CheckBox();
             this.nudLastSecondary = new System.Windows.Forms.NumericUpDown();
+            this.lblFocusServer = new System.Windows.Forms.Label();
+            this.tbFocusServer = new System.Windows.Forms.TextBox();
+            this.lblPort = new System.Windows.Forms.Label();
+            this.nufFocusPort = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudRefreshStatusPeriod)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLastSecondary)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nufFocusPort)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdOK
             // 
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(339, 92);
+            this.cmdOK.Location = new System.Drawing.Point(339, 86);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -84,28 +80,10 @@ namespace ASCOM.OrbitATC02
             this.picASCOM.DoubleClick += new System.EventHandler(this.BrowseToAscom);
             this.picASCOM.Click += new System.EventHandler(this.BrowseToAscom);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Comm Port";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(143, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Baud Rate";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 55);
+            this.label3.Location = new System.Drawing.Point(12, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 8;
@@ -113,87 +91,18 @@ namespace ASCOM.OrbitATC02
             // 
             // tbStepSize
             // 
-            this.tbStepSize.Location = new System.Drawing.Point(115, 52);
+            this.tbStepSize.Location = new System.Drawing.Point(115, 6);
             this.tbStepSize.Name = "tbStepSize";
             this.tbStepSize.Size = new System.Drawing.Size(62, 20);
             this.tbStepSize.TabIndex = 9;
             // 
-            // cbRefreshFirmwareInfo
-            // 
-            this.cbRefreshFirmwareInfo.AutoSize = true;
-            this.cbRefreshFirmwareInfo.Checked = global::ASCOM.OrbitATC02.Properties.Settings.Default.refreshFirmwareInfo;
-            this.cbRefreshFirmwareInfo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRefreshFirmwareInfo.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ASCOM.OrbitATC02.Properties.Settings.Default, "refreshFirmwareInfo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cbRefreshFirmwareInfo.Location = new System.Drawing.Point(15, 104);
-            this.cbRefreshFirmwareInfo.Name = "cbRefreshFirmwareInfo";
-            this.cbRefreshFirmwareInfo.Size = new System.Drawing.Size(129, 17);
-            this.cbRefreshFirmwareInfo.TabIndex = 12;
-            this.cbRefreshFirmwareInfo.Text = "Refresh Firmware Info";
-            this.cbRefreshFirmwareInfo.UseVisualStyleBackColor = true;
-            // 
-            // nudRefreshStatusPeriod
-            // 
-            this.nudRefreshStatusPeriod.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ASCOM.OrbitATC02.Properties.Settings.Default, "refreshStatusTimer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.nudRefreshStatusPeriod.Location = new System.Drawing.Point(166, 80);
-            this.nudRefreshStatusPeriod.Name = "nudRefreshStatusPeriod";
-            this.nudRefreshStatusPeriod.Size = new System.Drawing.Size(54, 20);
-            this.nudRefreshStatusPeriod.TabIndex = 11;
-            this.nudRefreshStatusPeriod.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.refreshStatusTimer;
-            // 
-            // cbRefreshStatus
-            // 
-            this.cbRefreshStatus.AutoSize = true;
-            this.cbRefreshStatus.Checked = global::ASCOM.OrbitATC02.Properties.Settings.Default.refreshStatus;
-            this.cbRefreshStatus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRefreshStatus.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ASCOM.OrbitATC02.Properties.Settings.Default, "refreshStatus", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cbRefreshStatus.Location = new System.Drawing.Point(15, 81);
-            this.cbRefreshStatus.Name = "cbRefreshStatus";
-            this.cbRefreshStatus.Size = new System.Drawing.Size(145, 17);
-            this.cbRefreshStatus.TabIndex = 10;
-            this.cbRefreshStatus.Text = "Refresh Status [seconds]";
-            this.cbRefreshStatus.UseVisualStyleBackColor = true;
-            this.cbRefreshStatus.CheckedChanged += new System.EventHandler(this.cbRefreshStatus_CheckedChanged);
-            // 
-            // nudBaudRate
-            // 
-            this.nudBaudRate.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ASCOM.OrbitATC02.Properties.Settings.Default, "BaudRate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.nudBaudRate.Increment = new decimal(new int[] {
-            2400,
-            0,
-            0,
-            0});
-            this.nudBaudRate.Location = new System.Drawing.Point(207, 12);
-            this.nudBaudRate.Maximum = new decimal(new int[] {
-            115200,
-            0,
-            0,
-            0});
-            this.nudBaudRate.Minimum = new decimal(new int[] {
-            2400,
-            0,
-            0,
-            0});
-            this.nudBaudRate.Name = "nudBaudRate";
-            this.nudBaudRate.Size = new System.Drawing.Size(120, 20);
-            this.nudBaudRate.TabIndex = 7;
-            this.nudBaudRate.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.BaudRate;
-            // 
-            // tbCommPort
-            // 
-            this.tbCommPort.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ASCOM.OrbitATC02.Properties.Settings.Default, "CommPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbCommPort.Location = new System.Drawing.Point(76, 12);
-            this.tbCommPort.Name = "tbCommPort";
-            this.tbCommPort.Size = new System.Drawing.Size(46, 20);
-            this.tbCommPort.TabIndex = 5;
-            this.tbCommPort.Text = global::ASCOM.OrbitATC02.Properties.Settings.Default.CommPort;
-            // 
             // cbSecondaryPositionStartUp
             // 
             this.cbSecondaryPositionStartUp.AutoSize = true;
-            this.cbSecondaryPositionStartUp.Checked = global::ASCOM.OrbitATC02.Properties.Settings.Default.lastSecondaryStartUp;
+            this.cbSecondaryPositionStartUp.Checked = global::ASCOM.OrbitATC02.Properties.Settings.Default.StartUpSecondary;
             this.cbSecondaryPositionStartUp.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSecondaryPositionStartUp.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ASCOM.OrbitATC02.Properties.Settings.Default, "lastSecondaryStartUp", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cbSecondaryPositionStartUp.Location = new System.Drawing.Point(15, 127);
+            this.cbSecondaryPositionStartUp.Location = new System.Drawing.Point(15, 51);
             this.cbSecondaryPositionStartUp.Name = "cbSecondaryPositionStartUp";
             this.cbSecondaryPositionStartUp.Size = new System.Drawing.Size(211, 17);
             this.cbSecondaryPositionStartUp.TabIndex = 13;
@@ -203,7 +112,7 @@ namespace ASCOM.OrbitATC02
             // nudLastSecondary
             // 
             this.nudLastSecondary.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ASCOM.OrbitATC02.Properties.Settings.Default, "lastSecondaryPosition", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.nudLastSecondary.Location = new System.Drawing.Point(232, 127);
+            this.nudLastSecondary.Location = new System.Drawing.Point(232, 51);
             this.nudLastSecondary.Maximum = new decimal(new int[] {
             8000,
             0,
@@ -217,24 +126,62 @@ namespace ASCOM.OrbitATC02
             this.nudLastSecondary.Name = "nudLastSecondary";
             this.nudLastSecondary.Size = new System.Drawing.Size(81, 20);
             this.nudLastSecondary.TabIndex = 14;
-            this.nudLastSecondary.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.lastSecondaryPosition;
+            this.nudLastSecondary.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.StartUpSecondaryPosition;
+            // 
+            // lblFocusServer
+            // 
+            this.lblFocusServer.AutoSize = true;
+            this.lblFocusServer.Location = new System.Drawing.Point(12, 92);
+            this.lblFocusServer.Name = "lblFocusServer";
+            this.lblFocusServer.Size = new System.Drawing.Size(70, 13);
+            this.lblFocusServer.TabIndex = 15;
+            this.lblFocusServer.Text = "Focus Server";
+            // 
+            // tbFocusServer
+            // 
+            this.tbFocusServer.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ASCOM.OrbitATC02.Properties.Settings.Default, "FocusServer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tbFocusServer.Location = new System.Drawing.Point(88, 89);
+            this.tbFocusServer.Name = "tbFocusServer";
+            this.tbFocusServer.Size = new System.Drawing.Size(97, 20);
+            this.tbFocusServer.TabIndex = 16;
+            this.tbFocusServer.Text = global::ASCOM.OrbitATC02.Properties.Settings.Default.FocusServer;
+            // 
+            // lblPort
+            // 
+            this.lblPort.AutoSize = true;
+            this.lblPort.Location = new System.Drawing.Point(191, 92);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(26, 13);
+            this.lblPort.TabIndex = 17;
+            this.lblPort.Text = "Port";
+            // 
+            // nufFocusPort
+            // 
+            this.nufFocusPort.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ASCOM.OrbitATC02.Properties.Settings.Default, "FocusPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.nufFocusPort.Location = new System.Drawing.Point(223, 90);
+            this.nufFocusPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.nufFocusPort.Name = "nufFocusPort";
+            this.nufFocusPort.Size = new System.Drawing.Size(90, 20);
+            this.nufFocusPort.TabIndex = 18;
+            this.nufFocusPort.Value = global::ASCOM.OrbitATC02.Properties.Settings.Default.FocusPort;
             // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 201);
+            this.ClientSize = new System.Drawing.Size(410, 165);
+            this.Controls.Add(this.nufFocusPort);
+            this.Controls.Add(this.lblPort);
+            this.Controls.Add(this.tbFocusServer);
+            this.Controls.Add(this.lblFocusServer);
             this.Controls.Add(this.nudLastSecondary);
             this.Controls.Add(this.cbSecondaryPositionStartUp);
-            this.Controls.Add(this.cbRefreshFirmwareInfo);
-            this.Controls.Add(this.nudRefreshStatusPeriod);
-            this.Controls.Add(this.cbRefreshStatus);
             this.Controls.Add(this.tbStepSize);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.nudBaudRate);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.tbCommPort);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.picASCOM);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdOK);
@@ -249,9 +196,8 @@ namespace ASCOM.OrbitATC02
             this.Text = global::ASCOM.OrbitATC02.Properties.Settings.Default.DriverName;
             this.Load += new System.EventHandler(this.SetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudRefreshStatusPeriod)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLastSecondary)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nufFocusPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -262,16 +208,13 @@ namespace ASCOM.OrbitATC02
         private System.Windows.Forms.Button cmdOK;
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.PictureBox picASCOM;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbCommPort;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown nudBaudRate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbStepSize;
-        private System.Windows.Forms.CheckBox cbRefreshStatus;
-        private System.Windows.Forms.NumericUpDown nudRefreshStatusPeriod;
-        private System.Windows.Forms.CheckBox cbRefreshFirmwareInfo;
         private System.Windows.Forms.CheckBox cbSecondaryPositionStartUp;
         private System.Windows.Forms.NumericUpDown nudLastSecondary;
+        private System.Windows.Forms.Label lblFocusServer;
+        private System.Windows.Forms.TextBox tbFocusServer;
+        private System.Windows.Forms.Label lblPort;
+        private System.Windows.Forms.NumericUpDown nufFocusPort;
     }
 }

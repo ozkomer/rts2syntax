@@ -25,37 +25,13 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.80")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Chase500 Focuser Setup V0.97")]
         public string DriverName {
             get {
                 return ((string)(this["DriverName"]));
             }
             set {
                 this["DriverName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM3")]
-        public string CommPort {
-            get {
-                return ((string)(this["CommPort"]));
-            }
-            set {
-                this["CommPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2400")]
-        public decimal BaudRate {
-            get {
-                return ((decimal)(this["BaudRate"]));
-            }
-            set {
-                this["BaudRate"] = value;
             }
         }
         
@@ -73,85 +49,49 @@ namespace ASCOM.OrbitATC02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Aun no actualizado.")]
-        public string DeviceDescription {
-            get {
-                return ((string)(this["DeviceDescription"]));
-            }
-            set {
-                this["DeviceDescription"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
-        public decimal refreshStatusTimer {
-            get {
-                return ((decimal)(this["refreshStatusTimer"]));
-            }
-            set {
-                this["refreshStatusTimer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool refreshStatus {
-            get {
-                return ((bool)(this["refreshStatus"]));
-            }
-            set {
-                this["refreshStatus"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool refreshFirmwareInfo {
-            get {
-                return ((bool)(this["refreshFirmwareInfo"]));
-            }
-            set {
-                this["refreshFirmwareInfo"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Common Files\\ASCOM\\Focuser\\Atc02Status.xml")]
-        public string Atc02StatusXmlFilePath {
-            get {
-                return ((string)(this["Atc02StatusXmlFilePath"]));
-            }
-            set {
-                this["Atc02StatusXmlFilePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3718")]
-        public decimal lastSecondaryPosition {
+        public decimal StartUpSecondaryPosition {
             get {
-                return ((decimal)(this["lastSecondaryPosition"]));
+                return ((decimal)(this["StartUpSecondaryPosition"]));
             }
             set {
-                this["lastSecondaryPosition"] = value;
+                this["StartUpSecondaryPosition"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool lastSecondaryStartUp {
+        public bool StartUpSecondary {
             get {
-                return ((bool)(this["lastSecondaryStartUp"]));
+                return ((bool)(this["StartUpSecondary"]));
             }
             set {
-                this["lastSecondaryStartUp"] = value;
+                this["StartUpSecondary"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string FocusServer {
+            get {
+                return ((string)(this["FocusServer"]));
+            }
+            set {
+                this["FocusServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+        public decimal FocusPort {
+            get {
+                return ((decimal)(this["FocusPort"]));
+            }
+            set {
+                this["FocusPort"] = value;
             }
         }
     }
