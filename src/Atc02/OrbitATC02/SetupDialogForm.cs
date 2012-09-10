@@ -6,23 +6,23 @@ namespace ASCOM.OrbitATC02
 {
     public partial class SetupDialogForm : Form
     {
+        private static Properties.Settings settings = Properties.Settings.Default;
         public SetupDialogForm()
         {
             InitializeComponent();
-            this.Text = Properties.Settings.Default.DriverName;
+            this.Text = settings.DriverName;
+            this.tbStepSize.Text = ""+settings.StepSize;
         }
 
         private void CmdOkClick(object sender, EventArgs e)
         {
-            Properties.Settings.Default.CommPort = tbCommPort.Text;
-            Properties.Settings.Default.BaudRate = nudBaudRate.Value;
-            Properties.Settings.Default.StepSize = Double.Parse(tbStepSize.Text);
-            Properties.Settings.Default.refreshFirmwareInfo = this.cbRefreshFirmwareInfo.Checked;
-            Properties.Settings.Default.refreshStatus = this.cbRefreshStatus.Checked;
-            Properties.Settings.Default.refreshStatusTimer = this.nudRefreshStatusPeriod.Value;
-            Properties.Settings.Default.lastSecondaryPosition = this.nudLastSecondary.Value;
-            Properties.Settings.Default.lastSecondaryStartUp = this.cbSecondaryPositionStartUp.Checked;
-            Properties.Settings.Default.Save();
+
+            settings.StepSize = Double.Parse(tbStepSize.Text);
+            settings.StartUpSecondaryPosition = this.nudLastSecondary.Value;
+            settings.StartUpSecondary = this.cbSecondaryPositionStartUp.Checked;
+            settings.FocusServer = this.tbFocusServer.Text;
+            settings.FocusPort = (int) this.nufFocusPort.Value;
+            settings.Save();
             Dispose();
         }
 
