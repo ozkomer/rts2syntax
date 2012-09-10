@@ -14,6 +14,7 @@ using System.Globalization;
 using nom.tam.fits;
 using System.Net.Sockets;
 using System.Net;
+using AtcXml;
 
 namespace FitsMonitor
 {
@@ -27,15 +28,7 @@ namespace FitsMonitor
         /// </summary>
         private static FitsMonitor.Properties.Settings settings = FitsMonitor.Properties.Settings.Default;
 
-        //private DateTime lastResponseTimeStamp;
-
-        //private double bfl;
-        //private int focstep;
-        //private double priTemp;
-        //private double secTemp;
-        //private double ambTemp;
-        //private int setFan;
-        Atc02Xml atc02Status;
+        private Atc02Xml atc02Status;
 
         public Form1()
         {
@@ -45,9 +38,14 @@ namespace FitsMonitor
             WinScpTransfer.HostName = settings.Host;
             WinScpTransfer.UserName = settings.Username;
             WinScpTransfer.SshHostKey = settings.SshHostKey;            
-            //this.lastResponseTimeStamp = DateTime.MinValue;
         }
 
+        /// <summary>
+        /// Cada vez que MaximDL crea un nuevo archivo fits, este metodo captura la ruta de este archivo
+        /// y comienza a procesarlo (copiarlo a zwicky).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void fsWatchFits_Created(object sender, System.IO.FileSystemEventArgs e)
         {
             Copiar(e.FullPath);
@@ -55,6 +53,7 @@ namespace FitsMonitor
 
         /// <summary>
         /// Copia un archivo desde baade hacia zwicky.
+        /// Ademas busca el correspondiente archivo jpg para desplegarlo en el picturebox.
         /// </summary>
         /// <param name="fullPath">Ruta del archivo de origen</param>
         public void Copiar(String fullPath)
@@ -70,33 +69,22 @@ namespace FitsMonitor
             ruta_size = ruta.Length;
             if (ruta_size != settings.FolderTotalDepth)
             {
-                logger.Warn("archivo descartado, debe estar en carpeta de profundidad " + settings.FolderTotalDepth + ".");
+                logger.Info("archivo descartado, debe estar en carpeta de profundidad " + settings.FolderTotalDepth + ".");
                 return;
             }
             if (fullPath.Contains(settings.DiscardFilePattern))
             {
-                Console.WriteLine("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
+                logger.Info("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
                 return;
             }
             CompletaFitsHeader(fullPath);
-            //StringBuilder remotePath;
-            //String directorioRemoto;
             String remoteFilename;
-            //remotePath = new StringBuilder();
-
-            //remotePath.Append();
-            //archivoRemoto.Append("/");
-            //String fecha;
-            //fecha = ruta[6];
-            //remotePath.Append(fecha);
-            //directorioRemoto = remotePath.ToString();
-            //remotePath.Append("/");
-            remoteFilename = (ruta[ruta_size - 1]);//.Replace(".fts", ".fits"));
-            //Console.WriteLine("--->" + remotePath.ToString());
-
+            remoteFilename = (ruta[ruta_size - 1]);
+            String localFolder;
+            localFolder = ruta[ruta_size - 2];
             url = new StringBuilder();
             url.Append("http://www.das.uchile.cl/~chase500/images/jpg/");
-            url.Append(remoteFilename.Substring(0, settings.JpgFilenameLength).Replace('p','+'));
+            url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
             url.Append(".jpg");
             //url=http://www.das.uchile.cl/~chase500/images/jpg/Images.jpg
             Console.WriteLine("url=" + url.ToString());
@@ -113,7 +101,7 @@ namespace FitsMonitor
         public void CompletaFitsHeader(String fitsFullPath)
         {
             this.refreshATC02XmlStatus();
-            if (!LecturaFresca())
+            if (!this.atc02Status.IsFresh())
             {
                 logger.Info("ATC02 sin datos recientes, no se actualizara Archivo fits '"+fitsFullPath+"'");
                 return;
@@ -377,37 +365,10 @@ namespace FitsMonitor
             }
         }
 
-
-        /// <summary>
-        /// Revisa si la última fecha leida por el ATC02 es cercana
-        /// a la fecha actual de el sistema.
-        /// 
-        /// Si la fecha es cercana, este metodo permitira ingresar la informacion
-        /// leida del Officina Stellare ATC02 a los archivos .fits
-        /// </summary>
-        /// <returns></returns>
-        private Boolean LecturaFresca()
-        {
-            Boolean respuesta;
-            respuesta = false;
-            TimeSpan vejezLectura; // Diferencia de tiempo entre el presente y la ultima lectura del ATC02
-            vejezLectura = DateTime.Now.Subtract(this.atc02Status.Timestamp);
-            if (vejezLectura.TotalSeconds < 120)
-            {
-                respuesta = true;
-            }
-            else
-            {
-                logger.Warn("Ultima lectura, desfasada c/r al presente por " + vejezLectura.TotalSeconds + " segundos.");
-            }
-            return respuesta;
-        }
-
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             this.MostrarVentana();
         }
-
 
         private String EnviaMensaje(String mensaje)
         {
@@ -461,8 +422,8 @@ namespace FitsMonitor
             Console.WriteLine("xmlStatus=");
             Console.WriteLine(xmlStatus);
                 this.atc02Status = new Atc02Xml(xmlStatus);
-            
-            if (LecturaFresca())
+
+            if (this.atc02Status.IsFresh())
             {
                 this.BackColor = Color.LightGreen;
                 this.Text = "Fits Monitor, ATC02 ok";
@@ -774,10 +735,6 @@ private void revisaRaDecFits(FileInfo archivo)
             //Console.WriteLine("#");
         }
 
-        //private void fsWatchOfficinaStelare_Created(object sender, FileSystemEventArgs e)
-        //{
-        //    fsVigilaOfficinaStelare(e);
-        //}
 
         private void bCheckRaDec_Click(object sender, EventArgs e)
         {
