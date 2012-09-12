@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Serduino.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SouthPoleX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.33301322203725</Value>
+    </Setting>
+    <Setting Name="SouthPoleY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.38591699967391</Value>
+    </Setting>
+    <Setting Name="SouthPoleZ" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-0.860311483221593</Value>
+    </Setting>
+    <Setting Name="ZenithX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.0434285535446861</Value>
+    </Setting>
+    <Setting Name="ZenithY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.997336304799117</Value>
+    </Setting>
+    <Setting Name="ZenithZ" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.0585212466935711</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
