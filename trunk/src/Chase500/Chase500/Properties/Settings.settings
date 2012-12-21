@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ASCOM.Chase500.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="DriverName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Chase500 Setup V0.78</Value>
+    </Setting>
     <Setting Name="Host" Type="System.String" Scope="User">
       <Value Profile="(Default)">139.229.12.88</Value>
     </Setting>
     <Setting Name="Port" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">502</Value>
-    </Setting>
-    <Setting Name="DriverName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Chase500 Setup V0.76</Value>
     </Setting>
     <Setting Name="NorthOpen" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">0</Value>
