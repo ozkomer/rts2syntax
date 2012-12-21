@@ -84,7 +84,14 @@ namespace FitsMonitor
             localFolder = ruta[ruta_size - 2];
             url = new StringBuilder();
             url.Append("http://www.das.uchile.cl/~chase500/images/jpg/");
-            url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
+            if (localFolder.Length >= settings.JpgFilenameLength)
+            {
+                url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
+            }
+            else
+            {
+                url.Append(localFolder);
+            }            
             url.Append(".jpg");
             //url=http://www.das.uchile.cl/~chase500/images/jpg/Images.jpg
             Console.WriteLine("url=" + url.ToString());
