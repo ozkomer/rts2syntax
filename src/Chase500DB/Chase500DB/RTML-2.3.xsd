@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 29-Jul-2001 (R. Denny) RTML 2.0 as agreed at Global HOU 2001 -->
+<!-- 01-Aug-2001 (R. Denny) Changes per R. Denny and F. Hessman (names, Target attributes) -->
+<!-- 02-Aug-2001 (R. Denny) Corrected this to support true/false per enumeration in DTD -->
+<!-- 03-Aug-2001 (R. Denny) Corrected to force RTML.version to be 2.0 per the DTD-->
+<!-- 03-Aug-2001 (R. Denny) Corrected defaulting of attributes on Correction and Target -->
+<!-- 16-Oct-2001 (R. Denny) Version 2.1, removal of ObjectType element per J. Aymon of HOU -->
+<!-- 17-Aug-2002 (R. Denny) Version 2.1.1, fix LimitingMagnitude, it is a real, not a date/time -->
+<!-- 14-Jun-2004 (R. Denny) Version 2.2, Switch to XSD schema, add Binning, count attribute, -->
+<!--                        autostack attribute to Picture, Horizon, SkyCondition, Seeing to Schedule, -->
+<!--                        Down to Moon, tolerance attribute to Target. Change Correction attribute -->
+<!--                        values from enums to booleans. Add 2.2 to permitted values for Version.-->
+<!--                        Add Descripton to Request, Target, and Picture, Name to Picture -->
+<!-- 15-Jun-2004 (R. Denny) Add autofocus attribute to Target, count and autostack attributes -->
+<!--                        and Dither element to Picture, make Request.TimeStamp optional, -->
+<!--                        Make Schedule.Moon constraints mutually exclusive, and require both -->
+<!--                        Distance and Width if either are used. Make RaOffset/DecOffset and -->
+<!--                        Dither mutually exclusive. Reorder Correction attributes alphabetically -->
+<!-- 03-Mar-2005 (R. Denny)	Add new AirmassRange to Schedule. Should be mutually exclusive with Airmass, -->
+<!-- 						but that would require a parent tag. Too much pain. So it is allowed to have-->
+<!-- 						both Airmass and AirmassRange. Fix binning type integer (string) -> int (int32) -->
+<!-- 27-May-2005 (R. Denny) Add new HourAngleRange to Schedule. Same comments as previous -->
+<!-- 02-Jun-2005 (R. Denny) Add new PositionAngle to Target -->
+<!-- 22-Jun-2006 (R. Denny) RTML 2.3: Add bestefforts attribute to Request, timefromprev and -->
+<!--                        tolfromprev attributes to Target. Add facets to many elements for -->
+<!--                        value range enforcement. Add 2.3 to allowed values for version -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="ID" type="xs:string"/>
+	<xs:element name="RTML">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Contact">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="User" type="xs:string"/>
+							<xs:element name="Email" type="xs:string"/>
+							<xs:element name="Organization" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Request" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ID"/>
+							<xs:element name="UserName" type="xs:string"/>
+							<xs:element name="Observers" type="xs:string" minOccurs="0"/>
+							<xs:element name="Description" type="xs:string" minOccurs="0"/>
+							<xs:element name="Reason" type="xs:string" minOccurs="0"/>
+							<xs:element name="Project" type="xs:string" minOccurs="0"/>
+							<xs:element name="Schedule" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Extinct" type="xs:float" minOccurs="0"/>
+										<xs:element name="Seeing" type="xs:float" minOccurs="0"/>
+										<xs:element name="Airmass" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:float">
+													<xs:minInclusive value="1.0"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="AirmassRange" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Minimum">
+														<xs:simpleType>
+															<xs:restriction base="xs:float">
+																<xs:minInclusive value="1.0"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Maximum">
+														<xs:simpleType>
+															<xs:restriction base="xs:float">
+																<xs:minInclusive value="1.0"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Horizon" type="xs:float" minOccurs="0"/>
+										<xs:element name="HourAngleRange" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="East">
+														<xs:simpleType>
+															<xs:restriction base="xs:float">
+																<xs:minInclusive value="-12.0"/>
+																<xs:maxExclusive value="24.0"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="West">
+														<xs:simpleType>
+															<xs:restriction base="xs:float">
+																<xs:minInclusive value="-12.0"/>
+																<xs:maxExclusive value="24.0"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="SkyCondition" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="Excellent"/>
+													<xs:enumeration value="Good"/>
+													<xs:enumeration value="Fair"/>
+													<xs:enumeration value="Poor"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Moon" minOccurs="0">
+											<xs:complexType>
+                        <xs:sequence>
+													<!--<xs:element name="Phase">
+														<xs:simpleType>
+															<xs:restriction base="xs:float">
+																<xs:minInclusive value="0.0"/>
+																<xs:maxInclusive value="1.0"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Down" type="xs:boolean"/>-->
+													<xs:sequence>
+														<xs:element name="Distance">
+															<xs:simpleType>
+																<xs:restriction base="xs:float">
+																	<xs:minInclusive value="0.0"/>
+																	<xs:maxInclusive value="90.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element name="Width">
+															<xs:simpleType>
+																<xs:restriction base="xs:float">
+																	<xs:minInclusive value="0.0"/>
+																	<xs:maxInclusive value="15.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+													</xs:sequence>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="TimeRange" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Earliest" type="xs:dateTime"/>
+													<xs:element name="Latest" type="xs:dateTime"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Priority" type="xs:byte" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Telescope" type="xs:string" minOccurs="0"/>
+							<xs:element name="TimeStamp" type="xs:dateTime" minOccurs="0"/>
+							<xs:element name="Target" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="ID" minOccurs="0"/>
+										<xs:element name="Name" type="xs:string"/>
+										<xs:element name="Description" type="xs:string" minOccurs="0"/>
+										<!--<xs:choice>-->
+											<xs:element name="Coordinates">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="RightAscension">
+															<xs:simpleType>
+																<xs:restriction base="xs:double">
+																	<xs:minInclusive value="0.0"/>
+																	<xs:maxExclusive value="360.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element name="Declination">
+															<xs:simpleType>
+																<xs:restriction base="xs:double">
+																	<xs:minInclusive value="-90.0"/>
+																	<xs:maxInclusive value="90.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element name="DateTime" type="xs:dateTime" minOccurs="0"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Planet" type="xs:string"/>
+											<xs:element name="OrbitalElements" type="xs:string"/>
+										<!--</xs:choice>-->
+										<xs:element name="PositionAngle" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:double">
+													<xs:minInclusive value="-180.0"/>
+													<xs:maxExclusive value="360.0"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Picture" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Name" type="xs:string"/>
+													<xs:element name="Description" type="xs:string" minOccurs="0"/>
+													<!--<xs:choice>-->
+														<xs:element name="ExposureTime">
+															<xs:simpleType>
+																<xs:restriction base="xs:float">
+																	<xs:minInclusive value="0.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<!--<xs:element name="LimitingMagnitude" type="xs:float"/>-->
+													<!--</xs:choice>-->
+													<xs:element name="Binning" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:unsignedInt">
+																<xs:minExclusive value="0"/>
+																<xs:maxInclusive value="16"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Filter" type="xs:string" minOccurs="0"/>
+													<xs:choice>
+														<xs:element name="Dither" minOccurs="0">
+															<xs:simpleType>
+																<xs:restriction base="xs:float">
+																	<xs:minExclusive value="0.0"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:sequence minOccurs="0">
+															<xs:element name="RaOffset">
+																<xs:simpleType>
+																	<xs:restriction base="xs:float">
+																		<xs:minInclusive value="-10.0"/>
+																		<xs:maxInclusive value="10.0"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="DecOffset">
+																<xs:simpleType>
+																	<xs:restriction base="xs:float">
+																		<xs:minInclusive value="-10.0"/>
+																		<xs:maxInclusive value="10.0"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+														</xs:sequence>
+													</xs:choice>
+												</xs:sequence>
+												<xs:attribute name="count" type="xs:unsignedInt" use="optional"/>
+												<xs:attribute name="autostack" type="xs:boolean" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="timefromprev" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:float">
+												<xs:minInclusive value="0.0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="tolfromprev" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:float">
+												<xs:minInclusive value="0.0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="count" type="xs:unsignedInt" use="optional"/>
+									<xs:attribute name="interval" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:float">
+												<xs:minInclusive value="0.0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="tolerance" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:float">
+												<xs:minInclusive value="0.0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="autofocus" type="xs:boolean" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Correction" minOccurs="0">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:anySimpleType">
+											<xs:attribute name="crPix" type="xs:boolean" use="optional"/>
+											<xs:attribute name="dark" type="xs:boolean" use="optional"/>
+											<xs:attribute name="dome" type="xs:boolean" use="optional"/>
+											<xs:attribute name="fixPix" type="xs:boolean" use="optional"/>
+											<xs:attribute name="flat" type="xs:boolean" use="optional"/>
+											<xs:attribute name="fringe" type="xs:boolean" use="optional"/>
+											<xs:attribute name="zero" type="xs:boolean" use="optional"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="bestefforts" type="xs:boolean" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:float">
+						<xs:enumeration value="2.1"/>
+						<xs:enumeration value="2.2"/>
+						<xs:enumeration value="2.3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
