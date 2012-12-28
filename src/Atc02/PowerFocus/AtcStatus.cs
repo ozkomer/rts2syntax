@@ -43,7 +43,7 @@ namespace PowerFocus
 
         public void refresh(String rawStatus, DateTime timestamp)
         {
-            logger.Info( "inicio.");
+            logger.Debug("inicio.");
             this.timeStamp = timestamp;
             String[] lineArray;
             lineArray = rawStatus.Split(("\n").ToCharArray());
@@ -51,7 +51,7 @@ namespace PowerFocus
             {
                 String line;
                 line = lineArray[i];
-                logger.Info( "Linea " + i + "=" + line);
+                logger.Debug( "Linea " + i + "=" + line);
                 if (line.StartsWith("STABT")) { this.stabilizationTemperature = extraeDouble(line); }
                 if (line.StartsWith("SETFAN")) { this.fanPower = extraeInt(line); }
                 if (line.StartsWith("PRITE")) { this.primaryTemperature = extraeDouble(line); }
@@ -63,7 +63,7 @@ namespace PowerFocus
                 if (line.StartsWith("PRES")) { this.pressure = extraeDouble(line); }
                 if (line.StartsWith("DEWPO")) { this.dewPoint = extraeDouble(line.Replace("DEWPO", " ")); }
             }
-            logger.Info("fin.");
+            logger.Debug("fin.");
         }
 
         public override string ToString()
