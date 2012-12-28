@@ -4,7 +4,7 @@
 ;
 [Setup]
 AppName=ASCOM ASCOM.OrbitATC02 Focuser Driver
-AppVerName=ASCOM ASCOM.OrbitATC02 Focuser Driver 0.97
+AppVerName=ASCOM ASCOM.OrbitATC02 Focuser Driver 0.98
 AppVersion=0.58
 AppPublisher=Eduardo Maureira <emaureir@gmail.com>
 AppPublisherURL=mailto:emaureir@gmail.com

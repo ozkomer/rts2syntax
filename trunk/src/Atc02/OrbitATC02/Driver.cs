@@ -202,7 +202,7 @@ namespace ASCOM.OrbitATC02
                     {
                         this.EnviaMensaje("FindOptimal");
                         System.Threading.Thread.Sleep(8000);
-                        this.EnviaMensaje("SetFan 0");
+                        //this.EnviaMensaje("SetFan 0");
                         System.Threading.Thread.Sleep(1000);
                         String comando;
                         comando = ("move " + settings.StartUpSecondaryPosition);
@@ -212,7 +212,7 @@ namespace ASCOM.OrbitATC02
                 else
                 {
                     Focuser.sysLog.LogMessageCrLf("Connected:", "--->desConectar");
-                    this.EnviaMensaje("SetFan 100");
+                    //this.EnviaMensaje("SetFan 100");
                 }
             }
         }
