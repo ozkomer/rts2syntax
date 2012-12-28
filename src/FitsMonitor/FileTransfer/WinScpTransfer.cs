@@ -100,7 +100,8 @@ namespace FileTransfer
                 remotheFullPathFilename.Append(remoteFilename);
                 transferResult = wscpSession.PutFiles(archivoLocal, remotheFullPathFilename.ToString(), false, transferOptions);
                 logger.Info("transferResult.IsSuccess=" + transferResult.IsSuccess);
-                foreach (OperationResultBase orb in transferResult.Failures)
+
+                foreach (SessionRemoteException orb in transferResult.Failures)
                 {
                     logger.Info("error-->" + orb.ToString());
                 }
