@@ -9,7 +9,7 @@
       <Value Profile="(Default)">2400</Value>
     </Setting>
     <Setting Name="refreshStatusTimer" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="lastSecondaryPosition" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3718</Value>
@@ -19,6 +19,12 @@
     </Setting>
     <Setting Name="FocusPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3000</Value>
+    </Setting>
+    <Setting Name="setFanTimer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">180</Value>
+    </Setting>
+    <Setting Name="AppVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Focus Server v0.5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

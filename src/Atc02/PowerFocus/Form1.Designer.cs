@@ -35,13 +35,14 @@
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewATC02 = new System.Windows.Forms.DataGridView();
+            this.ColumnParameter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bReadStatus = new System.Windows.Forms.Button();
             this.bSetFan = new System.Windows.Forms.Button();
             this.trackBarFan = new System.Windows.Forms.TrackBar();
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.bFindOptimal = new System.Windows.Forms.Button();
-            this.ColumnParameter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timerSetFan = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewATC02)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFan)).BeginInit();
@@ -51,7 +52,7 @@
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "Focus Server";
             this.notifyIcon1.Visible = true;
             // 
             // contextMenuStrip1
@@ -91,6 +92,20 @@
             this.dataGridViewATC02.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridViewATC02.Size = new System.Drawing.Size(379, 245);
             this.dataGridViewATC02.TabIndex = 1;
+            // 
+            // ColumnParameter
+            // 
+            this.ColumnParameter.FillWeight = 60F;
+            this.ColumnParameter.HeaderText = "Parameter";
+            this.ColumnParameter.Name = "ColumnParameter";
+            this.ColumnParameter.ReadOnly = true;
+            // 
+            // ColumnValue
+            // 
+            this.ColumnValue.HeaderText = "Value";
+            this.ColumnValue.Name = "ColumnValue";
+            this.ColumnValue.ReadOnly = true;
+            this.ColumnValue.Width = 250;
             // 
             // bReadStatus
             // 
@@ -138,19 +153,9 @@
             this.bFindOptimal.UseVisualStyleBackColor = true;
             this.bFindOptimal.Click += new System.EventHandler(this.bFindOptimal_Click);
             // 
-            // ColumnParameter
+            // timerSetFan
             // 
-            this.ColumnParameter.FillWeight = 60F;
-            this.ColumnParameter.HeaderText = "Parameter";
-            this.ColumnParameter.Name = "ColumnParameter";
-            this.ColumnParameter.ReadOnly = true;
-            // 
-            // ColumnValue
-            // 
-            this.ColumnValue.HeaderText = "Value";
-            this.ColumnValue.Name = "ColumnValue";
-            this.ColumnValue.ReadOnly = true;
-            this.ColumnValue.Width = 250;
+            this.timerSetFan.Tick += new System.EventHandler(this.timerSetFan_Tick);
             // 
             // Form1
             // 
@@ -162,9 +167,10 @@
             this.Controls.Add(this.trackBarFan);
             this.Controls.Add(this.bSetFan);
             this.Controls.Add(this.dataGridViewATC02);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::PowerFocus.Properties.Settings.Default, "AppVersion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Focus Server";
+            this.Text = global::PowerFocus.Properties.Settings.Default.AppVersion;
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -190,6 +196,7 @@
         private System.Windows.Forms.Button bFindOptimal;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnParameter;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
+        private System.Windows.Forms.Timer timerSetFan;
     }
 }
 
