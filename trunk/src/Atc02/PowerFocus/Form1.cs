@@ -100,7 +100,7 @@ namespace PowerFocus
                 String mensajeRecibido;
                 String mensajeRespuesta;
                 mensajeRecibido = encoder.GetString(message, 0, bytesRead);
-                logger.Info("mensajeRecibido=" + mensajeRecibido);
+                logger.Debug("mensajeRecibido=" + mensajeRecibido);
 
                 #region respuesta al cliente
                 mensajeRespuesta = procesaMensaje(mensajeRecibido);
@@ -379,6 +379,11 @@ namespace PowerFocus
         private void timerStatus_Tick(object sender, EventArgs e)
         {
             this.refreshATC02XmlStatus();
+        }
+
+        private void bFindOptimal_Click(object sender, EventArgs e)
+        {
+            this.focuser.FindOptimal();
         }
         
     }

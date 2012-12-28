@@ -35,12 +35,13 @@
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewATC02 = new System.Windows.Forms.DataGridView();
-            this.ColumnParameter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bReadStatus = new System.Windows.Forms.Button();
             this.bSetFan = new System.Windows.Forms.Button();
             this.trackBarFan = new System.Windows.Forms.TrackBar();
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
+            this.bFindOptimal = new System.Windows.Forms.Button();
+            this.ColumnParameter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewATC02)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFan)).BeginInit();
@@ -85,22 +86,11 @@
             this.dataGridViewATC02.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnParameter,
             this.ColumnValue});
-            this.dataGridViewATC02.Location = new System.Drawing.Point(12, 41);
+            this.dataGridViewATC02.Location = new System.Drawing.Point(12, 63);
             this.dataGridViewATC02.Name = "dataGridViewATC02";
-            this.dataGridViewATC02.Size = new System.Drawing.Size(259, 245);
+            this.dataGridViewATC02.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridViewATC02.Size = new System.Drawing.Size(379, 245);
             this.dataGridViewATC02.TabIndex = 1;
-            // 
-            // ColumnParameter
-            // 
-            this.ColumnParameter.HeaderText = "Parameter";
-            this.ColumnParameter.Name = "ColumnParameter";
-            this.ColumnParameter.ReadOnly = true;
-            // 
-            // ColumnValue
-            // 
-            this.ColumnValue.HeaderText = "Value";
-            this.ColumnValue.Name = "ColumnValue";
-            this.ColumnValue.ReadOnly = true;
             // 
             // bReadStatus
             // 
@@ -114,7 +104,7 @@
             // 
             // bSetFan
             // 
-            this.bSetFan.Location = new System.Drawing.Point(12, 322);
+            this.bSetFan.Location = new System.Drawing.Point(93, 12);
             this.bSetFan.Name = "bSetFan";
             this.bSetFan.Size = new System.Drawing.Size(75, 23);
             this.bSetFan.TabIndex = 3;
@@ -125,10 +115,10 @@
             // trackBarFan
             // 
             this.trackBarFan.LargeChange = 10;
-            this.trackBarFan.Location = new System.Drawing.Point(93, 322);
+            this.trackBarFan.Location = new System.Drawing.Point(174, 12);
             this.trackBarFan.Maximum = 100;
             this.trackBarFan.Name = "trackBarFan";
-            this.trackBarFan.Size = new System.Drawing.Size(178, 45);
+            this.trackBarFan.Size = new System.Drawing.Size(136, 45);
             this.trackBarFan.SmallChange = 5;
             this.trackBarFan.TabIndex = 4;
             this.trackBarFan.TickFrequency = 10;
@@ -138,14 +128,39 @@
             // 
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
+            // bFindOptimal
+            // 
+            this.bFindOptimal.Location = new System.Drawing.Point(316, 12);
+            this.bFindOptimal.Name = "bFindOptimal";
+            this.bFindOptimal.Size = new System.Drawing.Size(75, 23);
+            this.bFindOptimal.TabIndex = 5;
+            this.bFindOptimal.Text = "Find Optimal";
+            this.bFindOptimal.UseVisualStyleBackColor = true;
+            this.bFindOptimal.Click += new System.EventHandler(this.bFindOptimal_Click);
+            // 
+            // ColumnParameter
+            // 
+            this.ColumnParameter.FillWeight = 60F;
+            this.ColumnParameter.HeaderText = "Parameter";
+            this.ColumnParameter.Name = "ColumnParameter";
+            this.ColumnParameter.ReadOnly = true;
+            // 
+            // ColumnValue
+            // 
+            this.ColumnValue.HeaderText = "Value";
+            this.ColumnValue.Name = "ColumnValue";
+            this.ColumnValue.ReadOnly = true;
+            this.ColumnValue.Width = 250;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(283, 379);
+            this.ClientSize = new System.Drawing.Size(403, 316);
+            this.Controls.Add(this.bFindOptimal);
+            this.Controls.Add(this.bReadStatus);
             this.Controls.Add(this.trackBarFan);
             this.Controls.Add(this.bSetFan);
-            this.Controls.Add(this.bReadStatus);
             this.Controls.Add(this.dataGridViewATC02);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -168,12 +183,13 @@
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridViewATC02;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnParameter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
         private System.Windows.Forms.Button bReadStatus;
         private System.Windows.Forms.Button bSetFan;
         private System.Windows.Forms.TrackBar trackBarFan;
         private System.Windows.Forms.Timer timerStatus;
+        private System.Windows.Forms.Button bFindOptimal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnParameter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
     }
 }
 
