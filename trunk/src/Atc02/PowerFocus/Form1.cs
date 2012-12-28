@@ -235,8 +235,10 @@ namespace PowerFocus
             this.listenThread = new Thread(new ThreadStart(ListenForClients));
             this.listenThread.Start();
             this.focuser.conectar();
-            this.timerStatus.Interval = 500 * ((int)settings.refreshStatusTimer);
+            this.timerStatus.Interval = 1000 * ((int)settings.refreshStatusTimer);
             this.timerStatus.Start();
+            this.timerSetFan.Interval = 1000 * settings.setFanTimer;
+            this.timerSetFan.Start();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -286,13 +288,13 @@ namespace PowerFocus
             if (this.atc02Status.IsFresh())
             {
                 this.BackColor = Color.LightGreen;
-                this.Text = "Fits Monitor, ATC02 ok";
+                this.Text = settings.AppVersion+", ATC02 ok";
             }
             else
             {
                 logger.Warn("ATC02 log outdated");
                 this.BackColor = Color.Pink;
-                this.Text = "Fits Monitor, check ATC02 (power/driver/log)";
+                this.Text = settings.AppVersion + ", check ATC02 (power/driver/log)";
             }
             this.analizaATC02();
         }
@@ -378,12 +380,37 @@ namespace PowerFocus
 
         private void timerStatus_Tick(object sender, EventArgs e)
         {
-            this.refreshATC02XmlStatus();
+            this.refreshATC02XmlStatus();            
         }
 
         private void bFindOptimal_Click(object sender, EventArgs e)
         {
             this.focuser.FindOptimal();
+        }
+
+        private void timerSetFan_Tick(object sender, EventArgs e)
+        
+        {
+            Boolean condicion;
+            condicion = (   (this.atc02Status.IsFresh()) && 
+                            (this.atc02Status.PrimaryTemperature > this.atc02Status.SecondaryTemperature) &&
+                            (this.atc02Status.SecondaryTemperature >= this.atc02Status.AmbientTemperature)
+                         );
+
+            if (condicion)
+            {
+                if (this.atc02Status.FanPower!=100)
+                {
+                    this.focuser.SetFan(100);
+                }
+            }
+            else
+            {
+                if (this.atc02Status.FanPower != 0)
+                {
+                    this.focuser.SetFan(0);
+                }
+            }
         }
         
     }
