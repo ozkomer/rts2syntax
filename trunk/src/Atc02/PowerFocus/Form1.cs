@@ -288,13 +288,13 @@ namespace PowerFocus
             if (this.atc02Status.IsFresh())
             {
                 this.BackColor = Color.LightGreen;
-                this.Text = settings.AppVersion+", ATC02 ok";
+                this.toolStripStatusLabel1.Text = "ATC02 ok";
             }
             else
             {
                 logger.Warn("ATC02 log outdated");
                 this.BackColor = Color.Pink;
-                this.Text = settings.AppVersion + ", check ATC02 (power/driver/log)";
+                this.toolStripStatusLabel1.Text = "Check ATC02 (power/driver/log)";
             }
             this.analizaATC02();
         }

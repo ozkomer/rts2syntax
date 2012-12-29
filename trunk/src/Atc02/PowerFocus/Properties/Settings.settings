@@ -24,7 +24,7 @@
       <Value Profile="(Default)">180</Value>
     </Setting>
     <Setting Name="AppVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Focus Server v0.5</Value>
+      <Value Profile="(Default)">Focus Server v0.51</Value>
     </Setting>
   </Settings>
 </SettingsFile>
