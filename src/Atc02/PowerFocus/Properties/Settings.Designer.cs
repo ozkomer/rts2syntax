@@ -109,7 +109,7 @@ namespace PowerFocus.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Focus Server v0.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Focus Server v0.51")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
