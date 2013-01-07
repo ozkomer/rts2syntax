@@ -506,11 +506,13 @@ namespace Montura
             }
             url1 = url1.Replace("CMD", comando);
             url2 = url2.Replace("CMD", comando);
+            logger.Debug("url1=" + url1);
+            logger.Debug("url2=" + url2);
             String resp1, resp2;
-            resp1 = Http.GetUrl(url1);
-            resp2 = Http.GetUrl(url2);
-            Console.WriteLine("" + url1 + " ---> " + resp1);
-            Console.WriteLine("" + url2 + " ---> " + resp2);
+            //resp1 = Http.GetUrl(url1);
+            //resp2 = Http.GetUrl(url2);
+            //Console.WriteLine("" + url1 + " ---> " + resp1);
+            //Console.WriteLine("" + url2 + " ---> " + resp2);
         }
 
         /// <summary>
