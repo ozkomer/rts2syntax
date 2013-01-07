@@ -17,12 +17,12 @@ namespace ZapatillaIP_cs
 
         List<CheckBox> relayCheckBox;
         static ZapatillaIP_cs.Properties.Settings settings = Properties.Settings.Default;
-        private ArduinoTcp arduinoTcp;
+        private ArduinoUdp arduinoUdp;
 
         public Form1()
         {
             InitializeComponent();
-            this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
+            this.arduinoUdp = new ArduinoUdp(settings.ipAddress, (int)settings.port);
             //this.arduinoTcp.Connect();
             relayCheckBox = new List<CheckBox>();
             relayCheckBox.Add(checkBoxRelay1);
@@ -40,14 +40,12 @@ namespace ZapatillaIP_cs
             relayCheckBox.Add(checkBoxRelay13);
             relayCheckBox.Add(checkBoxRelay14);
             relayCheckBox.Add(checkBoxRelay15);
-            relayCheckBox.Add(checkBoxRelay16);
-
-            
+            relayCheckBox.Add(checkBoxRelay16);            
         }
 
         private void readRelays()
         {
-            this.arduinoTcp.readRelays();
+            this.arduinoUdp.readRelays();
             this.refreshcheckBoxRelayColors();
         }
 
@@ -57,7 +55,7 @@ namespace ZapatillaIP_cs
             for (int i = 0; i < 16; i++)
             {
                 boton = relayCheckBox[i];
-                if (this.arduinoTcp.RelayStatus[i])
+                if (this.arduinoUdp.RelayStatus[i])
                 {
                     boton.BackColor = Color.LightGreen;
                 }
@@ -65,22 +63,7 @@ namespace ZapatillaIP_cs
                 {
                     boton.BackColor = Color.Pink;
                 }
-                if (!this.arduinoTcp.Tcpclnt.Connected)
-                {
-                    boton.Enabled = false;
-                }
-            }
-        }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (this.arduinoTcp.Tcpclnt == null)
-            {
-                return;
-            }
-            if (this.arduinoTcp.Tcpclnt.Connected)
-            {
-                this.arduinoTcp.Tcpclnt.Close();
             }
         }
 
@@ -89,17 +72,6 @@ namespace ZapatillaIP_cs
         {
             this.readRelays();
         }
-
-        //private void buttonRelay_Click(object sender, EventArgs e)
-        //{
-        //    int botonPresionado;
-        //    //botonPresionado = -1;
-        //    botonPresionado = relayButton.IndexOf((Button)sender);
-        //    Console.WriteLine("botonPresionado=" + botonPresionado);
-        //    relayStatus[botonPresionado] = !relayStatus[botonPresionado];
-        //    refreshButtonRelayColors();
-        //    refreshPorts();
-        //}
 
         /**
          * Recorre la lista de reles, formando una lista con aquellos que estan tickeados. 
@@ -138,14 +110,14 @@ namespace ZapatillaIP_cs
             {
                 foreach (int indice in tickeds)
                 {
-                    Console.WriteLine("relayStatus[" + indice + "]=" + this.arduinoTcp.RelayStatus[indice] + " ---> " + targetState);
+                    Console.WriteLine("relayStatus[" + indice + "]=" + this.arduinoUdp.RelayStatus[indice] + " ---> " + targetState);
                     // Se actualiza la interfaz para que ningun checkBox permanezca tickeado despues mover los switches
                     relayCheckBox[indice].Checked = false;
                     // Se actualizan los estados en el arduino, pero no aun en el arreglo de relays
-                    this.arduinoTcp.RelayStatus[indice] = targetState;
+                    this.arduinoUdp.RelayStatus[indice] = targetState;
                 }
                 refreshcheckBoxRelayColors();
-                this.arduinoTcp.refreshPorts();
+                this.arduinoUdp.refreshPorts();
             }
         }
 
@@ -161,19 +133,7 @@ namespace ZapatillaIP_cs
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            this.readRelays();
         }
-
-        private void buttonConnect_Click(object sender, EventArgs e)
-        {
-            this.arduinoTcp.Connect();
-            if (this.arduinoTcp.Tcpclnt.Connected)
-            {
-                this.tabControl1.Visible = true;
-                this.readRelays();
-            }
-        }
-
- 
     }
 }

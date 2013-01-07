@@ -44,7 +44,7 @@ namespace Montura
         /// </summary>
         private Boolean tiltLimitLast;
 
-        private ArduinoTcp arduinoTcp;
+        private ArduinoUdp arduinoUdp;
 
         private Telescope telescopio;
         static Montura.Properties.Settings settings = Properties.Settings.Default;
@@ -100,7 +100,7 @@ namespace Montura
             tiltLimit = false;
             tiltLimitLast = false;
             this.udpClient = new UdpClient();
-            this.arduinoTcp = new ArduinoTcp(settings.ipAddress, (int)settings.port);
+            this.arduinoUdp = new ArduinoUdp(settings.ipAddress, (int)settings.port);
             InitializeComponent();
 
             stat = null;
@@ -130,17 +130,17 @@ namespace Montura
         public void EnciendeMontura()
         {
             this.timerReadSerial.Stop();
-            this.arduinoTcp.Connect();
-            if (this.arduinoTcp.Tcpclnt.Connected)
+            //this.arduinoUdp.Connect();
+            //if (this.arduinoUdp.Tcpclnt.Connected)
             {
-                this.arduinoTcp.readRelays();
-                this.arduinoTcp.RelayStatus[2] = true;
-                this.arduinoTcp.refreshPorts();
+                this.arduinoUdp.readRelays();
+                this.arduinoUdp.RelayStatus[2] = true;
+                this.arduinoUdp.refreshPorts();
 
-                if (this.arduinoTcp.Tcpclnt.Connected)
-                {
-                    this.arduinoTcp.Tcpclnt.Close();
-                }
+                //if (this.arduinoUdp.Tcpclnt.Connected)
+                //{
+                //    this.arduinoUdp.Tcpclnt.Close();
+                //}
             }
             this.timerReadSerial.Start();
         }
