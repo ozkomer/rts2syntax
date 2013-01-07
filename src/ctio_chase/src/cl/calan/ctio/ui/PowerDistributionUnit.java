@@ -19,7 +19,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cl.calan.ctio.ArduinoTcp;
+import cl.calan.ctio.ArduinoUdp;
 
 
 /**
@@ -37,7 +37,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 	private NetworkUi networkUI;
 	private RelaysUI relaysUI;
 	
-	private ArduinoTcp arduinoTCP;
+	private ArduinoUdp arduinoUDP;
 	
 	public PowerDistributionUnit ()
 	{
@@ -53,7 +53,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 		this.setResizable(false);
 		this.networkUI = new NetworkUi(this);
 		this.relaysUI = new RelaysUI(this);
-		this.relaysUI.setVisible(false);
+		this.relaysUI.setVisible(true);
 		
 		FlowLayout layout;
 		layout = new FlowLayout();
@@ -65,7 +65,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 		int port;
 		host = networkUI.getHost();
 		port =  networkUI.getPort();
-		arduinoTCP = new ArduinoTcp(host, port);
+		arduinoUDP = new ArduinoUdp(host, port);
 	}
 	
 	/**
@@ -117,7 +117,8 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 		System.out.println("Conectar");
 		
 		String mensajeError;
-		mensajeError = arduinoTCP.Connect();
+		mensajeError = null;
+//		mensajeError = arduinoTCP.Connect();
 		if (mensajeError==null)
 		{
 			System.out.println("Conectado exitosamente.");
@@ -184,18 +185,18 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
         {
         	for (Integer indice : tickeds) 
             {
-                System.out.println("relayStatus[" + indice + "]=" + this.arduinoTCP.getRelayStatus()[indice]+ " ---> " + targetState);
+                System.out.println("relayStatus[" + indice + "]=" + this.arduinoUDP.getRelayStatus()[indice]+ " ---> " + targetState);
                 // Se actualiza la interfaz para que ningun checkBox permanezca tickeado despues mover los switches
                 this.relaysUI.getJcbRelay()[indice].setSelected(false);//relayCheckBox[indice].Checked = false;
                 // Se actualizan los estados en el arduino, pero no aun en el arreglo de relays
                 Boolean[] tmpRelayStatus;
-                tmpRelayStatus = this.arduinoTCP.getRelayStatus();
+                tmpRelayStatus = this.arduinoUDP.getRelayStatus();
                 tmpRelayStatus[indice]=targetState;
-                this.arduinoTCP.setRelayStatus(tmpRelayStatus);
+                this.arduinoUDP.setRelayStatus(tmpRelayStatus);
             }
             refreshcheckBoxRelayColors();
             // Ahora si se actualiza el arreglo de Relays.
-            this.arduinoTCP.refreshPorts();
+            this.arduinoUDP.refreshPorts();
         }
     }
 
@@ -203,7 +204,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 	private void Read()
 	{
 		System.out.println("Read");
-        this.arduinoTCP.readRelays();
+        this.arduinoUDP.readRelays();
         this.refreshcheckBoxRelayColors();
 	}
 
@@ -216,7 +217,7 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
         {
             boton = jcbArray[i];
             
-            if (this.arduinoTCP.getRelayStatus()[i])
+            if (this.arduinoUDP.getRelayStatus()[i])
             {
                 boton.setBackground(Color.GREEN);
             }
@@ -225,10 +226,11 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
             	boton.setBackground(Color.PINK);
             }
             
-            if (!this.arduinoTCP.IsConnected())
-            {
-                boton.setEnabled( false );
-            }
+            boton.setEnabled(true);
+//            if (!this.arduinoTCP.IsConnected())
+//            {
+//                boton.setEnabled( false );
+//            }
         }
 	}
 
@@ -246,10 +248,10 @@ public class PowerDistributionUnit extends JFrame implements ComponentListener, 
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		if (arduinoTCP.DisConnect())
-		{
-			System.out.println("Desconectado exitosamente.");
-		}
+//		if (arduinoTCP.DisConnect())
+//		{
+//			System.out.println("Desconectado exitosamente.");
+//		}
 		System.exit(0);		
 	}
 
