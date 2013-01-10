@@ -36,9 +36,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Atc02\AtcXml\bin\Release\AtcXml.dll</HintPath>
     </Reference>
+    <Reference Include="CSharpFITS_v1.1, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\setup\CSharpFits\CSharpFITS_v1.1_dll\CSharpFITS_v1.1.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Setup\apache\log4net-1.2.11-bin-newkey\log4net-1.2.11\bin\net\3.5\release\log4net.dll</HintPath>
+      <HintPath>..\..\..\setup\apache\log4net-1.2.11-bin-newkey\log4net-1.2.11\bin\net\3.5\release\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -95,10 +99,6 @@
     <None Include="Resources\IconAstronomy.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Setup\CSharpFits\CSharpFITS_v1.1_source\CSharpFITS_v1.1_source\CSharpFITS_v1.1\CSharpFITS_v1.1.csproj">
-      <Project>{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}</Project>
-      <Name>CSharpFITS_v1.1</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FileTransfer\FileTransfer.csproj">
       <Project>{560E158A-435B-4699-92DF-4AFBE07FB844}</Project>
       <Name>FileTransfer</Name>

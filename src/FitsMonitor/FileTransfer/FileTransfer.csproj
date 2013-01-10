@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Setup\apache\log4net-1.2.11-bin-newkey\log4net-1.2.11\bin\net\3.5\release\log4net.dll</HintPath>
+      <HintPath>..\..\..\setup\apache\log4net-1.2.11-bin-newkey\log4net-1.2.11\bin\net\3.5\release\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -47,9 +47,9 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WinSCP, Version=1.0.0.235, Culture=neutral, PublicKeyToken=b5f19f5762436b89, processorArchitecture=MSIL">
+    <Reference Include="WinSCP, Version=1.0.0.725, Culture=neutral, PublicKeyToken=b5f19f5762436b89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Setup\winscp\winscp506automation\WinSCP.dll</HintPath>
+      <HintPath>..\..\..\setup\winscp\winScpV508\winscp508automation\WinSCP.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
