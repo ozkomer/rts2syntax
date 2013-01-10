@@ -1,3 +1,4 @@
+// USAR COM7
 /*
 Control de arreglo de reles por comandos seriales o TCP/IP
 Eduardo Maureira, Enero 2012
@@ -34,15 +35,10 @@ byte gateway[] = { 139, 229, 12, 1 };
 //the subnet for the shield:
 byte subnet[] = { 255, 255, 255, 0};
 
-//byte ip[] = { 139, 229, 65, 214 };// 139.229.65.214
-//the gateway for the shield:
-//byte gateway[] = { 139, 229, 65, 193 };
-//the subnet for the shield:
-//byte subnet[] = { 255, 255, 255, 224 };
-
 // Servidor de la Zapatilla IP
-EthernetServer server = EthernetServer(18008);
-EthernetClient client;
+EthernetUDP udp;// = EthernetServer(18008);
+//EthernetClient client;
+//char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
 
 void setup()  
 {
@@ -65,18 +61,13 @@ void setup()
   Ethernet.begin(mac,ip,gateway,subnet);
 
   // start listening for clients
-  server.begin();
+  udp.begin(18008);
   listarComandosSerial ();
   readRelays();
 }
  
 
 void loop() {
-//  currentLimits= digitalRead( pinlimitsRA);
-//  if ((lastLimits==LOW) && (currentLimits==HIGH))
-//  {
-//    apagarMontura();
-//  }
   if (Serial.available() > 0) {
     // read the incoming byte:
     incomingByte = Serial.read();    
@@ -87,18 +78,15 @@ void loop() {
     listarComandosSerial ();
   }
   // if an incoming client connects, there will be bytes available to read:
-  client = server.available();
-  if (client == true) {
+  int packetSize = udp.parsePacket();
+  if (udp.available()) {
     // read bytes from the incoming client and write them back
     // to any clients connected to the server:
     byte letra;
-    letra = client.read();
+    letra = udp.read();
     delay(BREATH_TIME);
-    procesaComandoTcpIP(letra);
-
-  }
-
-  
+    procesaComandoUdp(letra);
+  }  
 } // end loop
 
 void apagarMontura()
@@ -124,20 +112,32 @@ void encenderTodo()
   updateRelays();
 }
 
-void procesaComandoTcpIP(byte comando)
+void procesaComandoUdp(byte comando)
 {
+        Serial.print ("procesaComandoUdp, comando=");
+        Serial.print(comando);
+        Serial.println("");   
     byte chk;
     byte suma;
     switch (comando)
     {
-    case 1:
+     case 1:
     
-      port0=client.read();
-      port1=client.read();
-      chk = client.read();
+      port0=udp.read();
+      port1=udp.read();
+      chk = udp.read();
       suma = (comando + port0 + port1);
       if (suma==chk)
       {
+        Serial.print ("port0=");
+        Serial.print(port0);
+        Serial.print ("\t port1=");
+        Serial.print(port1);
+        Serial.print ("\t chk=");
+        Serial.print(chk);
+        Serial.print ("\t suma=");
+        Serial.print(suma);
+        Serial.println("");        
         updateRelays();
         readRelays();
       }
@@ -149,9 +149,19 @@ void procesaComandoTcpIP(byte comando)
         Serial.println(chk);
       }
       break;
-    case 2:
-      client.write(port0);
-      client.write(port1);
+     case 2:
+      IPAddress remote;
+      int remotPort;
+      remote = udp.remoteIP();
+      remotPort =  udp.remotePort();
+      Serial.print(remote);
+      Serial.print(" on port:");
+      Serial.println(remotPort);
+      delay(BREATH_TIME);
+      udp.beginPacket(remote,remotPort);
+      udp.write(port0);
+      udp.write(port1);
+      udp.endPacket();
       break;
     }
     
