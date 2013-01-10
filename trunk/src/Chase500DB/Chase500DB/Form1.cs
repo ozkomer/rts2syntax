@@ -36,7 +36,7 @@ namespace Chase500DB
 
             StringBuilder archivoSalida;
             archivoSalida = new StringBuilder();
-            archivoSalida.Append(@"C:\Users\chase\Desktop\scheduler_tmp\");
+            archivoSalida.Append(@"C:\Users\Administrator\Desktop\rtml2.3\");
             archivoSalida.Append(fileName);
 
             Console.WriteLine("archivoSalida=" + archivoSalida.ToString());
