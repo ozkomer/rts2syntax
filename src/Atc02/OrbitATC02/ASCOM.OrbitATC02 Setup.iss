@@ -33,9 +33,9 @@ Name: "{cf}\ASCOM\Uninstall\Focuser\ASCOM.OrbitATC02"
 ; TODO: Add subfolders below {app} as needed (e.g. Name: "{app}\MyFolder")
 
 [Files]
-Source: "C:\Users\chase\Documents\emaureir\src\Atc02\OrbitATC02\bin\Release\ASCOM.OrbitATC02.Focuser.dll"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Atc02\OrbitATC02\bin\Release\ASCOM.OrbitATC02.Focuser.dll"; DestDir: "{app}"
 ; Require a read-me HTML to appear after installation, maybe driver's Help doc
-Source: "C:\Users\chase\Documents\emaureir\src\Atc02\OrbitATC02\OrbitATC02ReadMe.htm"; DestDir: "{app}"; Flags: isreadme
+Source: "C:\Users\Administrator\Documents\src\Atc02\OrbitATC02\OrbitATC02ReadMe.htm"; DestDir: "{app}"; Flags: isreadme
 ; TODO: Add other files needed by your driver here (add subfolders above)
 
 
