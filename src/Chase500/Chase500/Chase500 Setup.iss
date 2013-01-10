@@ -34,12 +34,12 @@ Name: "{cf}\ASCOM\Uninstall\Dome\Chase500"
 
 [Files]
          
-Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ASCOM.Chase500.Dome.dll"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\Interop.IObjectSafetyTLB.dll"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ModbusTCP.dll"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\bin\Release\ModbusTCP.xml"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Chase500\Chase500\bin\Release\ASCOM.Chase500.Dome.dll"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Chase500\Chase500\bin\Release\Interop.IObjectSafetyTLB.dll"; DestDir: "{app}"
+; Source: "C:\Users\Administrator\Documents\src\Chase500\Chase500\bin\Release\ModbusTCP.dll"; DestDir: "{app}"
+; Source: "C:\Users\Administrator\Documents\src\Chase500\Chase500\bin\Release\ModbusTCP.xml"; DestDir: "{app}"
 ; Require a read-me HTML to appear after installation, maybe driver's Help doc
-Source: "C:\Users\chase\Documents\emaureir\src\Chase500\Chase500\LeaMe_Chase500.htm"; DestDir: "{app}"; Flags: isreadme
+Source: "C:\Users\Administrator\Documents\src\Chase500\Chase500\LeaMe_Chase500.htm"; DestDir: "{app}"; Flags: isreadme
 ; TODO: Add other files needed by your driver here (add subfolders above)
 
 
