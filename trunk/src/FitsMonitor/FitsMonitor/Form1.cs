@@ -116,7 +116,7 @@ namespace FitsMonitor
             DateTime Ahora;
             Ahora = DateTime.Now;
             Fits fitsFile;
-
+            System.Threading.Thread.Sleep(1000);
             fitsFile = new Fits(fitsFullPath);
 
             BasicHDU hdu;
@@ -152,6 +152,28 @@ namespace FitsMonitor
                 hcSecTemp = hdu.Header.FindCard("SECTEMP");
                 hcAmbTemp = hdu.Header.FindCard("AMBTEMP");
                 hcSetFan = hdu.Header.FindCard("SETFAN");
+                if (hcFocStep == null)
+                {
+                    hcFocStep = new HeaderCard("FOCSTEP");
+                    hdu.Header.AddCard(hcFocStep);
+                }
+                if (hcPriTemp == null) 
+                {
+                    hcPriTemp = new HeaderCard("PRITEMP");
+                    hdu.Header.AddCard(hcPriTemp);
+                }
+                if (hcSecTemp == null) {
+                    hcSecTemp = new HeaderCard("SECTEMP");
+                    hdu.Header.AddCard(hcSecTemp);
+                }
+                if (hcAmbTemp == null) {
+                    hcAmbTemp = new HeaderCard("AMBTEMP");
+                    hdu.Header.AddCard(hcAmbTemp);
+                }
+                if (hcSetFan == null) {
+                    hcSetFan = new HeaderCard("SETFAN");
+                    hdu.Header.AddCard(hcSetFan);
+                }
 
                 hcFocStep.Value = ("" + Atc02Xml.BflToFocSetp( this.atc02Status.FocusPosition));
                 hcPriTemp.Value = ("" + this.atc02Status.PrimaryTemperature);
@@ -162,7 +184,7 @@ namespace FitsMonitor
             }
             fitsFile.Close();
             // Permitimos al sistema que guarde los cambios en el archivo fits.
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(1000);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -327,7 +349,7 @@ namespace FitsMonitor
                     textoFecha.Append(" ");
                     textoFecha.Append(this.atc02Status.Timestamp.ToShortTimeString());
 
-                    Console.WriteLine("timestamp=" + textoFecha.ToString());
+                    //Console.WriteLine("timestamp=" + textoFecha.ToString());
                     fila[1] = textoFecha.ToString();
                     agregaFila(fila);
 
@@ -411,9 +433,9 @@ namespace FitsMonitor
             int bytesRead;
             bytesRead = clientStream.Read(bufferIn, 0, 800);
             respuesta = encoder.GetString(bufferIn, 0, 800);
-            Console.WriteLine("-----------");
-            Console.WriteLine(respuesta);
-            Console.WriteLine("-----------");
+            //Console.WriteLine("-----------");
+            //Console.WriteLine(respuesta);
+            //Console.WriteLine("-----------");
             client.Close();
             return respuesta;
         }
@@ -426,8 +448,8 @@ namespace FitsMonitor
         {
             String xmlStatus;
             xmlStatus = EnviaMensaje("GetXmlStatus");
-            Console.WriteLine("xmlStatus=");
-            Console.WriteLine(xmlStatus);
+            //Console.WriteLine("xmlStatus=");
+            //Console.WriteLine(xmlStatus);
                 this.atc02Status = new Atc02Xml(xmlStatus);
 
             if (this.atc02Status.IsFresh())

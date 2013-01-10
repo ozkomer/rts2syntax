@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="WatchFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\chase\Documents\ACP Astronomy\Images</Value>
+      <Value Profile="(Default)">D:\ACP\Images</Value>
     </Setting>
     <Setting Name="Host" Type="System.String" Scope="User">
-      <Value Profile="(Default)">139.229.12.77</Value>
+      <Value Profile="(Default)">146.83.9.11</Value>
     </Setting>
     <Setting Name="Username" Type="System.String" Scope="User">
       <Value Profile="(Default)">chase</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">/images/repository/inbox/</Value>
     </Setting>
     <Setting Name="FolderTotalDepth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9</Value>
+      <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="DiscardFilePattern" Type="System.String" Scope="User">
       <Value Profile="(Default)">RAW</Value>
