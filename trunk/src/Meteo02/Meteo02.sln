@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromptWeather", "PromptWeat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromptWeatherTest", "PromptWeatherTest\PromptWeatherTest.csproj", "{8E9738C1-C362-4EA1-A829-6E28123579FA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupChaseMeteo02", "SetupChaseMeteo02\SetupChaseMeteo02.vdproj", "{B53E8205-F18A-470B-85A6-9A74160045AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,14 @@ Global
 		{8E9738C1-C362-4EA1-A829-6E28123579FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9738C1-C362-4EA1-A829-6E28123579FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E9738C1-C362-4EA1-A829-6E28123579FA}.Release|x86.ActiveCfg = Release|Any CPU
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Debug|Any CPU.ActiveCfg = Debug
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Debug|Any CPU.Build.0 = Debug
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Debug|x86.ActiveCfg = Debug
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Debug|x86.Build.0 = Debug
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Release|Any CPU.ActiveCfg = Release
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Release|Any CPU.Build.0 = Release
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Release|x86.ActiveCfg = Release
+		{B53E8205-F18A-470B-85A6-9A74160045AD}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

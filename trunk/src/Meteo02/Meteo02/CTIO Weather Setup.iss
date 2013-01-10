@@ -33,12 +33,12 @@ Name: "{cf}\ASCOM\Uninstall\Switches\CTIO Weather"
 ; TODO: Add subfolders below {app} as needed (e.g. Name: "{app}\MyFolder")
 
 [Files]
-Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll.config"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\log4net.dll"; DestDir: "{app}"
-Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\bin\Release\log4net.xml"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Meteo02\Meteo02\bin\Release\ASCOM.Meteo02.SafetyMonitor.dll.config"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Meteo02\Meteo02\bin\Release\log4net.dll"; DestDir: "{app}"
+Source: "C:\Users\Administrator\Documents\src\Meteo02\Meteo02\bin\Release\log4net.xml"; DestDir: "{app}"
 ; Require a read-me HTML to appear after installation, maybe driver's Help doc
-Source: "C:\Users\chase\Documents\emaureir\src\Meteo02\Meteo02\LeameMeteo02.htm"; DestDir: "{app}"; Flags: isreadme
+Source: "C:\Users\Administrator\Documents\src\Meteo02\Meteo02\LeameMeteo02.htm"; DestDir: "{app}"; Flags: isreadme
 ; TODO: Add other files needed by your driver here (add subfolders above)
 
 
