@@ -389,11 +389,15 @@ namespace PowerFocus
         }
 
         private void timerSetFan_Tick(object sender, EventArgs e)
-        
         {
+            Boolean deltaTPositivo;
+            Boolean deltaT_inRange;
+            deltaTPositivo = (this.atc02Status.PrimaryTemperature > this.atc02Status.SecondaryTemperature); 
+            deltaT_inRange = (this.atc02Status.PrimaryTemperature - this.atc02Status.SecondaryTemperature) >= 3.0;
+
             Boolean condicion;
             condicion = (   (this.atc02Status.IsFresh()) && 
-                            (this.atc02Status.PrimaryTemperature > this.atc02Status.SecondaryTemperature) &&
+                             deltaTPositivo && deltaT_inRange &&
                             (this.atc02Status.SecondaryTemperature >= this.atc02Status.AmbientTemperature)
                          );
 
