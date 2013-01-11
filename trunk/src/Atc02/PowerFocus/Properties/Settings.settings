@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CommPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM3</Value>
+      <Value Profile="(Default)">COM4</Value>
     </Setting>
     <Setting Name="BaudRate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2400</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">180</Value>
     </Setting>
     <Setting Name="AppVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Focus Server v0.51</Value>
+      <Value Profile="(Default)">Focus Server v0.52</Value>
     </Setting>
   </Settings>
 </SettingsFile>
