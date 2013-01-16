@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Montura", "Montura\Montura.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serduino", "Serduino\Serduino.csproj", "{E6771E7A-6ACE-4F5A-8789-3B3041AC7F35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpPerfChart", "SpPerfChart\SpPerfChart.csproj", "{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +35,6 @@ Global
 		{E6771E7A-6ACE-4F5A-8789-3B3041AC7F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6771E7A-6ACE-4F5A-8789-3B3041AC7F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6771E7A-6ACE-4F5A-8789-3B3041AC7F35}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
