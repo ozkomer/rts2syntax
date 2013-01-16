@@ -97,10 +97,6 @@
       <Project>{E6771E7A-6ACE-4F5A-8789-3B3041AC7F35}</Project>
       <Name>Serduino</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpPerfChart\SpPerfChart.csproj">
-      <Project>{F2FF6C46-A791-4CAE-AB46-BD1A37F3FCD7}</Project>
-      <Name>SpPerfChart</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ZxRelay16\ZxRelay16.csproj">
       <Project>{DFD52825-F4D2-479F-93A8-A012C67AC602}</Project>
       <Name>ZxRelay16</Name>
