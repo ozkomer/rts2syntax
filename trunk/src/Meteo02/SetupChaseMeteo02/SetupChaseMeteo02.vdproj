@@ -70,13 +70,13 @@
         "Entry"
         {
         "MsmKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
-        "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
+        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
-        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
+        "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,12 +88,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_28C562D83C27BEA8C5A6A5CED39A58F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -106,13 +100,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
+        "OwnerKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
+        "OwnerKey" = "8:_28C562D83C27BEA8C5A6A5CED39A58F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -256,7 +256,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:2"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -358,7 +358,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:2"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -491,7 +491,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:2"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -510,6 +510,17 @@
             "Property" = "8:DesktopFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3E02F6DFE38C4ADDA6460A5DA219AE03"
+                    {
+                    "Name" = "8:Orbit"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_6D1D9D17AF834ACA81AB2C33C22B6C0D"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_F048E14113D14AE5833FE746F00F9E66"
@@ -563,7 +574,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chase500SafetyWeather"
         "ProductCode" = "8:{37C57B18-2DF0-4A47-B5FC-267BA49B3885}"
-        "PackageCode" = "8:{11EC3C61-D37B-454E-B785-8345E81D052C}"
+        "PackageCode" = "8:{695285FD-EF6A-442E-8F8E-9F9517EE55B2}"
         "UpgradeCode" = "8:{019E0BE0-2D04-4E01-A856-952597D7413C}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -692,6 +703,20 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
             "Folder" = "8:_E1BC4964C426423D9DA45CDF54452A00"
+            "WorkingFolder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
+            "Icon" = "8:_1F1368ADE3F64B838932DCB9D5D807AD"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6835F8C51A1C417A962F3B77EA292591"
+            {
+            "Name" = "8:MeteoChase500DriverTestAplication.exe"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
+            "Folder" = "8:_3E02F6DFE38C4ADDA6460A5DA219AE03"
             "WorkingFolder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
             "Icon" = "8:_1F1368ADE3F64B838932DCB9D5D807AD"
             "Feature" = "8:"
