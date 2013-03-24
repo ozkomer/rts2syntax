@@ -80,60 +80,71 @@ namespace ASCOM.Meteo02
         /// <returns>True si: hay condiciones meteorologicas aptas para la observacion.</returns>
         public bool isSafe()
         {
-            bool safe;
+            bool safetyStatus;
             // Decimos que las condiciones son seguras salvo si...
-            safe = true;
+            safetyStatus = true;
             // Si hace menos de media hora se declaro un "unsafe"
             if (this.timerUnsafe.Enabled)
             {
                 // no se evalua nada, solo se retorna que sigue siendo unsafe observar
-                safe = false;
+                safetyStatus = false;
             }
             else
             {
-                //Consideraiones para la humedad relativa
-                if (this.ultimo.RelativeHumidity > settings.maxHumidity)
+                //Consideraciones para el último registro
+                if (this.ultimo == null)
                 {
-                    logger.Info("unsafe, razon:RelativeHumidity=" + this.ultimo.RelativeHumidity + " > " + settings.maxHumidity);
-                    safe = false;
+                    logger.Info("unsafe, razon: Ultimo registro es null");
+                    safetyStatus = false;
                 }
+                else
+                {
+                    //Consideraiones para la humedad relativa
+                    if (this.ultimo.RelativeHumidity > settings.maxHumidity)
+                    {
+                        logger.Info("unsafe, razon: RelativeHumidity=" + this.ultimo.RelativeHumidity + " > " + settings.maxHumidity);
+                        safetyStatus = false;
+                    }
+                    //Consideraiones para el dewPoint
+                    float deltaTemp; //Diferencia entre tenperaturaAmviente y Temperatura de Rocio
+                    deltaTemp = this.ultimo.AmbientTemperature - this.ultimo.DewPoint;
+                    if (deltaTemp < settings.minDewPointDelta)
+                    {
+
+                        logger.Info("unsafe, razon: DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
+                        safetyStatus = false;
+                    }
+
+                }
+
                 //Consideraiones para el viento
                 //double averageWS;
                 this.refreshAverageWindSpeed();
                 if (this.averageWindSpeed > settings.maxWindSpeed_inKnots)
                 {
-                    logger.Info("unsafe, razon:AverageWindSpeed=" + this.averageWindSpeed + " > " + settings.maxWindSpeed_inKnots);
-                    safe = false;
-                }
-                //Consideraiones para el dewPoint
-                float deltaTemp; //Diferencia entre tenperaturaAmviente y Temperatura de Rocio
-                deltaTemp = this.ultimo.AmbientTemperature - this.ultimo.DewPoint;
-                if (deltaTemp < settings.minDewPointDelta)
-                {
-
-                    logger.Info("unsafe, razon:DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
-                    safe = false;
+                    logger.Info("unsafe, razon: AverageWindSpeed=" + this.averageWindSpeed + " > " + settings.maxWindSpeed_inKnots);
+                    safetyStatus = false;
                 }
 
                 //Consideraciones para asegurar datos de hace menos de 5 minutos
                 if (!this.safeCincoMinutos())
                 {
-                    logger.Info("unsafe, razon:Ultimo dato es de hace mas de 5 minutos; ultimo=" + this.ultimo.ToString());
-                    safe = false;
+                    logger.Info("unsafe, razon: Ultimo dato es de hace mas de 5 minutos; ultimo=" + this.ultimo.ToString());
+                    safetyStatus = false;
                 }
 
                 // Si alguna de las consideraciones ANTERIORES nos lleva a un flanco de bajada.
                 // E.D. de safe a unsafe, entonces iniciamos el timer. Y por lo 
                 // Tando durante la siguiente media hora seguiremos en estado unsafe
                 // pase lo que pase.
-                if (!safe)
+                if (!safetyStatus)
                 {
                     logger.Info("activando  timerUnsafe.");
                     this.timerUnsafe.Start();
                 }
                 //logger.Info("safe="+safe);
             }
-            return safe;
+            return safetyStatus;
         }
 
         /// <summary>
@@ -206,7 +217,7 @@ namespace ASCOM.Meteo02
             DateTime haceCincoMinutos;
             haceCincoMinutos = DateTime.Now.Subtract(WeatherAnalisis.cincoMinutos);
             // if (ultimo is earlier than haceCincoMinutos)
-            if (this.ultimo.FechaHora.CompareTo(haceCincoMinutos) < 0)
+            if ((this.ultimo!=null) && (this.ultimo.FechaHora.CompareTo(haceCincoMinutos) < 0))
             {
                 logger.Warn("Ultimo registro es de hace mas de 5 minutos. ultimo="+ultimo.ToString());
                 return false;
