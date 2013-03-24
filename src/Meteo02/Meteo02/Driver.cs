@@ -213,12 +213,28 @@ namespace ASCOM.Meteo02
         }
 
         public DateTime FechaHora
-        { get { return this.weather_Analisis.Ultimo.FechaHora; } }
+        {
+            get {
+            if (this.weather_Analisis.Ultimo==null)
+            {
+            DateTime respuesta;
+            respuesta = new DateTime(1, 1, 1);
+            return respuesta;
+            }
+            return this.weather_Analisis.Ultimo.FechaHora; 
+        }
+        }
 
         #region Weather Object
         public float AmbientTemperature
         {
-            get { return this.weather_Analisis.Ultimo.AmbientTemperature; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.AmbientTemperature; 
+            }
         }
 
         //public bool Available
@@ -229,7 +245,13 @@ namespace ASCOM.Meteo02
 
         public float BarometricPressure
         {
-            get { return this.weather_Analisis.Ultimo.BarometricPressure; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.BarometricPressure; 
+            }
         }
 
         public float Clouds
@@ -241,7 +263,13 @@ namespace ASCOM.Meteo02
 
         public float DewPoint
         {
-            get { return this.weather_Analisis.Ultimo.DewPoint; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.DewPoint; 
+            }
         }
 
         public float InsideTemperature
@@ -260,7 +288,13 @@ namespace ASCOM.Meteo02
 
         public float RelativeHumidity
         {
-            get { return this.weather_Analisis.Ultimo.RelativeHumidity; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.RelativeHumidity; 
+            }
         }
 
         public bool Safe
@@ -276,7 +310,13 @@ namespace ASCOM.Meteo02
 
         public float WindDirection
         {
-            get { return this.weather_Analisis.Ultimo.WindDirection; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.WindDirection; 
+            }
         }
 
         /// <summary>
@@ -286,7 +326,13 @@ namespace ASCOM.Meteo02
         /// </summary>
         public float WindVelocity
         {
-            get { return this.weather_Analisis.Ultimo.WindSpeed; }
+            get {
+                if (this.weather_Analisis.Ultimo == null)
+                {
+                    return -1;
+                }
+                return this.weather_Analisis.Ultimo.WindSpeed; 
+            }
         }
 
         #endregion

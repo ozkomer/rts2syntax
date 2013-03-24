@@ -69,6 +69,7 @@ namespace ASCOM.Meteo02
         /// <param name="registro"></param>
         public WeatherRow(tololoDataSet.DataTableWeatherRow registro)
         {
+            this.hasErrors = false; //Partimos suponiendo que no hay errores
 
             if (
                  (registro.HasErrors) ||
@@ -83,7 +84,6 @@ namespace ASCOM.Meteo02
                 this.hasErrors = true;
                 logger.Error("WeatherRow: Se ha recibido registro con errores, DateTime=" + registro.time);
             }
-            this.hasErrors = false;
 
 
             this.fechaHora = registro.time;
@@ -94,6 +94,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
+                this.hasErrors = true;
                 logger.Error("Nuevo registro tiene humedad=null messaje=" + ex.Message);
             }
 
@@ -103,15 +104,18 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
+                this.hasErrors = true;
                 logger.Error("Nuevo registro tiene temp=null messaje=" + ex.Message);
             }
 
             try
             {
+                this.hasErrors = true;
                 this.barometricPressure = registro.pres;
             }
             catch (StrongTypingException ex)
             {
+                this.hasErrors = true;
                 logger.Error("Nuevo registro tiene barometricPressure=null messaje=" + ex.Message);
             }
 
@@ -121,6 +125,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
+                this.hasErrors = true;
                 logger.Error("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
             }
 
@@ -130,6 +135,7 @@ namespace ASCOM.Meteo02
             }
             catch (StrongTypingException ex)
             {
+                this.hasErrors = true;
                 logger.Error("Nuevo registro tiene windSpeed=null messaje=" + ex.Message);
             }
             this.refreshDewPoint();
