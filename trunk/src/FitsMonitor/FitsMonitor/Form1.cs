@@ -35,7 +35,7 @@ namespace FitsMonitor
             XmlConfigurator.Configure();
             logger.Info("Start FitsMonitor.");
             InitializeComponent();
-            zwickyTransfer = new WinScpTransfer(settings.Host, settings.Username, settings.SshHostKey);
+            zwickyTransfer = new WinScpTransfer(settings.ZwickyHost, settings.ZwickyUsername, settings.ZwickySshHostKey);
             //zwickyTransfer.HostName = settings.Host;
             //zwickyTransfer.UserName = settings.Username;
             //zwickyTransfer.SshHostKey = settings.SshHostKey;            

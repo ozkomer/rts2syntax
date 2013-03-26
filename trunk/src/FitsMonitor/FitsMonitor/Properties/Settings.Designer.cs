@@ -38,36 +38,36 @@ namespace FitsMonitor.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("146.83.9.11")]
-        public string Host {
+        public string ZwickyHost {
             get {
-                return ((string)(this["Host"]));
+                return ((string)(this["ZwickyHost"]));
             }
             set {
-                this["Host"] = value;
+                this["ZwickyHost"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("chase")]
-        public string Username {
+        public string ZwickyUsername {
             get {
-                return ((string)(this["Username"]));
+                return ((string)(this["ZwickyUsername"]));
             }
             set {
-                this["Username"] = value;
+                this["ZwickyUsername"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ssh-rsa 2048 cb:fb:8d:12:39:4f:84:ca:53:ce:eb:44:a0:ad:be:ed")]
-        public string SshHostKey {
+        public string ZwickySshHostKey {
             get {
-                return ((string)(this["SshHostKey"]));
+                return ((string)(this["ZwickySshHostKey"]));
             }
             set {
-                this["SshHostKey"] = value;
+                this["ZwickySshHostKey"] = value;
             }
         }
         
@@ -149,6 +149,42 @@ namespace FitsMonitor.Properties {
         public string version {
             get {
                 return ((string)(this["version"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
+        public string WorkerAcpHost {
+            get {
+                return ((string)(this["WorkerAcpHost"]));
+            }
+            set {
+                this["WorkerAcpHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("chase")]
+        public string WorkerAcpUsername {
+            get {
+                return ((string)(this["WorkerAcpUsername"]));
+            }
+            set {
+                this["WorkerAcpUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ssh-rsa 2048 58:c9:d5:76:c1:f6:d9:99:b8:8c:8b:90:0a:ff:67:7c")]
+        public string WorkerAcpSshHostKey {
+            get {
+                return ((string)(this["WorkerAcpSshHostKey"]));
+            }
+            set {
+                this["WorkerAcpSshHostKey"] = value;
             }
         }
     }
