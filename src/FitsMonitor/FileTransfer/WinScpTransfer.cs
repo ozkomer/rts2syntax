@@ -9,27 +9,34 @@ namespace FileTransfer
 {
     public class WinScpTransfer
     {
-        private static String hostName;
-        private static String userName;
-        private static String sshHostKey;
+        private String hostName;
+        private String userName;
+        private String sshHostKey;
         private static readonly ILog logger = LogManager.GetLogger(typeof(WinScpTransfer));
 
-        public static String HostName
+        public WinScpTransfer(String hostName, String userName, String sshHostKey)
         {
-            get { return WinScpTransfer.hostName; }
-            set { WinScpTransfer.hostName = value; }
+            this.hostName = hostName;
+            this.userName = userName;
+            this.sshHostKey = sshHostKey;
         }
 
-        public static String UserName
+        public String HostName
         {
-            get { return WinScpTransfer.userName; }
-            set { WinScpTransfer.userName = value; }
+            get { return this.hostName; }
+            set { this.hostName = value; }
         }
 
-        public static String SshHostKey
+        public String UserName
         {
-            get { return WinScpTransfer.sshHostKey; }
-            set { WinScpTransfer.sshHostKey = value; }
+            get { return this.userName; }
+            set { this.userName = value; }
+        }
+
+        public String SshHostKey
+        {
+            get { return this.sshHostKey; }
+            set { this.sshHostKey = value; }
         }
 
         /// <summary>
@@ -39,7 +46,7 @@ namespace FileTransfer
         /// <param name="archivoLocal">File to upload</param>
         /// <param name="remotePath">Remote Directory</param>
         /// <param name="remoteFilename">RemoteFilename</param>
-        public static void Upload(String archivoLocal, String remotePath, String remoteFilename)
+        public void Upload(String archivoLocal, String remotePath, String remoteFilename)
         {
             logger.Info("archivoLocal=" + archivoLocal);
             logger.Info("remotePath=" + remotePath);
@@ -51,11 +58,11 @@ namespace FileTransfer
             SessionOptions sesionOptions;
             sesionOptions = new SessionOptions();
 
-            sesionOptions.HostName = WinScpTransfer.hostName;
-            sesionOptions.UserName = WinScpTransfer.userName;
+            sesionOptions.HostName = this.hostName;
+            sesionOptions.UserName = this.userName;
             sesionOptions.Protocol = Protocol.Sftp;
             sesionOptions.PortNumber = 22;
-            sesionOptions.SshHostKey = WinScpTransfer.sshHostKey;
+            sesionOptions.SshHostKey = this.sshHostKey;
             try
             {
                 wscpSession.Open(sesionOptions);
