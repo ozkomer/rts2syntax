@@ -29,15 +29,16 @@ namespace FitsMonitor
         private static FitsMonitor.Properties.Settings settings = FitsMonitor.Properties.Settings.Default;
 
         private Atc02Xml atc02Status;
-
+        private WinScpTransfer zwickyTransfer;
         public Form1()
         {
             XmlConfigurator.Configure();
             logger.Info("Start FitsMonitor.");
             InitializeComponent();
-            WinScpTransfer.HostName = settings.Host;
-            WinScpTransfer.UserName = settings.Username;
-            WinScpTransfer.SshHostKey = settings.SshHostKey;            
+            zwickyTransfer = new WinScpTransfer(settings.Host, settings.Username, settings.SshHostKey);
+            //zwickyTransfer.HostName = settings.Host;
+            //zwickyTransfer.UserName = settings.Username;
+            //zwickyTransfer.SshHostKey = settings.SshHostKey;            
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace FitsMonitor
             Console.WriteLine("url=" + url.ToString());
             this.pictureBox1.ImageLocation = url.ToString();
             this.textBoxUrl.Text = url.ToString();
-            FileTransfer.WinScpTransfer.Upload(fullPath, settings.RemoteBasePath, remoteFilename);
+            this.zwickyTransfer.Upload(fullPath, settings.RemoteBasePath, remoteFilename);
         }
 
         /// <summary>
