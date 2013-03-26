@@ -83,7 +83,7 @@ namespace FitsMonitor
             String localFolder;
             localFolder = ruta[ruta_size - 2];
             url = new StringBuilder();
-            url.Append("http://www.das.uchile.cl/~chase500/images/jpg/");
+            url.Append("http://www.das.uchile.cl/~cata500/images/jpg/");
             if (localFolder.Length >= settings.JpgFilenameLength)
             {
                 url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
@@ -180,7 +180,17 @@ namespace FitsMonitor
                 hcSecTemp.Value = ("" + this.atc02Status.SecondaryTemperature);
                 hcAmbTemp.Value = ("" + this.atc02Status.AmbientTemperature);
                 hcSetFan.Value  = ("" + this.atc02Status.FanPower);
-                hdu.Header.Rewrite();
+                System.Threading.Thread.Sleep(4000);
+                try
+                {
+                    hdu.Header.Rewrite();
+                }
+                catch (Exception)
+                {
+
+                    logger.Error("Error en: hdu.Header.Rewrite();");
+                }
+                
             }
             fitsFile.Close();
             // Permitimos al sistema que guarde los cambios en el archivo fits.
@@ -780,6 +790,11 @@ private void revisaRaDecFits(FileInfo archivo)
         private void bReadStatus_Click(object sender, EventArgs e)
         {
             this.refreshATC02XmlStatus();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.MostrarVentana();
         }
     }
 }

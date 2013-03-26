@@ -142,5 +142,14 @@ namespace FitsMonitor.Properties {
                 this["FocusPort"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.51")]
+        public string version {
+            get {
+                return ((string)(this["version"]));
+            }
+        }
     }
 }

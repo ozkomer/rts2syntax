@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -72,11 +72,10 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.ImageLocation = "http://www.das.uchile.cl/~jose/chase500/P1070498.JPG";
-            this.pictureBox1.Location = new System.Drawing.Point(15, 43);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.ImageLocation = "http://zwicky.das.uchile.cl/pictures/chase500night.JPG";
+            this.pictureBox1.Location = new System.Drawing.Point(11, 35);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(355, 327);
+            this.pictureBox1.Size = new System.Drawing.Size(266, 266);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -88,6 +87,7 @@
             this.notifyIcon1.Text = "Fits Monitor";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // contextMenuStrip1
             // 
@@ -95,13 +95,13 @@
             this.showToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(111, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.Image = global::FitsMonitor.Properties.Resources.Play_1_Normal_icon;
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.showToolStripMenuItem.Text = "Show";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
@@ -109,25 +109,23 @@
             // 
             this.exitToolStripMenuItem.Image = global::FitsMonitor.Properties.Resources.Stop_Normal_Red_icon;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // textBoxUrl
             // 
-            this.textBoxUrl.Location = new System.Drawing.Point(43, 7);
-            this.textBoxUrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxUrl.Location = new System.Drawing.Point(32, 6);
             this.textBoxUrl.Name = "textBoxUrl";
-            this.textBoxUrl.Size = new System.Drawing.Size(416, 22);
+            this.textBoxUrl.Size = new System.Drawing.Size(313, 20);
             this.textBoxUrl.TabIndex = 1;
-            this.textBoxUrl.Text = "http://www.das.uchile.cl/~jose/chase500/P1070498.JPG";
+            this.textBoxUrl.Text = "http://zwicky.das.uchile.cl/pictures/chase500night.JPG";
             // 
             // bCopiarOffline
             // 
-            this.bCopiarOffline.Location = new System.Drawing.Point(320, 350);
-            this.bCopiarOffline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.bCopiarOffline.Location = new System.Drawing.Point(240, 284);
             this.bCopiarOffline.Name = "bCopiarOffline";
-            this.bCopiarOffline.Size = new System.Drawing.Size(152, 28);
+            this.bCopiarOffline.Size = new System.Drawing.Size(114, 23);
             this.bCopiarOffline.TabIndex = 2;
             this.bCopiarOffline.Text = "Start Offline Copy!";
             this.bCopiarOffline.UseVisualStyleBackColor = true;
@@ -139,22 +137,20 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(16, 15);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(487, 414);
+            this.tabControl1.Size = new System.Drawing.Size(365, 336);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.textBoxUrl);
             this.tabPage1.Controls.Add(this.pictureBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage1.Size = new System.Drawing.Size(479, 385);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(357, 310);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sample";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -164,21 +160,19 @@
             this.tabPage2.Controls.Add(this.bReadStatus);
             this.tabPage2.Controls.Add(this.labelLastDetectedValues);
             this.tabPage2.Controls.Add(this.dataGridViewATC02);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage2.Size = new System.Drawing.Size(479, 385);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(357, 310);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Header";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // bReadStatus
             // 
-            this.bReadStatus.Location = new System.Drawing.Point(8, 7);
-            this.bReadStatus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.bReadStatus.Location = new System.Drawing.Point(6, 6);
             this.bReadStatus.Name = "bReadStatus";
-            this.bReadStatus.Size = new System.Drawing.Size(100, 28);
+            this.bReadStatus.Size = new System.Drawing.Size(75, 23);
             this.bReadStatus.TabIndex = 5;
             this.bReadStatus.Text = "Read Status";
             this.bReadStatus.UseVisualStyleBackColor = true;
@@ -188,49 +182,47 @@
             // 
             this.labelLastDetectedValues.AutoSize = true;
             this.labelLastDetectedValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLastDetectedValues.Location = new System.Drawing.Point(143, 38);
-            this.labelLastDetectedValues.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelLastDetectedValues.Location = new System.Drawing.Point(107, 31);
             this.labelLastDetectedValues.Name = "labelLastDetectedValues";
-            this.labelLastDetectedValues.Size = new System.Drawing.Size(163, 17);
+            this.labelLastDetectedValues.Size = new System.Drawing.Size(129, 13);
             this.labelLastDetectedValues.TabIndex = 5;
             this.labelLastDetectedValues.Text = "Last Detected Values";
             // 
             // dataGridViewATC02
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewATC02.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewATC02.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewATC02.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewATC02.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnParametro,
             this.Column2});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewATC02.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridViewATC02.Location = new System.Drawing.Point(8, 78);
-            this.dataGridViewATC02.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewATC02.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewATC02.Location = new System.Drawing.Point(6, 63);
             this.dataGridViewATC02.Name = "dataGridViewATC02";
             this.dataGridViewATC02.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewATC02.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewATC02.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewATC02.RowTemplate.Height = 24;
-            this.dataGridViewATC02.Size = new System.Drawing.Size(460, 297);
+            this.dataGridViewATC02.Size = new System.Drawing.Size(345, 241);
             this.dataGridViewATC02.TabIndex = 3;
             // 
             // ColumnParametro
@@ -255,20 +247,18 @@
             this.tabPage3.Controls.Add(this.bOfflineFolder);
             this.tabPage3.Controls.Add(this.bCopiarOffline);
             this.tabPage3.Controls.Add(this.tbOfflineFolder);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(479, 385);
+            this.tabPage3.Size = new System.Drawing.Size(357, 310);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "OffLine";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // bCheckRaDec
             // 
-            this.bCheckRaDec.Location = new System.Drawing.Point(272, 159);
-            this.bCheckRaDec.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.bCheckRaDec.Location = new System.Drawing.Point(204, 129);
             this.bCheckRaDec.Name = "bCheckRaDec";
-            this.bCheckRaDec.Size = new System.Drawing.Size(141, 28);
+            this.bCheckRaDec.Size = new System.Drawing.Size(106, 23);
             this.bCheckRaDec.TabIndex = 7;
             this.bCheckRaDec.Text = "Check Ra Dec";
             this.bCheckRaDec.UseVisualStyleBackColor = true;
@@ -276,10 +266,9 @@
             // 
             // bCorrectNames
             // 
-            this.bCorrectNames.Location = new System.Drawing.Point(48, 159);
-            this.bCorrectNames.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.bCorrectNames.Location = new System.Drawing.Point(36, 129);
             this.bCorrectNames.Name = "bCorrectNames";
-            this.bCorrectNames.Size = new System.Drawing.Size(120, 28);
+            this.bCorrectNames.Size = new System.Drawing.Size(90, 23);
             this.bCorrectNames.TabIndex = 6;
             this.bCorrectNames.Text = "CorrectNames";
             this.bCorrectNames.UseVisualStyleBackColor = true;
@@ -288,24 +277,22 @@
             // labelSubFolderDeep
             // 
             this.labelSubFolderDeep.AutoSize = true;
-            this.labelSubFolderDeep.Location = new System.Drawing.Point(268, 44);
-            this.labelSubFolderDeep.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSubFolderDeep.Location = new System.Drawing.Point(201, 36);
             this.labelSubFolderDeep.Name = "labelSubFolderDeep";
-            this.labelSubFolderDeep.Size = new System.Drawing.Size(115, 17);
+            this.labelSubFolderDeep.Size = new System.Drawing.Size(87, 13);
             this.labelSubFolderDeep.TabIndex = 5;
             this.labelSubFolderDeep.Text = "Sub Folder Deep";
             // 
             // numericUpDownSubFolderDeep
             // 
-            this.numericUpDownSubFolderDeep.Location = new System.Drawing.Point(392, 42);
-            this.numericUpDownSubFolderDeep.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDownSubFolderDeep.Location = new System.Drawing.Point(294, 34);
             this.numericUpDownSubFolderDeep.Maximum = new decimal(new int[] {
             2,
             0,
             0,
             0});
             this.numericUpDownSubFolderDeep.Name = "numericUpDownSubFolderDeep";
-            this.numericUpDownSubFolderDeep.Size = new System.Drawing.Size(53, 22);
+            this.numericUpDownSubFolderDeep.Size = new System.Drawing.Size(41, 20);
             this.numericUpDownSubFolderDeep.TabIndex = 4;
             this.numericUpDownSubFolderDeep.Value = new decimal(new int[] {
             1,
@@ -315,10 +302,9 @@
             // 
             // bOfflineFolder
             // 
-            this.bOfflineFolder.Location = new System.Drawing.Point(4, 38);
-            this.bOfflineFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.bOfflineFolder.Location = new System.Drawing.Point(3, 31);
             this.bOfflineFolder.Name = "bOfflineFolder";
-            this.bOfflineFolder.Size = new System.Drawing.Size(64, 28);
+            this.bOfflineFolder.Size = new System.Drawing.Size(48, 23);
             this.bOfflineFolder.TabIndex = 3;
             this.bOfflineFolder.Text = "Folder";
             this.bOfflineFolder.UseVisualStyleBackColor = true;
@@ -326,21 +312,19 @@
             // 
             // tbOfflineFolder
             // 
-            this.tbOfflineFolder.Location = new System.Drawing.Point(12, 6);
-            this.tbOfflineFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbOfflineFolder.Location = new System.Drawing.Point(9, 5);
             this.tbOfflineFolder.Name = "tbOfflineFolder";
-            this.tbOfflineFolder.Size = new System.Drawing.Size(455, 22);
+            this.tbOfflineFolder.Size = new System.Drawing.Size(342, 20);
             this.tbOfflineFolder.TabIndex = 0;
             this.tbOfflineFolder.Text = "C:\\Users\\chase\\Documents\\ACP Astronomy\\Images\\20120719";
             this.tbOfflineFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage4.Size = new System.Drawing.Size(479, 385);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(357, 310);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "ATC02";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -366,15 +350,14 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(525, 444);
+            this.ClientSize = new System.Drawing.Size(394, 364);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.MinimumSize = new System.Drawing.Size(533, 476);
+            this.MinimumSize = new System.Drawing.Size(402, 392);
             this.Name = "Form1";
-            this.Text = "Fits Monitor";
+            this.Text = global::FitsMonitor.Properties.Settings.Default.version;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
