@@ -13,7 +13,7 @@
 //              debido a la flexibilida y potencialidades del lenguage y del ambiente de desarrollo.
 //
 // Implements:	ASCOM SafetyMonitor interface version: 1.0
-// Author:		(XXX) Eduardo Maureira <emaureir@gmail.com>
+// Author:		Eduardo Maureira <emaureir@gmail.com>
 //
 // Edit Log:
 //
@@ -111,6 +111,13 @@ namespace ASCOM.Meteo02
         private WeatherAnalisis weather_Analisis;
 
         /// <summary>
+        /// ESto evalua el estatus safe a partir del sitio web de los prompt.
+        /// Se propone esto como metodo alternativo (o secundario) en caso que la 
+        /// base de datos de meteorologia de Tololo, falle.
+        /// </summary>
+        private PromptAnalisis promptAnalisis;
+
+        /// <summary>
         /// objeto que contiene las variables meteorologicas.
         /// </summary>
         //private WeatherRow weatherRow;
@@ -139,7 +146,8 @@ namespace ASCOM.Meteo02
             //XmlConfigurator.Configure();
             logger.Debug("Meteorologic monitor:Constructor Start");
             dtWeatheTa = new DataTableWeatherTableAdapter();
-            weather_Analisis = new WeatherAnalisis();
+            this.weather_Analisis = new WeatherAnalisis();
+            this.promptAnalisis = new PromptAnalisis();
 
             this.conectado = (dtWeatheTa != null);
             this.LeerUltimoRegistro();
@@ -299,7 +307,21 @@ namespace ASCOM.Meteo02
 
         public bool Safe
         {
-            get { return this.weather_Analisis.isSafe(); }
+            get
+            {
+                Boolean respuesta;
+                respuesta = false; // Por default decimos que es unsafe observar
+                switch (Properties.Settings.Default.safeUnsafeLogic)
+                {
+                    case 0:
+                        respuesta = this.weather_Analisis.isSafe();
+                        break;
+                    case 1:
+                        respuesta = this.promptAnalisis.Safe;
+                        break;
+                }
+                return respuesta;
+            }
         }
 
         public bool Connected

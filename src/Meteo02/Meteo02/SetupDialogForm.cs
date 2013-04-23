@@ -15,6 +15,15 @@ namespace ASCOM.Meteo02
 
         private void CmdOkClick(object sender, EventArgs e)
         {
+            if (this.rbWeatherDB.Checked)
+            {
+                Properties.Settings.Default.safeUnsafeLogic = 0;
+            }
+            if (this.rbPromptWebSite.Checked)
+            {
+                Properties.Settings.Default.safeUnsafeLogic = 1;
+            }
+            Properties.Settings.Default.Save();
             Dispose();
         }
 
@@ -45,6 +54,15 @@ namespace ASCOM.Meteo02
             this.textBoxMaxHumidity.Text = ""+ (100 * Properties.Settings.Default.maxHumidity)+" %";
             this.textBoxMaxWindSpeed.Text = "" + Properties.Settings.Default.maxWindSpeed_inKnots;
             this.textBoxMinDewPoint.Text = "" + Properties.Settings.Default.minDewPointDelta;
+            switch (Properties.Settings.Default.safeUnsafeLogic)
+            {
+                case 0:
+                    this.rbWeatherDB.Checked=true;
+                    break;
+                case 1:
+                    this.rbPromptWebSite.Checked = true;
+                    break;
+            }
         }
     }
 }

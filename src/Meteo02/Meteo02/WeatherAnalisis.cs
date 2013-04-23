@@ -110,11 +110,9 @@ namespace ASCOM.Meteo02
                     deltaTemp = this.ultimo.AmbientTemperature - this.ultimo.DewPoint;
                     if (deltaTemp < settings.minDewPointDelta)
                     {
-
                         logger.Info("unsafe, razon: DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
                         safetyStatus = false;
                     }
-
                 }
 
                 //Consideraiones para el viento
