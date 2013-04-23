@@ -110,7 +110,6 @@ namespace ASCOM.Meteo02
 
             try
             {
-                this.hasErrors = true;
                 this.barometricPressure = registro.pres;
             }
             catch (StrongTypingException ex)
