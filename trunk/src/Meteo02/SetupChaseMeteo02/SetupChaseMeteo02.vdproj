@@ -21,98 +21,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_28B3D4150B9F83A9F9F34FE8C6EE855A"
-        "OwnerKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_28C562D83C27BEA8C5A6A5CED39A58F3"
-        "OwnerKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
-        "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_76278D9A971A463AAAA16145182EDB26"
+        "MsmKey" = "8:_98E8D1A1DE294876A591C6108FB5F11B"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8084445363F76400548FFF86E3C8EA55"
-        "OwnerKey" = "8:_28C562D83C27BEA8C5A6A5CED39A58F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
-        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A65164C1366C4BAA97D4EE5B50DC7589"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
-        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
-        "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DD2A394A7336A1A7F4262DB6E84FB2AE"
-        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_637C0EBE95B295E9B4480FFEF6EDA591"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8519E2EF0EF70E6AFE83EE62ABE8117E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_28C562D83C27BEA8C5A6A5CED39A58F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ACBC980632F6655E0CC6B792DDF66E3D"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -240,261 +150,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_28B3D4150B9F83A9F9F34FE8C6EE855A"
-            {
-            "SourcePath" = "8:ASCOM.Utilities.tlb"
-            "TargetName" = "8:ASCOM.Utilities.tlb"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:2"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_28C562D83C27BEA8C5A6A5CED39A58F3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:ASCOM.Exceptions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_28C562D83C27BEA8C5A6A5CED39A58F3"
-                    {
-                    "Name" = "8:ASCOM.Exceptions.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ASCOM.Exceptions.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_637C0EBE95B295E9B4480FFEF6EDA591"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ASCOM.Meteo02.SafetyMonitor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c905f9c317eb11a9, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_637C0EBE95B295E9B4480FFEF6EDA591"
-                    {
-                    "Name" = "8:ASCOM.Meteo02.SafetyMonitor.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ASCOM.Meteo02.SafetyMonitor.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76278D9A971A463AAAA16145182EDB26"
-            {
-            "SourcePath" = "8:..\\MeteoChase500DriverTestAplication\\bin\\Release\\MeteoChase500DriverTestAplication.exe.config"
-            "TargetName" = "8:MeteoChase500DriverTestAplication.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8084445363F76400548FFF86E3C8EA55"
-            {
-            "SourcePath" = "8:ASCOM.Exceptions.tlb"
-            "TargetName" = "8:ASCOM.Exceptions.tlb"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:2"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8519E2EF0EF70E6AFE83EE62ABE8117E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:ASCOM.Utilities, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_8519E2EF0EF70E6AFE83EE62ABE8117E"
-                    {
-                    "Name" = "8:ASCOM.Utilities.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ASCOM.Utilities.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8B92BDEF8B8543F8A520688B63D4061D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MeteoChase500DriverTestAplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_8B92BDEF8B8543F8A520688B63D4061D"
-                    {
-                    "Name" = "8:MeteoChase500DriverTestAplication.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\MeteoChase500DriverTestAplication\\bin\\Release\\MeteoChase500DriverTestAplication.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A65164C1366C4BAA97D4EE5B50DC7589"
-            {
-            "SourcePath" = "8:..\\MeteoChase500DriverTestAplication\\bin\\Release\\log4net.xml"
-            "TargetName" = "8:log4net.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ACBC980632F6655E0CC6B792DDF66E3D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_ACBC980632F6655E0CC6B792DDF66E3D"
-                    {
-                    "Name" = "8:log4net.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:log4net.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DD2A394A7336A1A7F4262DB6E84FB2AE"
-            {
-            "SourcePath" = "8:ASCOM.Meteo02.SafetyMonitor.tlb"
-            "TargetName" = "8:ASCOM.Meteo02.SafetyMonitor.tlb"
-            "Tag" = "8:"
-            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:2"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -574,7 +229,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chase500SafetyWeather"
         "ProductCode" = "8:{37C57B18-2DF0-4A47-B5FC-267BA49B3885}"
-        "PackageCode" = "8:{695285FD-EF6A-442E-8F8E-9F9517EE55B2}"
+        "PackageCode" = "8:{8AAA09E9-E734-435B-8017-30113C7EF257}"
         "UpgradeCode" = "8:{019E0BE0-2D04-4E01-A856-952597D7413C}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -693,29 +348,29 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3F9BA1BCF574448989FD4057693D6B93"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_605CEE458B644A598525F37E10F469CC"
             {
-            "Name" = "8:Chase500_Weather.exe"
+            "Name" = "8:MeteoChase500"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
+            "Target" = "8:_98E8D1A1DE294876A591C6108FB5F11B"
             "Folder" = "8:_E1BC4964C426423D9DA45CDF54452A00"
             "WorkingFolder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
             "Icon" = "8:_1F1368ADE3F64B838932DCB9D5D807AD"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6835F8C51A1C417A962F3B77EA292591"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FED59393F26945418D35F761242E0CEE"
             {
-            "Name" = "8:MeteoChase500DriverTestAplication.exe"
+            "Name" = "8:MeteoChase500.exe"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_8B92BDEF8B8543F8A520688B63D4061D"
+            "Target" = "8:_98E8D1A1DE294876A591C6108FB5F11B"
             "Folder" = "8:_3E02F6DFE38C4ADDA6460A5DA219AE03"
             "WorkingFolder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
             "Icon" = "8:_1F1368ADE3F64B838932DCB9D5D807AD"
@@ -1120,6 +775,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_98E8D1A1DE294876A591C6108FB5F11B"
+            {
+            "SourcePath" = "8:..\\MeteoChase500DriverTestAplication\\obj\\Debug\\MeteoChase500DriverTestAplication.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FF35FD1D28224BD1ADBBAE71DD3B35CE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{9F7CD329-CA86-44CC-ACC7-BD0F81C103A4}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
         }
     }
 }
