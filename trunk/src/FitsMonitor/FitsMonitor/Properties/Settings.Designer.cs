@@ -74,12 +74,12 @@ namespace FitsMonitor.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("/images/repository/inbox/")]
-        public string RemoteBasePath {
+        public string ZwickyRemoteBasePath {
             get {
-                return ((string)(this["RemoteBasePath"]));
+                return ((string)(this["ZwickyRemoteBasePath"]));
             }
             set {
-                this["RemoteBasePath"] = value;
+                this["ZwickyRemoteBasePath"] = value;
             }
         }
         
@@ -145,7 +145,7 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.51")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.52")]
         public string version {
             get {
                 return ((string)(this["version"]));
@@ -185,6 +185,18 @@ namespace FitsMonitor.Properties {
             }
             set {
                 this["WorkerAcpSshHostKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/usr/share/gloria/rts/repositories/acp")]
+        public string WorkerAcpRemoteBasePath {
+            get {
+                return ((string)(this["WorkerAcpRemoteBasePath"]));
+            }
+            set {
+                this["WorkerAcpRemoteBasePath"] = value;
             }
         }
     }

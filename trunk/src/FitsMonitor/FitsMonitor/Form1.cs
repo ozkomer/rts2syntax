@@ -29,6 +29,7 @@ namespace FitsMonitor
         private static FitsMonitor.Properties.Settings settings = FitsMonitor.Properties.Settings.Default;
 
         private Atc02Xml atc02Status;
+        private WinScpTransfer acpWorkerTransfer;
         private WinScpTransfer zwickyTransfer;
         public Form1()
         {
@@ -36,9 +37,7 @@ namespace FitsMonitor
             logger.Info("Start FitsMonitor.");
             InitializeComponent();
             zwickyTransfer = new WinScpTransfer(settings.ZwickyHost, settings.ZwickyUsername, settings.ZwickySshHostKey);
-            //zwickyTransfer.HostName = settings.Host;
-            //zwickyTransfer.UserName = settings.Username;
-            //zwickyTransfer.SshHostKey = settings.SshHostKey;            
+            acpWorkerTransfer = new WinScpTransfer(settings.WorkerAcpHost, settings.WorkerAcpUsername, settings.WorkerAcpSshHostKey);
         }
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace FitsMonitor
             String localFolder;
             localFolder = ruta[ruta_size - 2];
             url = new StringBuilder();
-            url.Append("http://www.das.uchile.cl/~cata500/images/jpg/");
+            url.Append("file:///D:/digitalsky/");
             if (localFolder.Length >= settings.JpgFilenameLength)
             {
                 url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
@@ -98,7 +97,12 @@ namespace FitsMonitor
             Console.WriteLine("url=" + url.ToString());
             this.pictureBox1.ImageLocation = url.ToString();
             this.textBoxUrl.Text = url.ToString();
-            this.zwickyTransfer.Upload(fullPath, settings.RemoteBasePath, remoteFilename);
+            this.zwickyTransfer.Upload(fullPath, settings.ZwickyRemoteBasePath, remoteFilename);
+            // Si el archivo coreesponde al proyecto Gloria, lo copiamos tambien al servidor AcpWorker
+            if (remoteFilename.StartsWith("G"))
+            {
+                this.acpWorkerTransfer.Upload(fullPath,settings.WorkerAcpRemoteBasePath,remoteFilename);
+            }
         }
 
         /// <summary>

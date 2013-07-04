@@ -72,7 +72,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.ImageLocation = "http://zwicky.das.uchile.cl/pictures/chase500night.JPG";
+            this.pictureBox1.ImageLocation = "http://146.83.9.11/pictures/chase500night.JPG";
             this.pictureBox1.Location = new System.Drawing.Point(11, 35);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(266, 266);
@@ -119,7 +119,7 @@
             this.textBoxUrl.Name = "textBoxUrl";
             this.textBoxUrl.Size = new System.Drawing.Size(313, 20);
             this.textBoxUrl.TabIndex = 1;
-            this.textBoxUrl.Text = "http://zwicky.das.uchile.cl/pictures/chase500night.JPG";
+            this.textBoxUrl.Text = "http://146.83.9.11/pictures/chase500night.JPG";
             // 
             // bCopiarOffline
             // 
@@ -352,7 +352,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 364);
+            this.ClientSize = new System.Drawing.Size(394, 365);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(402, 392);

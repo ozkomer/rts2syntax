@@ -14,7 +14,7 @@
     <Setting Name="ZwickySshHostKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">ssh-rsa 2048 cb:fb:8d:12:39:4f:84:ca:53:ce:eb:44:a0:ad:be:ed</Value>
     </Setting>
-    <Setting Name="RemoteBasePath" Type="System.String" Scope="User">
+    <Setting Name="ZwickyRemoteBasePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">/images/repository/inbox/</Value>
     </Setting>
     <Setting Name="FolderTotalDepth" Type="System.Int32" Scope="User">
@@ -33,7 +33,7 @@
       <Value Profile="(Default)">3000</Value>
     </Setting>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Fits Monitor V0.51</Value>
+      <Value Profile="(Default)">Fits Monitor V0.52</Value>
     </Setting>
     <Setting Name="WorkerAcpHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
@@ -43,6 +43,9 @@
     </Setting>
     <Setting Name="WorkerAcpSshHostKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">ssh-rsa 2048 58:c9:d5:76:c1:f6:d9:99:b8:8c:8b:90:0a:ff:67:7c</Value>
+    </Setting>
+    <Setting Name="WorkerAcpRemoteBasePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/usr/share/gloria/rts/repositories/acp</Value>
     </Setting>
   </Settings>
 </SettingsFile>
