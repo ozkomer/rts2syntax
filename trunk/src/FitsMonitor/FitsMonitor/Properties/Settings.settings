@@ -33,7 +33,7 @@
       <Value Profile="(Default)">3000</Value>
     </Setting>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Fits Monitor V0.52</Value>
+      <Value Profile="(Default)">Fits Monitor V0.53</Value>
     </Setting>
     <Setting Name="WorkerAcpHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
@@ -46,6 +46,12 @@
     </Setting>
     <Setting Name="WorkerAcpRemoteBasePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">/usr/share/gloria/rts/repositories/acp</Value>
+    </Setting>
+    <Setting Name="ZwickyTransferEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WorkerAcpTransferEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>
