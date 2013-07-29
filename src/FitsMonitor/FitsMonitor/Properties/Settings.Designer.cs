@@ -145,7 +145,7 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.52")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.53")]
         public string version {
             get {
                 return ((string)(this["version"]));
@@ -197,6 +197,30 @@ namespace FitsMonitor.Properties {
             }
             set {
                 this["WorkerAcpRemoteBasePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ZwickyTransferEnable {
+            get {
+                return ((bool)(this["ZwickyTransferEnable"]));
+            }
+            set {
+                this["ZwickyTransferEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WorkerAcpTransferEnable {
+            get {
+                return ((bool)(this["WorkerAcpTransferEnable"]));
+            }
+            set {
+                this["WorkerAcpTransferEnable"] = value;
             }
         }
     }

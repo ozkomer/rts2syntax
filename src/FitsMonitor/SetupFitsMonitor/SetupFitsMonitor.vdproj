@@ -468,7 +468,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Fits Monitor"
         "ProductCode" = "8:{27EA3FD6-C616-4EC4-BBDA-193EA4D80E3D}"
-        "PackageCode" = "8:{01FBECB5-74D3-4312-B7B8-799526807714}"
+        "PackageCode" = "8:{5ADD9539-7F8A-4438-A219-CDBDCFDA7915}"
         "UpgradeCode" = "8:{BE072F7A-AC56-467A-9810-441C312F3290}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -589,7 +589,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4EDEE45559624325B35CEAE00452AD17"
             {
-            "Name" = "8:Fits Monitor"
+            "Name" = "8:06_Fits Monitor"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -612,7 +612,7 @@
             "Target" = "8:_A9086B344A794FE0AE82519D1F7AEAB3"
             "Folder" = "8:_F25E8D714F4F4AD290711D2653ED534D"
             "WorkingFolder" = "8:_BE710650A7A9488782C82633D01CAA7D"
-            "Icon" = "8:"
+            "Icon" = "8:_DBFA932D2C434D3EA66F6EC1D8CF7E79"
             "Feature" = "8:"
             }
         }

@@ -54,12 +54,14 @@ namespace FitsMonitor
         /// <summary>
         /// Copia un archivo desde baade hacia zwicky.
         /// Ademas busca el correspondiente archivo jpg para desplegarlo en el picturebox.
+        /// El archivo debe estar en una carpeta(profundidad)=settings.FolderTotalDepth
+        /// El nombre del archivo no debe contener el texto "DiscardFilePattern" (Ej: RAW)
         /// </summary>
         /// <param name="fullPath">Ruta del archivo de origen</param>
         public void Copiar(String fullPath)
         {
             // Url del archivo Sample en el sitio de Jose Maza
-            StringBuilder url;
+            StringBuilder urlJpeg;
             // Componentes del fullPath, separadas por el caracter '/'
             String[] ruta;
             // Cantidad de componentes del arreglo ruta
@@ -77,29 +79,40 @@ namespace FitsMonitor
                 logger.Info("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
                 return;
             }
-            CompletaFitsHeader(fullPath);
+            this.CompletaFitsHeader(fullPath);
             String remoteFilename;
             remoteFilename = (ruta[ruta_size - 1]);
             String localFolder;
             localFolder = ruta[ruta_size - 2];
-            url = new StringBuilder();
-            url.Append("file:///D:/digitalsky/");
+            urlJpeg = new StringBuilder();
+            urlJpeg.Append("file:///D:/digitalsky/");
             if (localFolder.Length >= settings.JpgFilenameLength)
             {
-                url.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
+                urlJpeg.Append(localFolder.Substring(0, settings.JpgFilenameLength).Replace('p', '+'));
             }
             else
             {
-                url.Append(localFolder);
+                urlJpeg.Append(localFolder);
             }            
-            url.Append(".jpg");
+            urlJpeg.Append(".jpg");
             //url=http://www.das.uchile.cl/~chase500/images/jpg/Images.jpg
-            Console.WriteLine("url=" + url.ToString());
-            this.pictureBox1.ImageLocation = url.ToString();
-            this.textBoxUrl.Text = url.ToString();
-            this.zwickyTransfer.Upload(fullPath, settings.ZwickyRemoteBasePath, remoteFilename);
+            logger.Debug("urlJpeg=" + urlJpeg.ToString());
+            this.pictureBox1.ImageLocation = urlJpeg.ToString();
+            this.textBoxUrl.Text = urlJpeg.ToString();
+            if (settings.ZwickyTransferEnable)
+            {
+                this.zwickyTransfer.Upload(fullPath, settings.ZwickyRemoteBasePath, remoteFilename);
+            }
             // Si el archivo coreesponde al proyecto Gloria, lo copiamos tambien al servidor AcpWorker
-            if (remoteFilename.StartsWith("G"))
+            // Tambien copiamos los AutoFlat,Bias,Darks
+            if  ( 
+                    (settings.WorkerAcpTransferEnable) && 
+                    (    remoteFilename.StartsWith("G") || 
+                        remoteFilename.StartsWith("AutoFlat") ||
+                        remoteFilename.StartsWith("Bias") ||
+                        remoteFilename.StartsWith("Dark")
+                    )
+                )
             {
                 this.acpWorkerTransfer.Upload(fullPath,settings.WorkerAcpRemoteBasePath,remoteFilename);
             }
