@@ -33,7 +33,7 @@
       <Value Profile="(Default)">3000</Value>
     </Setting>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Fits Monitor V0.53</Value>
+      <Value Profile="(Default)">Fits Monitor V0.54</Value>
     </Setting>
     <Setting Name="WorkerAcpHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>

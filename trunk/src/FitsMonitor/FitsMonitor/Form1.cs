@@ -79,7 +79,11 @@ namespace FitsMonitor
                 logger.Info("archivo descartado, por poseer el patron " + settings.DiscardFilePattern + ".");
                 return;
             }
-            this.CompletaFitsHeader(fullPath);
+            if (!(this.CompletaFitsHeader(fullPath)))
+            {
+                logger.Error("Error al modificar header.");
+                return;
+            }
             String remoteFilename;
             remoteFilename = (ruta[ruta_size - 1]);
             String localFolder;
@@ -118,19 +122,29 @@ namespace FitsMonitor
             }
         }
 
+
         /// <summary>
         /// Modifica el header de un archivo .fits, previo al envio 
-        /// del archivo a otro servidor.
-        /// </summary>
-        /// <param name="fullPath"></param>
-        public void CompletaFitsHeader(String fitsFullPath)
+        /// del archivo a otro servidor.        /// </summary>
+        /// <param name="fitsFullPath"></param>
+        /// <returns>True si consigue modificar el header del archivo</returns>
+        public Boolean CompletaFitsHeader(String fitsFullPath)
         {
             this.refreshATC02XmlStatus();
             if (!this.atc02Status.IsFresh())
             {
                 logger.Info("ATC02 sin datos recientes, no se actualizara Archivo fits '"+fitsFullPath+"'");
-                return;
+                return false;
             }
+            FileInfo archivoFitsNuevo;
+            archivoFitsNuevo = new FileInfo(fitsFullPath);
+            if (archivoFitsNuevo.Exists)
+            {
+                logger.Info("Archivo no existe, no se actualizara Header del archivo fits '" + fitsFullPath + "'");
+                return false;
+            }
+            Boolean respuesta;
+            respuesta = true; // Solo si ocurre alguna excepcion esta variable sera False
             DateTime Ahora;
             Ahora = DateTime.Now;
             Fits fitsFile;
@@ -205,7 +219,7 @@ namespace FitsMonitor
                 }
                 catch (Exception)
                 {
-
+                    respuesta = false;
                     logger.Error("Error en: hdu.Header.Rewrite();");
                 }
                 
@@ -213,6 +227,7 @@ namespace FitsMonitor
             fitsFile.Close();
             // Permitimos al sistema que guarde los cambios en el archivo fits.
             System.Threading.Thread.Sleep(1000);
+            return respuesta;
         }
 
         private void Form1_Resize(object sender, EventArgs e)
