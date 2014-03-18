@@ -145,7 +145,7 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.54")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fits Monitor V0.55")]
         public string version {
             get {
                 return ((string)(this["version"]));
@@ -154,7 +154,7 @@ namespace FitsMonitor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
+        [global::System.Configuration.DefaultSettingValueAttribute("139.229.12.76")]
         public string WorkerAcpHost {
             get {
                 return ((string)(this["WorkerAcpHost"]));

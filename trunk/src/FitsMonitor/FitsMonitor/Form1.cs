@@ -137,10 +137,28 @@ namespace FitsMonitor
                 return false;
             }
             FileInfo archivoFitsNuevo;
+            int test;
+            int testLimit;
+            test = 1;
+            testLimit = 4;
+
             archivoFitsNuevo = new FileInfo(fitsFullPath);
-            if (archivoFitsNuevo.Exists)
+            do
             {
-                logger.Info("Archivo no existe, no se actualizara Header del archivo fits '" + fitsFullPath + "'");
+                test++;
+                if (archivoFitsNuevo.Exists)
+                {
+                    break;
+                }
+                else
+                {
+                    logger.Warn( String.Format("Archivo '{0}'no existe, intento {1} de {2}, esperando 1 segundo.", fitsFullPath, test, testLimit));
+                    System.Threading.Thread.Sleep(1000); 
+                }
+            } while (test <= testLimit);
+            if (!archivoFitsNuevo.Exists)
+            {
+                logger.Error(String.Format("Archivo '{0}'no existe.", fitsFullPath));
                 return false;
             }
             Boolean respuesta;
