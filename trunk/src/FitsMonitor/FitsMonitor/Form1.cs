@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using FileTransfer;
 using log4net.Config;
 using log4net;
 using System.Globalization;
@@ -15,6 +14,7 @@ using nom.tam.fits;
 using System.Net.Sockets;
 using System.Net;
 using AtcXml;
+using System.Diagnostics;
 
 namespace FitsMonitor
 {
@@ -29,15 +29,16 @@ namespace FitsMonitor
         private static FitsMonitor.Properties.Settings settings = FitsMonitor.Properties.Settings.Default;
 
         private Atc02Xml atc02Status;
-        private WinScpTransfer acpWorkerTransfer;
-        private WinScpTransfer zwickyTransfer;
+        //private WinScpTransfer acpWorkerTransfer;
+        private Process proceso = null;
+
         public Form1()
         {
             XmlConfigurator.Configure();
             logger.Info("Start FitsMonitor.");
             InitializeComponent();
-            zwickyTransfer = new WinScpTransfer(settings.ZwickyHost, settings.ZwickyUsername, settings.ZwickySshHostKey);
-            acpWorkerTransfer = new WinScpTransfer(settings.WorkerAcpHost, settings.WorkerAcpUsername, settings.WorkerAcpSshHostKey);
+            this.proceso = null;
+            //acpWorkerTransfer = new WinScpTransfer(settings.WorkerAcpHost_, settings.WorkerAcpUsername, settings.WorkerAcpSshHostKey);
         }
 
         /// <summary>
@@ -52,7 +53,8 @@ namespace FitsMonitor
         }
 
         /// <summary>
-        /// Copia un archivo desde baade hacia zwicky.
+        /// Copia el archivo a la carpeta syncBox que luego transportara el archivo
+        /// a Zwicky.
         /// Ademas busca el correspondiente archivo jpg para desplegarlo en el picturebox.
         /// El archivo debe estar en una carpeta(profundidad)=settings.FolderTotalDepth
         /// El nombre del archivo no debe contener el texto "DiscardFilePattern" (Ej: RAW)
@@ -82,10 +84,10 @@ namespace FitsMonitor
             if (!(this.CompletaFitsHeader(fullPath)))
             {
                 logger.Error("Error al modificar header.");
-                return;
+                //return;
             }
-            String remoteFilename;
-            remoteFilename = (ruta[ruta_size - 1]);
+            //String remoteFilename;
+            //remoteFilename = (ruta[ruta_size - 1]);
             String localFolder;
             localFolder = ruta[ruta_size - 2];
             urlJpeg = new StringBuilder();
@@ -103,22 +105,42 @@ namespace FitsMonitor
             logger.Debug("urlJpeg=" + urlJpeg.ToString());
             this.pictureBox1.ImageLocation = urlJpeg.ToString();
             this.textBoxUrl.Text = urlJpeg.ToString();
+
+            FileInfo archivoFitsModificado;
+            archivoFitsModificado = new FileInfo(fullPath);
             if (settings.ZwickyTransferEnable)
             {
-                this.zwickyTransfer.Upload(fullPath, settings.ZwickyRemoteBasePath, remoteFilename);
+                
+                StringBuilder archivoCarpetaRSync;
+                archivoCarpetaRSync = new StringBuilder();
+                archivoCarpetaRSync.Append(settings.LocalRSyncFolder);
+                archivoCarpetaRSync.Append(Path.DirectorySeparatorChar);
+                archivoCarpetaRSync.Append(archivoFitsModificado.Name);
+                logger.Info(String.Format("Copiando archivo a carpeta Rsync: de (%s) a (%s)", fullPath, archivoCarpetaRSync.ToString()));
+                archivoFitsModificado.CopyTo(archivoCarpetaRSync.ToString());
             }
             // Si el archivo coreesponde al proyecto Gloria, lo copiamos tambien al servidor AcpWorker
             // Tambien copiamos los AutoFlat,Bias,Darks
             if  ( 
                     (settings.WorkerAcpTransferEnable) && 
-                    (    remoteFilename.StartsWith("G") || 
-                        remoteFilename.StartsWith("AutoFlat") ||
-                        remoteFilename.StartsWith("Bias") ||
-                        remoteFilename.StartsWith("Dark")
+                    (
+                        archivoFitsModificado.Name.StartsWith("G") ||
+                        archivoFitsModificado.Name.StartsWith("AutoFlat") ||
+                        archivoFitsModificado.Name.StartsWith("Bias") ||
+                        archivoFitsModificado.Name.StartsWith("Dark")
                     )
                 )
             {
-                this.acpWorkerTransfer.Upload(fullPath,settings.WorkerAcpRemoteBasePath,remoteFilename);
+                if (archivoFitsModificado.Exists)
+                {
+                    StringBuilder archivoDestino;
+                    archivoDestino = new StringBuilder ();
+                    archivoDestino.Append(settings.WorkerAcpLocalPath);
+                    archivoDestino.Append(Path.DirectorySeparatorChar);
+                    archivoDestino.Append(archivoFitsModificado.Name);
+                    logger.Info(String.Format("Copiando archivo a carpeta AcpWorker...VirtualBox: de (%s) a (%s)", fullPath, archivoDestino.ToString()));
+                    archivoFitsModificado.CopyTo(archivoDestino.ToString());
+                }
             }
         }
 
@@ -846,6 +868,25 @@ private void revisaRaDecFits(FileInfo archivo)
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.MostrarVentana();
+        }
+
+        private void timerRSync_Tick(object sender, EventArgs e)
+        {
+            logger.Debug("timerRSync_Tick");
+            ProcessStartInfo startInfo;
+            if ((this.proceso == null) ||
+                ((this.proceso != null) && (proceso.HasExited))
+                )
+            {
+                startInfo = new ProcessStartInfo();
+                startInfo.FileName = settings.RSyncCommand;
+                logger.Debug("iniciando comando:" + startInfo.FileName);
+                proceso = Process.Start(startInfo);
+            }
+            else
+            {
+                logger.Debug("Proceso anterior sigue en ejecucion");
+            }
         }
     }
 }

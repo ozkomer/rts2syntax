@@ -99,12 +99,6 @@
     <None Include="Resources\IconAstronomy.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileTransfer\FileTransfer.csproj">
-      <Project>{560E158A-435B-4699-92DF-4AFBE07FB844}</Project>
-      <Name>FileTransfer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Play-1-Normal-icon.png" />
   </ItemGroup>
   <ItemGroup>

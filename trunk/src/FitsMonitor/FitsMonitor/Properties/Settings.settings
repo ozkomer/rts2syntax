@@ -5,18 +5,6 @@
     <Setting Name="WatchFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\ACP\Images</Value>
     </Setting>
-    <Setting Name="ZwickyHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">146.83.9.11</Value>
-    </Setting>
-    <Setting Name="ZwickyUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">chase</Value>
-    </Setting>
-    <Setting Name="ZwickySshHostKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ssh-rsa 2048 cb:fb:8d:12:39:4f:84:ca:53:ce:eb:44:a0:ad:be:ed</Value>
-    </Setting>
-    <Setting Name="ZwickyRemoteBasePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/images/repository/inbox/</Value>
-    </Setting>
     <Setting Name="FolderTotalDepth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">6</Value>
     </Setting>
@@ -33,25 +21,25 @@
       <Value Profile="(Default)">3000</Value>
     </Setting>
     <Setting Name="version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Fits Monitor V0.55</Value>
-    </Setting>
-    <Setting Name="WorkerAcpHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">139.229.12.76</Value>
-    </Setting>
-    <Setting Name="WorkerAcpUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">chase</Value>
-    </Setting>
-    <Setting Name="WorkerAcpSshHostKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ssh-rsa 2048 58:c9:d5:76:c1:f6:d9:99:b8:8c:8b:90:0a:ff:67:7c</Value>
-    </Setting>
-    <Setting Name="WorkerAcpRemoteBasePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/usr/share/gloria/rts/repositories/acp</Value>
+      <Value Profile="(Default)">Fits Monitor V0.58</Value>
     </Setting>
     <Setting Name="ZwickyTransferEnable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="WorkerAcpTransferEnable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LocalRSyncFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\syncBox</Value>
+    </Setting>
+    <Setting Name="RSyncCommand" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Administrator\Documents\rsync\cwrsyncZwicky.cmd</Value>
+    </Setting>
+    <Setting Name="RSyncTimer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">360000</Value>
+    </Setting>
+    <Setting Name="WorkerAcpLocalPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\VirtualBoxShared\fits</Value>
     </Setting>
   </Settings>
 </SettingsFile>

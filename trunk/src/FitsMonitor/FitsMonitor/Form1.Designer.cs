@@ -59,6 +59,7 @@
             this.folderBrowserOffline = new System.Windows.Forms.FolderBrowserDialog();
             this.timerAtc02 = new System.Windows.Forms.Timer(this.components);
             this.fsWatchFits = new System.IO.FileSystemWatcher();
+            this.timerRSync = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -348,6 +349,12 @@
             this.fsWatchFits.SynchronizingObject = this;
             this.fsWatchFits.Created += new System.IO.FileSystemEventHandler(this.fsWatchFits_Created);
             // 
+            // timerRSync
+            // 
+            this.timerRSync.Enabled = global::FitsMonitor.Properties.Settings.Default.ZwickyTransferEnable;
+            this.timerRSync.Interval = global::FitsMonitor.Properties.Settings.Default.RSyncTimer;
+            this.timerRSync.Tick += new System.EventHandler(this.timerRSync_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,6 +411,7 @@
         private System.Windows.Forms.Button bCheckRaDec;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button bReadStatus;
+        private System.Windows.Forms.Timer timerRSync;
     }
 }
 
