@@ -161,7 +161,7 @@ namespace Cupula
             this.checkBoxO1XT116.AutoSize = true;
             this.checkBoxO1XT116.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT116.Enabled = false;
-            this.checkBoxO1XT116.Location = new System.Drawing.Point(563, 117);
+            this.checkBoxO1XT116.Location = new System.Drawing.Point(563, 94);
             this.checkBoxO1XT116.Name = "checkBoxO1XT116";
             this.checkBoxO1XT116.Size = new System.Drawing.Size(73, 17);
             this.checkBoxO1XT116.TabIndex = 23;
@@ -174,7 +174,7 @@ namespace Cupula
             this.checkBoxO1XT115.AutoSize = true;
             this.checkBoxO1XT115.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT115.Enabled = false;
-            this.checkBoxO1XT115.Location = new System.Drawing.Point(427, 117);
+            this.checkBoxO1XT115.Location = new System.Drawing.Point(573, 71);
             this.checkBoxO1XT115.Name = "checkBoxO1XT115";
             this.checkBoxO1XT115.Size = new System.Drawing.Size(63, 17);
             this.checkBoxO1XT115.TabIndex = 22;
@@ -187,7 +187,7 @@ namespace Cupula
             this.checkBoxO1XT114.AutoSize = true;
             this.checkBoxO1XT114.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT114.Enabled = false;
-            this.checkBoxO1XT114.Location = new System.Drawing.Point(231, 117);
+            this.checkBoxO1XT114.Location = new System.Drawing.Point(516, 117);
             this.checkBoxO1XT114.Name = "checkBoxO1XT114";
             this.checkBoxO1XT114.Size = new System.Drawing.Size(120, 17);
             this.checkBoxO1XT114.TabIndex = 21;
@@ -200,7 +200,7 @@ namespace Cupula
             this.checkBoxO1XT113.AutoSize = true;
             this.checkBoxO1XT113.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT113.Enabled = false;
-            this.checkBoxO1XT113.Location = new System.Drawing.Point(58, 117);
+            this.checkBoxO1XT113.Location = new System.Drawing.Point(377, 117);
             this.checkBoxO1XT113.Name = "checkBoxO1XT113";
             this.checkBoxO1XT113.Size = new System.Drawing.Size(113, 17);
             this.checkBoxO1XT113.TabIndex = 20;
@@ -213,7 +213,7 @@ namespace Cupula
             this.checkBoxO1XT112.AutoSize = true;
             this.checkBoxO1XT112.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT112.Enabled = false;
-            this.checkBoxO1XT112.Location = new System.Drawing.Point(515, 94);
+            this.checkBoxO1XT112.Location = new System.Drawing.Point(49, 117);
             this.checkBoxO1XT112.Name = "checkBoxO1XT112";
             this.checkBoxO1XT112.Size = new System.Drawing.Size(122, 17);
             this.checkBoxO1XT112.TabIndex = 19;
@@ -226,7 +226,7 @@ namespace Cupula
             this.checkBoxO1XT111.AutoSize = true;
             this.checkBoxO1XT111.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT111.Enabled = false;
-            this.checkBoxO1XT111.Location = new System.Drawing.Point(375, 94);
+            this.checkBoxO1XT111.Location = new System.Drawing.Point(236, 117);
             this.checkBoxO1XT111.Name = "checkBoxO1XT111";
             this.checkBoxO1XT111.Size = new System.Drawing.Size(115, 17);
             this.checkBoxO1XT111.TabIndex = 18;
@@ -239,7 +239,7 @@ namespace Cupula
             this.checkBoxO1XT110.AutoSize = true;
             this.checkBoxO1XT110.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT110.Enabled = false;
-            this.checkBoxO1XT110.Location = new System.Drawing.Point(223, 94);
+            this.checkBoxO1XT110.Location = new System.Drawing.Point(362, 94);
             this.checkBoxO1XT110.Name = "checkBoxO1XT110";
             this.checkBoxO1XT110.Size = new System.Drawing.Size(128, 17);
             this.checkBoxO1XT110.TabIndex = 17;
@@ -252,7 +252,7 @@ namespace Cupula
             this.checkBoxO1XT109.AutoSize = true;
             this.checkBoxO1XT109.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT109.Enabled = false;
-            this.checkBoxO1XT109.Location = new System.Drawing.Point(51, 94);
+            this.checkBoxO1XT109.Location = new System.Drawing.Point(231, 94);
             this.checkBoxO1XT109.Name = "checkBoxO1XT109";
             this.checkBoxO1XT109.Size = new System.Drawing.Size(120, 17);
             this.checkBoxO1XT109.TabIndex = 16;
@@ -265,7 +265,7 @@ namespace Cupula
             this.checkBoxO1XT108.AutoSize = true;
             this.checkBoxO1XT108.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxO1XT108.Enabled = false;
-            this.checkBoxO1XT108.Location = new System.Drawing.Point(515, 71);
+            this.checkBoxO1XT108.Location = new System.Drawing.Point(50, 94);
             this.checkBoxO1XT108.Name = "checkBoxO1XT108";
             this.checkBoxO1XT108.Size = new System.Drawing.Size(121, 17);
             this.checkBoxO1XT108.TabIndex = 15;

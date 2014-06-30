@@ -4,7 +4,7 @@
 ;
 [Setup]
 AppName=ASCOM Chase500 Dome Driver
-AppVerName=ASCOM Chase500 Dome Driver 0.78
+AppVerName=ASCOM Chase500 Dome Driver 0.80
 AppVersion=0.5
 AppPublisher=Eduardo Maureira <emaureir@gmail.com>
 AppPublisherURL=mailto:emaureir@gmail.com

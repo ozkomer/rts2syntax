@@ -1,8 +1,7 @@
 //tabs=4
 // --------------------------------------------------------------------------------
-// TODO fill in this information for your driver, then remove this line!
 //
-// ASCOM Dome driver for Chase500
+// ASCOM Dome driver for Cata500
 //
 // Description:	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
 //				nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
@@ -11,7 +10,7 @@
 //				sanctus est Lorem ipsum dolor sit amet.
 //
 // Implements:	ASCOM Dome interface version: 1.0
-// Author:		(XXX) Your N. Here <your@email.here>
+// Author:		Eduardo Maureira <emaureir@gmail.com>
 //
 // Edit Log:
 //
@@ -70,12 +69,12 @@ namespace ASCOM.Chase500
         private byte deadManStatus;
 
         /// <summary>
-        /// Posicion definido por el usuario para la apertura del lado Norte.
+        /// Posicion definida por el usuario para la apertura del lado Norte.
         /// </summary>
         private ushort northRoof;
 
         /// <summary>
-        /// Posicion definido por el usuario para la apertura del lado Sur.
+        /// Posicion definida por el usuario para la apertura del lado Sur.
         /// </summary>
         private ushort southRoof;
 
@@ -264,6 +263,8 @@ namespace ASCOM.Chase500
         {
             //northRoof = Dome.OPEN;
             //southRoof = Dome.OPEN;
+            this.OpenDome();
+            System.Threading.Thread.Sleep(20000);
             this.OpenDome();
         }
 
@@ -558,11 +559,12 @@ namespace ASCOM.Chase500
         /// </summary>
         public void Disconnect()
         {
-            if (zelioConn.connected)
-            {
-                sysLog.LogMessageCrLf("Disconnect()", "Finalizando sesion ModBus con el PLC.");
-                zelioConn.disconnect();
-            }
+            sysLog.LogMessageCrLf("Disconnect()", "Manteniendo sesion ModBus con el PLC.");
+            //if (zelioConn.connected)
+            //{
+            //    sysLog.LogMessageCrLf("Disconnect()", "Finalizando sesion ModBus con el PLC.");
+            //    zelioConn.disconnect();
+            //}
         }
 
 
