@@ -384,9 +384,9 @@ namespace ASCOM.OrbitATC02
             int bytesRead;
             bytesRead = clientStream.Read(bufferIn, 0, 800);
             respuesta = encoder.GetString(bufferIn, 0, 800);
-            Console.WriteLine("-----------");
-            Console.WriteLine(respuesta);
-            Console.WriteLine("-----------");
+            //Console.WriteLine("-----------");
+            //Console.WriteLine(respuesta);
+            //Console.WriteLine("-----------");
             client.Close();
             return respuesta;
         }
