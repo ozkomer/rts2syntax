@@ -66,14 +66,17 @@ namespace ASCOM.Meteo02
                 for (int i = 0; i < 5; i++)
                 {
                     indexDomePrompt[i] = strHtml.IndexOf("domePrompt" + (i + 1));
-                    Console.WriteLine("indexDomePrompt[" + i + "]=" + indexDomePrompt[i]);
-                    strDomePrompt[i] = strHtml.Substring(indexDomePrompt[i], 30);
-                    Console.WriteLine("strDomePrompt[" + i + "]=" + strDomePrompt[i]);
-                    is_openPrompt[i] = strDomePrompt[i].Contains("OPEN");
-                    Console.WriteLine("is_openPrompt[" + i + "]=" + is_openPrompt[i]);
-                    if (is_openPrompt[i])
+                    if (indexDomePrompt[i] > 0)
                     {
-                        cantDomosAbiertos++;
+                        Console.WriteLine("indexDomePrompt[" + i + "]=" + indexDomePrompt[i]);
+                        strDomePrompt[i] = strHtml.Substring(indexDomePrompt[i], 30);
+                        Console.WriteLine("strDomePrompt[" + i + "]=" + strDomePrompt[i]);
+                        is_openPrompt[i] = strDomePrompt[i].Contains("OPEN");
+                        Console.WriteLine("is_openPrompt[" + i + "]=" + is_openPrompt[i]);
+                        if (is_openPrompt[i])
+                        {
+                            cantDomosAbiertos++;
+                        }
                     }
                 }
             }

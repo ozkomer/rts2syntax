@@ -4,7 +4,7 @@
 ;
 [Setup]
 AppName=ASCOM CTIO Weather Switches Driver
-AppVerName=ASCOM CTIO Weather Switches Driver 0.9
+AppVerName=ASCOM CTIO Weather Switches Driver 0.92
 AppVersion=0.8.1
 AppPublisher=Eduardo Maureira <emaureir@gmail.com>
 AppPublisherURL=mailto:emaureir@gmail.com
