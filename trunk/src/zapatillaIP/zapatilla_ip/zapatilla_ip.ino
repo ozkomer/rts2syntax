@@ -1,8 +1,7 @@
-// USAR COM7
 /*
+ USAR COM7
 Control de arreglo de reles por comandos seriales o TCP/IP
-Eduardo Maureira, Enero 2012
-
+Eduardo Maureira, Diciembre 2013
 */
 
 #include <Wire.h> // specify use of Wire.h library.
@@ -21,9 +20,9 @@ int incomingByte = 0;	// for incoming serial data
 //.. This allows eight individual devices to be connected at one time with individual addresses of 0x20 through 0x27. (Hex numbers!) 
 byte zxRelayAddres = 0x20;
 
-// Status de los relés 1 al 8
+// Status de los relÃ©s 1 al 8
 byte port0=0; 
-// Status de los relés 9 al 16
+// Status de los relÃ©s 9 al 16
 byte port1=0;
 
 // the media access control (ethernet hardware) address for the shield:
@@ -35,10 +34,15 @@ byte gateway[] = { 139, 229, 12, 1 };
 //the subnet for the shield:
 byte subnet[] = { 255, 255, 255, 0};
 
+//byte ip[] = { 139, 229, 65, 214 };// 139.229.65.214
+//the gateway for the shield:
+//byte gateway[] = { 139, 229, 65, 193 };
+//the subnet for the shield:
+//byte subnet[] = { 255, 255, 255, 224 };
+
 // Servidor de la Zapatilla IP
-EthernetUDP udp;// = EthernetServer(18008);
-//EthernetClient client;
-//char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+EthernetServer server = EthernetServer(18008);
+EthernetClient client;
 
 void setup()  
 {
@@ -61,13 +65,18 @@ void setup()
   Ethernet.begin(mac,ip,gateway,subnet);
 
   // start listening for clients
-  udp.begin(18008);
+  server.begin();
   listarComandosSerial ();
   readRelays();
 }
  
 
 void loop() {
+//  currentLimits= digitalRead( pinlimitsRA);
+//  if ((lastLimits==LOW) && (currentLimits==HIGH))
+//  {
+//    apagarMontura();
+//  }
   if (Serial.available() > 0) {
     // read the incoming byte:
     incomingByte = Serial.read();    
@@ -78,15 +87,18 @@ void loop() {
     listarComandosSerial ();
   }
   // if an incoming client connects, there will be bytes available to read:
-  int packetSize = udp.parsePacket();
-  if (udp.available()) {
+  client = server.available();
+  if (client == true) {
     // read bytes from the incoming client and write them back
     // to any clients connected to the server:
     byte letra;
-    letra = udp.read();
+    letra = client.read();
     delay(BREATH_TIME);
-    procesaComandoUdp(letra);
-  }  
+    procesaComandoTcpIP(letra);
+
+  }
+
+  
 } // end loop
 
 void apagarMontura()
@@ -112,32 +124,20 @@ void encenderTodo()
   updateRelays();
 }
 
-void procesaComandoUdp(byte comando)
+void procesaComandoTcpIP(byte comando)
 {
-        Serial.print ("procesaComandoUdp, comando=");
-        Serial.print(comando);
-        Serial.println("");   
     byte chk;
     byte suma;
     switch (comando)
     {
-     case 1:
+    case 1:
     
-      port0=udp.read();
-      port1=udp.read();
-      chk = udp.read();
+      port0=client.read();
+      port1=client.read();
+      chk = client.read();
       suma = (comando + port0 + port1);
       if (suma==chk)
       {
-        Serial.print ("port0=");
-        Serial.print(port0);
-        Serial.print ("\t port1=");
-        Serial.print(port1);
-        Serial.print ("\t chk=");
-        Serial.print(chk);
-        Serial.print ("\t suma=");
-        Serial.print(suma);
-        Serial.println("");        
         updateRelays();
         readRelays();
       }
@@ -149,19 +149,9 @@ void procesaComandoUdp(byte comando)
         Serial.println(chk);
       }
       break;
-     case 2:
-      IPAddress remote;
-      int remotPort;
-      remote = udp.remoteIP();
-      remotPort =  udp.remotePort();
-      Serial.print(remote);
-      Serial.print(" on port:");
-      Serial.println(remotPort);
-      delay(BREATH_TIME);
-      udp.beginPacket(remote,remotPort);
-      udp.write(port0);
-      udp.write(port1);
-      udp.endPacket();
+    case 2:
+      client.write(port0);
+      client.write(port1);
       break;
     }
     
@@ -275,3 +265,4 @@ void readRelays()
       Serial.print(port1,DEC);
       Serial.println("");
 }
+
