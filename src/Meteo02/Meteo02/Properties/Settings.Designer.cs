@@ -48,7 +48,7 @@ namespace ASCOM.Meteo02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("16.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30.4")]
         public double maxWindSpeed_inKnots {
             get {
                 return ((double)(this["maxWindSpeed_inKnots"]));
