@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DriverName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Chase500 Focuser Setup V0.98</Value>
+      <Value Profile="(Default)">Chase500 Focuser Setup V0.981</Value>
     </Setting>
     <Setting Name="StepSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
