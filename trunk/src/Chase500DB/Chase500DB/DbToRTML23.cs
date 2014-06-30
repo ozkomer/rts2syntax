@@ -26,6 +26,10 @@ namespace Chase500DB
         private int projectID;
         private String rtmlFilename;
 
+        // Cache con la lista de Filtros
+        chase500DataSet.filtersDataTable dtFilter;
+            
+
         public DbToRTML23(int _projectID, String _rtmlFilename)
         {
             taPlan = new Chase500DB.chase500DataSetTableAdapters.plansTableAdapter();
@@ -35,13 +39,32 @@ namespace Chase500DB
             taFilter = new Chase500DB.chase500DataSetTableAdapters.filtersTableAdapter();
             taConstraints = new Chase500DB.chase500DataSetTableAdapters.constraintsTableAdapter();
 
+            // Cargamos el cache con la lista de filtros
+            dtFilter = taFilter.GetData();
+
             rtml = new RTML();
             rtml.version = 2.3F;
             this.projectID = _projectID;
             this.rtmlFilename = _rtmlFilename;
         }
 
+        private chase500DataSet.filtersRow getFiltro(int filterId)
+        {
+            Console.WriteLine("getFiltro-->" + filterId);
+            foreach (chase500DataSet.filtersRow fila in dtFilter)
+            {
+                if (fila.id == filterId) { return fila; }
+            }
+            return null;
+        }
 
+
+
+        
+        /// <summary>
+        /// Barre la lista de plans obteniendo bloques de 30 registros.
+        /// 
+        /// </summary> 
         public void FillRTML()
         {
             this.setContact();
@@ -63,41 +86,72 @@ namespace Chase500DB
             //    }
             //}
 
-            chase500DataSet.plansDataTable dtPlan;
-            dtPlan = taPlan.GetDataByProjectID(this.projectID);
-
             List<RTMLRequest> listaRequest;
             listaRequest = new List<RTMLRequest>();
             Console.WriteLine("START:FillRTML");
 
-            foreach (chase500DataSet.plansRow rowPlan in dtPlan.Rows)
+
+            int firstRow;
+            firstRow = 0;
+            Boolean bloqueConDatos;
+            bloqueConDatos  = true;
+            while (bloqueConDatos)
             {
-                if (rowPlan.enabled)
+                chase500DataSet.plansDataTable dtPlan;
+
+                // Aqui se lee un bloque de 30 registros
+                Boolean timeout = false;
+                dtPlan = null;
+                do
                 {
-                    dtObservation = taObservation.GetDataByPlanId(rowPlan.id);
-                    rowObservation = (chase500DataSet.observationsRow)dtObservation.Rows[0];
-                    RTMLRequest request;
-                    request = new RTMLRequest();
-                    request.ID = rowPlan.name;
-                    request.UserName = contacto.User;
-                    request.Description = rowPlan.description;
-                    request.Reason = ("monitor=" + rowPlan.resubmit);
+                    try
+                    {
+                        dtPlan = taPlan.GetDataByProjectIdLimit(this.projectID, firstRow);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("taPlan.GetDataByProjectIdLimit-> Timeout, reintentando.");
+                        timeout = true;
+                    }         
+                } while (timeout);
 
-                    request.Schedule = getConstraints(rowObservation.constraint_id, rowPlan.priority);
+               
+                firstRow += 30; // en la siguiente vuelta leeremos los siguiente 30 registros
+                Console.WriteLine("dtPlan.Rows.Count=" + dtPlan.Rows.Count);
+                bloqueConDatos = (dtPlan.Rows.Count>0);
+                if (dtPlan.Rows.Count==0) {
+                    Console.WriteLine("Bloque sin datos, abandonando loop 'bloqueConDatos'");
+                    break;
+                }
+                foreach (chase500DataSet.plansRow rowPlan in dtPlan.Rows)
+                {
+                    if (rowPlan.enabled)
+                    {
+                        dtObservation = taObservation.GetDataByPlanId(rowPlan.id);
+                        rowObservation = (chase500DataSet.observationsRow)dtObservation.Rows[0];
+                        RTMLRequest request;
+                        request = new RTMLRequest();
+                        request.ID = rowPlan.name;
+                        request.UserName = contacto.User;
+                        request.Description = rowPlan.description;
+                        request.Reason = ("monitor=" + rowPlan.resubmit);
 
-                    dtProject = taProject.GetById(rowPlan.project_id);
-                    rowProject = (chase500DataSet.projectsRow)dtProject.Rows[0];
+                        request.Schedule = getConstraints(rowObservation.constraint_id, rowPlan.priority);
 
-                    request.Project = rowProject.name;
-                    RTMLRequestTarget target;
-                    target = new RTMLRequestTarget();
-                    target.Name = rowObservation.description;
-                    target.Coordinates = getCoordenadas(rowObservation);
-                    request.Target = new RTMLRequestTarget[1];
-                    request.Target[0] = target;
-                    target.Picture = getPictures(rowObservation.id);
+                        dtProject = taProject.GetById(rowPlan.project_id);
+                        rowProject = (chase500DataSet.projectsRow)dtProject.Rows[0];
 
-                    listaRequest.Add(request);
+                        request.Project = rowProject.name;
+                        RTMLRequestTarget target;
+                        target = new RTMLRequestTarget();
+                        target.Name = rowObservation.description;
+                        target.Coordinates = getCoordenadas(rowObservation);
+                        request.Target = new RTMLRequestTarget[1];
+                        request.Target[0] = target;
+                        target.Picture = getPictures(rowObservation.id);
+
+                        listaRequest.Add(request);
+                    }
                 }
             }
             rtml.Request = listaRequest.ToArray();
@@ -142,7 +196,21 @@ namespace Chase500DB
             chase500DataSet.imagesetsDataTable dtImageSet;
 
             RTMLRequestTargetPicture requestTargetPicture;
-            dtImageSet = taImageSet.GetDataByObservationId(observationRowID);
+            bool timeOut;
+            timeOut = false;
+            dtImageSet = null;
+            do
+            {
+                try
+                {
+                    dtImageSet = taImageSet.GetDataByObservationId(observationRowID);
+                }
+                catch (Exception)
+                {
+                    timeOut = true;
+                }
+            } while (timeOut);
+
             chase500DataSet.filtersRow filtroOptico;
             foreach (chase500DataSet.imagesetsRow filaImage in dtImageSet.Rows)
             {
@@ -161,14 +229,7 @@ namespace Chase500DB
             return listaRespuesta.ToArray();
         }
 
-        private chase500DataSet.filtersRow getFiltro(int filterId)
-        {
-            chase500DataSet.filtersDataTable dtFilter;
-            chase500DataSet.filtersRow rowFilter;
-            dtFilter = taFilter.GetDataById(filterId);
-            rowFilter = (chase500DataSet.filtersRow)dtFilter.Rows[0];
-            return rowFilter;
-        }
+
 
         private RTMLRequestTargetCoordinates getCoordenadas(chase500DataSet.observationsRow rowObs)
         {
@@ -228,7 +289,8 @@ namespace Chase500DB
             using (Stream stream = new FileStream( this.rtmlFilename, FileMode.Create))
             {
                 XmlWriter writer;
-                writer = new XmlTextWriter(stream, Encoding.Unicode);
+                //writer = new XmlTextWriter(stream, Encoding.Unicode);
+                writer = new XmlTextWriter(stream, Encoding.Default);
                 serializer.Serialize(writer, this.rtml);
                 writer.Close();
             }
