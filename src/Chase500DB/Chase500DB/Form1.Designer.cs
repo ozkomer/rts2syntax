@@ -37,6 +37,7 @@
             this.projectsTableAdapter = new Chase500DB.chase500DataSetTableAdapters.projectsTableAdapter();
             this.observationsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.observationsTableAdapter = new Chase500DB.chase500DataSetTableAdapters.observationsTableAdapter();
+            this.bGetId = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.projectsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chase500DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.observationsBindingSource)).BeginInit();
@@ -86,11 +87,21 @@
             // 
             this.observationsTableAdapter.ClearBeforeFill = true;
             // 
+            // bGetId
+            // 
+            this.bGetId.Location = new System.Drawing.Point(27, 59);
+            this.bGetId.Name = "bGetId";
+            this.bGetId.Size = new System.Drawing.Size(75, 23);
+            this.bGetId.TabIndex = 2;
+            this.bGetId.Text = "button1";
+            this.bGetId.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 38);
+            this.ClientSize = new System.Drawing.Size(308, 93);
+            this.Controls.Add(this.bGetId);
             this.Controls.Add(this.cbxProject);
             this.Controls.Add(this.bCrearDoc);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -113,6 +124,7 @@
         private Chase500DB.chase500DataSetTableAdapters.projectsTableAdapter projectsTableAdapter;
         private System.Windows.Forms.BindingSource observationsBindingSource;
         private Chase500DB.chase500DataSetTableAdapters.observationsTableAdapter observationsTableAdapter;
+        private System.Windows.Forms.Button bGetId;
     }
 }
 
