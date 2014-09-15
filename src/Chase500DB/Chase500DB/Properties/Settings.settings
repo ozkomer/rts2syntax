@@ -5,10 +5,10 @@
     <Setting Name="chase500ConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;server=146.83.9.11;User Id=chase500;Persist Security Info=True;password=rU2mfCERRAmqwU8D;database=chase500;Connect Timeout=30000&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;server=146.83.9.11;User Id=usuarioremoto;Persist Security Info=True;password=fF5bFEjhBuEFRtsK;database=chase500;Connect Timeout=30000&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;MySql.Data.MySqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">server=146.83.9.11;User Id=chase500;Persist Security Info=True;password=rU2mfCERRAmqwU8D;database=chase500;Connect Timeout=30000</Value>
+      <Value Profile="(Default)">server=146.83.9.11;User Id=usuarioremoto;Persist Security Info=True;password=fF5bFEjhBuEFRtsK;database=chase500;Connect Timeout=30000</Value>
     </Setting>
   </Settings>
 </SettingsFile>
