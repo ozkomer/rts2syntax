@@ -22,5 +22,11 @@
     <Setting Name="safeUnsafeLogic" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="DriverName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Chase 500 Weather v0.93</Value>
+    </Setting>
+    <Setting Name="minAmbientTemperature" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

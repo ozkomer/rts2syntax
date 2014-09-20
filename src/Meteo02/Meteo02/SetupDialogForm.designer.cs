@@ -241,13 +241,14 @@ namespace ASCOM.Meteo02
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.picASCOM);
             this.Controls.Add(this.cmdOK);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ASCOM.Meteo02.Properties.Settings.Default, "DriverName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Chase 500 Weather";
+            this.Text = global::ASCOM.Meteo02.Properties.Settings.Default.DriverName;
             this.Load += new System.EventHandler(this.SetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             this.tabControl1.ResumeLayout(false);
