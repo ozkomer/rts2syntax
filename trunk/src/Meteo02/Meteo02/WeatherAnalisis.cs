@@ -113,7 +113,15 @@ namespace ASCOM.Meteo02
                         logger.Info("unsafe, razon: DewPoint=" + deltaTemp + " < " + settings.minDewPointDelta);
                         safetyStatus = false;
                     }
+
+                    //Consideraiones para la temperatura                
+                    if (this.ultimo.AmbientTemperature < settings.minAmbientTemperature)
+                    {
+                        logger.Info("unsafe, razon: AmbientTemperature=" + this.averageWindSpeed + " <0 ");
+                        safetyStatus = false;
+                    }
                 }
+
 
                 //Consideraiones para el viento
                 //double averageWS;
